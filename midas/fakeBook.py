@@ -40,7 +40,7 @@ def _main():
     print(sortedFrame)
 
     t = time.strftime('%Y-%m-%d', time.localtime())
-    fileName = '../logs/%s_%s%s' %(t, PAST_DAY_PERIOD, '.csv')
+    fileName = '../logs/%s%s' %(t, '.csv')
     # print(fileName)
     with open(fileName, 'w', encoding='utf8') as file:
         sortedFrame.to_csv(file)
