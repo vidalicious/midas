@@ -7,7 +7,7 @@ from pandas import DataFrame
 COL_PASTCHANGE = 'past_p_change'
 COL_PASTPOSITIVE = 'past_positive'
 PAST_DAY_PERIOD = 10
-PAST_POSITIVE_PERIOD = 3
+PAST_POSITIVE_PERIOD = 2
 
 
 def past_hist_p_change(histData, pastDay=5):
