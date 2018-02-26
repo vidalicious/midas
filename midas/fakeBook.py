@@ -3,6 +3,7 @@ import tushare as ts
 import time
 from functools import reduce
 from pandas import DataFrame
+import numpy as np
 
 COL_PASTCHANGE = 'past_p_change'
 COL_PASTPOSITIVE = 'past_positive'
@@ -21,16 +22,16 @@ def _main():
 
     frame = DataFrame()
     frame['name'] = basics['name']
+    frame[COL_PASTCHANGE] = np.nan
+    frame[COL_PASTPOSITIVE] = np.nan
     frame['pe'] = basics['pe']
-    frame[COL_PASTCHANGE] = None
-    frame[COL_PASTPOSITIVE] = None
     i = 0
     for code in basics.index:
         histData = ts.get_hist_data(code)
         try:
-            frame[COL_PASTCHANGE][code] = past_hist_p_change(histData, PAST_DAY_PERIOD)
+            frame.loc[code, COL_PASTCHANGE] = past_hist_p_change(histData, PAST_DAY_PERIOD)
             if past_hist_p_change(histData, PAST_POSITIVE_PERIOD) > 0:
-                frame[COL_PASTPOSITIVE][code] = '★'
+                frame.loc[code, COL_PASTPOSITIVE] = '★'
         except Exception:
             continue
 
