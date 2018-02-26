@@ -17,14 +17,15 @@ def past_hist_p_change(histData, pastDay=5):
 
 
 def _main():
-    names = ts.get_stock_basics()['name']
+    basics = ts.get_stock_basics()
 
     frame = DataFrame()
-    frame['name'] = names
+    frame['name'] = basics['name']
+    frame['pe'] = basics['pe']
     frame[COL_PASTCHANGE] = None
     frame[COL_PASTPOSITIVE] = None
     i = 0
-    for code in names.index:
+    for code in basics.index:
         histData = ts.get_hist_data(code)
         try:
             frame[COL_PASTCHANGE][code] = past_hist_p_change(histData, PAST_DAY_PERIOD)
