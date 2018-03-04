@@ -14,7 +14,7 @@ PAST_POSITIVE_PERIOD = 2
 def past_hist_p_change(histData, pastDay=5):
     past_p_changes = histData['p_change'][:pastDay]
     mul = reduce(lambda x, y: x*y, map(lambda x: 1+x/100, past_p_changes.values))
-    return (mul - 1) * 100
+    return round((mul - 1) * 100, 3)
 
 
 def _main():
@@ -42,7 +42,7 @@ def _main():
     print(sortedFrame)
 
     t = time.strftime('%Y-%m-%d', time.localtime())
-    fileName = '../logs/%s%s' %(t, '.csv')
+    fileName = '../logs/%s@fakeBook%s' %(t, '.csv')
     # print(fileName)
     with open(fileName, 'w', encoding='utf8') as file:
         sortedFrame.to_csv(file)
