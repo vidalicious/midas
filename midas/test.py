@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import tushare as ts
 
-histData = ts.get_hist_data('002569')
-print(histData)
-
+# histData = ts.get_hist_data('002569')
+# print(histData)
+print([1, 2, 3, 5][:2])
 # print(1.1 ** 28)
