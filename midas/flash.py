@@ -40,8 +40,8 @@ def _main():
 
     filtered_frame = frame[(frame[COL_PASTFAR] < 0)
                            & (frame[COL_PASTNEAR] > 0)
-                           & (frame[COL_PASTAVERAGETURNOVER] < 10)
-                           & (frame['pe'] < 100)]
+                           & (frame[COL_PASTAVERAGETURNOVER] < 10) & (frame[COL_PASTAVERAGETURNOVER] > 0.5)
+                           & (frame['pe'] < 100) & (frame['pe'] > 0)]
 
     sorted_frame = filtered_frame.sort_values(by=COL_PASTFAR)
     print(sorted_frame)
