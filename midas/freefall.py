@@ -6,14 +6,13 @@ import numpy as np
 from midas.midas.api import hist_p_change as hpc
 from midas.midas.api import past_average_turnover as pat
 
-__version__ = 3
+__version__ = 4
 
-COL_PASTFAR = 'past_far'
-COL_PASTNEAR = 'past_near'
+COL_PAST_P_CHANGE = 'past_p_change'
 COL_PASTAVERAGETURNOVER = 'past_average_turnover'
 COL_STOPMARK = 'stop_mark'
-DAY_NEAR = 2
-DAY_FAR = 12
+DAY_BEGIN = 0
+DAY_END = 10
 PAST_AVERAGE_TURNOVER_PERIOD = 3
 
 # 上证指数
@@ -25,16 +24,14 @@ def _main():
     frame = DataFrame()
     frame['name'] = basics['name']
     frame['pe'] = basics['pe']
-    frame[COL_PASTFAR] = np.nan
-    frame[COL_PASTNEAR] = np.nan
+    frame[COL_PAST_P_CHANGE] = np.nan
     frame[COL_PASTAVERAGETURNOVER] = np.nan
     frame[COL_STOPMARK] = np.nan
     i = 0
     for code in basics.index:
         hist_data = ts.get_hist_data(code)
         try:
-            frame.loc[code, COL_PASTFAR] = hpc(hist_data, begin=DAY_NEAR, end=DAY_FAR)
-            frame.loc[code, COL_PASTNEAR] = hpc(hist_data, begin=0, end=DAY_NEAR)
+            frame.loc[code, COL_PAST_P_CHANGE] = hpc(hist_data, begin=DAY_BEGIN, end=DAY_END)
             frame.loc[code, COL_PASTAVERAGETURNOVER] = pat(hist_data, PAST_AVERAGE_TURNOVER_PERIOD)
             if hist_data.index[0] != LAST_MARKET_DATE:
                 frame.loc[code, COL_STOPMARK] = 'stop'
@@ -44,16 +41,15 @@ def _main():
         i += 1
         print('#####', i, '#####')
 
-    filtered_frame = frame[(frame[COL_PASTFAR] < 0)
-                           & (frame[COL_PASTNEAR] > 0)
+    filtered_frame = frame[(frame[COL_PAST_P_CHANGE] < 0)
                            & (frame[COL_PASTAVERAGETURNOVER] < 20) & (frame[COL_PASTAVERAGETURNOVER] > 0.5)
                            & (frame['pe'] < 100) & (frame['pe'] > 0)
                            & (frame[COL_STOPMARK] != 'stop')]
 
-    sorted_frame = filtered_frame.sort_values(by=COL_PASTFAR)
+    sorted_frame = filtered_frame.sort_values(by=COL_PAST_P_CHANGE)
     print(sorted_frame)
 
-    file_name = '../logs/%s@flash%s' % (LAST_MARKET_DATE, '.csv')
+    file_name = '../logs/%s@freefall%s' % (LAST_MARKET_DATE, '.csv')
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         sorted_frame.to_csv(file)

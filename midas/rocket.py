@@ -7,6 +7,7 @@ import numpy as np
 from midas.midas.api import past_hist_p_change as phpc
 from midas.midas.api import past_average_turnover as pat
 
+__version__ = 2
 
 COL_PASTCHANGE = 'past_p_change'
 COL_PASTPOSITIVE = 'past_positive'

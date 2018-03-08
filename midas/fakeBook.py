@@ -5,6 +5,8 @@ from functools import reduce
 from pandas import DataFrame
 import numpy as np
 
+__version__ = 1
+
 COL_PASTCHANGE = 'past_p_change'
 COL_PASTPOSITIVE = 'past_positive'
 PAST_DAY_PERIOD = 10
