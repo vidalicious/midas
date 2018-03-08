@@ -49,7 +49,7 @@ def _main():
     sorted_frame = filtered_frame.sort_values(by=COL_PAST_P_CHANGE)
     print(sorted_frame)
 
-    file_name = '../logs/%s@freefall%s' % (LAST_MARKET_DATE, '.csv')
+    file_name = '../logs/%s@FreeFall%s' % (LAST_MARKET_DATE, '.csv')
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         sorted_frame.to_csv(file)
