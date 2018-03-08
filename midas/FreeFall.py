@@ -18,6 +18,7 @@ PAST_AVERAGE_TURNOVER_PERIOD = 3
 # 上证指数
 LAST_MARKET_DATE = ts.get_hist_data('000001').index[0]
 
+
 def _main():
     basics = ts.get_stock_basics()
 
