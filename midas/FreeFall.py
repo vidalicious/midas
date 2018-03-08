@@ -12,7 +12,7 @@ COL_PAST_P_CHANGE = 'past_p_change'
 COL_PASTAVERAGETURNOVER = 'past_average_turnover'
 COL_STOPMARK = 'stop_mark'
 DAY_BEGIN = 0
-DAY_END = 10
+DAY_END = 20
 PAST_AVERAGE_TURNOVER_PERIOD = 3
 
 # 上证指数
