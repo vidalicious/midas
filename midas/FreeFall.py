@@ -28,8 +28,8 @@ def _main():
     frame[COL_PAST_P_CHANGE] = np.nan
     frame[COL_PASTAVERAGETURNOVER] = np.nan
     frame[COL_STOPMARK] = np.nan
-    i = 0
-    for code in basics.index:
+
+    for i, code in enumerate(basics.index):
         hist_data = ts.get_hist_data(code)
         try:
             frame.loc[code, COL_PAST_P_CHANGE] = hpc(hist_data, begin=DAY_BEGIN, end=DAY_END)
@@ -39,7 +39,6 @@ def _main():
         except Exception:
             continue
 
-        i += 1
         print('#####', i, '#####')
 
     filtered_frame = frame[(frame[COL_PAST_P_CHANGE] < 0)
