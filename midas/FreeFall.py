@@ -43,7 +43,7 @@ def _main():
 
     filtered_frame = frame[(frame[COL_PAST_P_CHANGE] < 0)
                            & (frame[COL_PASTAVERAGETURNOVER] < 20) & (frame[COL_PASTAVERAGETURNOVER] > 0.5)
-                           & (frame['pe'] < 100) & (frame['pe'] > 0)
+                           & (frame['pe'] > 0)
                            & (frame[COL_STOPMARK] != 'stop')]
 
     sorted_frame = filtered_frame.sort_values(by=COL_PAST_P_CHANGE)
