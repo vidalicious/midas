@@ -20,3 +20,11 @@ def hist_p_change(hist_data, begin=0, end=5):
 def past_average_turnover(hist_data, past_day=5):
     turnovers = hist_data['turnover'][:past_day]
     return round(mean(turnovers), 3)
+
+
+def is_cross_ma5_ma10(hist_data):
+    ma5_0 = hist_data['ma5'][0]
+    ma10_0 = hist_data['ma10'][0]
+    ma5_1 = hist_data['ma5'][1]
+    ma10_1 = hist_data['ma10'][1]
+    return ma5_0 > ma10_0 and ma5_1 < ma10_1
