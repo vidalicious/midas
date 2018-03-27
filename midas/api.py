@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from functools import reduce
 
-from numpy import mean
+import numpy as np
 
 
 def past_hist_p_change(hist_data, past_day=5):
@@ -19,7 +19,7 @@ def hist_p_change(hist_data, begin=0, end=5):
 
 def past_average_turnover(hist_data, past_day=5):
     turnovers = hist_data['turnover'][:past_day]
-    return round(mean(turnovers), 3)
+    return round(np.mean(turnovers), 3)
 
 
 def is_cross_ma5_ma10(hist_data):
@@ -28,3 +28,10 @@ def is_cross_ma5_ma10(hist_data):
     ma5_1 = hist_data['ma5'][1]
     ma10_1 = hist_data['ma10'][1]
     return ma5_0 > ma10_0 and ma5_1 < ma10_1
+
+
+def normalizing_std_close(hist_data, begin=0, end=5):
+    closes = hist_data['close'][begin:end]
+    mean = np.mean(closes)
+    std = np.std(closes)
+    return round(std / mean, 3)
