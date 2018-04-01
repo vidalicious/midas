@@ -35,3 +35,14 @@ def normalizing_std_close(hist_data, begin=0, end=5):
     mean = np.mean(closes)
     std = np.std(closes)
     return round(std / mean, 3)
+
+
+def std_close(hist_data, begin=0, end=5):
+    closes = hist_data['close'][begin:end]
+    std = np.std(closes)
+    return round(std, 3)
+
+
+def last_ma5(hist_data):
+    return hist_data['ma5'][0]
+
