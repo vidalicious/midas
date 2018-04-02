@@ -9,6 +9,8 @@ import midas.midas.api as api
 COL_CLOSE = 'close'
 COL_UPPERLIMIT = 'upper_limit'
 COL_LOWERLIMIT = 'lower_limit'
+COL_UPPERLIMITPCHANGE = 'upper_limit_p_change'
+COL_LOWERLIMITPCHANGE = 'lower_limit_p_change'
 COL_STOPMARK = 'stop_mark'
 
 K_UPPER_LIMIT_RATIO = 3
@@ -26,6 +28,8 @@ def _main():
     frame['close'] = np.nan
     frame[COL_UPPERLIMIT] = np.nan
     frame[COL_LOWERLIMIT] = np.nan
+    frame[COL_UPPERLIMITPCHANGE] = ''
+    frame[COL_LOWERLIMITPCHANGE] = ''
     frame[COL_STOPMARK] = ''
 
     for i, code in enumerate(const.positions):
@@ -35,6 +39,8 @@ def _main():
             frame.loc[code, COL_CLOSE] = hist_data['close'][0]
             frame.loc[code, COL_UPPERLIMIT] = api.next_close_to_tunnel_top(hist_data, n=5, ratio=K_UPPER_LIMIT_RATIO)
             frame.loc[code, COL_LOWERLIMIT] = api.next_close_to_ma(hist_data, n=5)
+            frame.loc[code, COL_UPPERLIMITPCHANGE] = '{c:.3}%'.format(c=(frame.loc[code, COL_UPPERLIMIT] / frame.loc[code, COL_CLOSE] - 1) * 100)
+            frame.loc[code, COL_LOWERLIMITPCHANGE] = '{c:.3}%'.format(c=(frame.loc[code, COL_LOWERLIMIT] / frame.loc[code, COL_CLOSE] - 1) * 100)
             if hist_data.index[0] != LAST_MARKET_DATE:
                 frame.loc[code, COL_STOPMARK] = 'stop'
         except Exception:

@@ -1,2 +1,3 @@
-,name,close,upper_limit,lower_limit,stop_mark
-002278,神开股份,12.7,13.333,12.265,
+,name,close,upper_limit,lower_limit,upper_limit_p_change,lower_limit_p_change,stop_mark
+002278,神开股份,12.7,13.333,12.265,4.98%,-3.43%,
+000820,神雾节能,18.75,19.376,18.298,3.34%,-2.41%,
