@@ -9,6 +9,7 @@ import midas.midas.api as api
 COL_CLOSE = 'close'
 COL_UPPERLIMIT = 'upper_limit'
 COL_LOWERLIMIT = 'lower_limit'
+COL_STOPMARK = 'stop_mark'
 
 K_UPPER_LIMIT_RATIO = 3
 
@@ -25,6 +26,7 @@ def _main():
     frame['close'] = np.nan
     frame[COL_UPPERLIMIT] = np.nan
     frame[COL_LOWERLIMIT] = np.nan
+    frame[COL_STOPMARK] = ''
 
     for i, code in enumerate(const.positions):
         frame.loc[code, 'name'] = basics.loc[code, 'name']
@@ -33,15 +35,19 @@ def _main():
             frame.loc[code, COL_CLOSE] = hist_data['close'][0]
             frame.loc[code, COL_UPPERLIMIT] = api.next_close_to_tunnel_top(hist_data, n=5, ratio=K_UPPER_LIMIT_RATIO)
             frame.loc[code, COL_LOWERLIMIT] = api.next_close_to_ma(hist_data, n=5)
+            if hist_data.index[0] != LAST_MARKET_DATE:
+                frame.loc[code, COL_STOPMARK] = 'stop'
         except Exception:
             continue
 
         print('#####', i, '#####')
 
+    filtered_frame = frame[(frame[COL_STOPMARK] != 'stop')]
+
     file_name = '../logs/{date}@Positions.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
-        frame.to_csv(file)
+        filtered_frame.to_csv(file)
 
 
 if __name__ == '__main__':

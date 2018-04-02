@@ -28,7 +28,7 @@ def _main():
     # frame['pe'] = basics['pe']
     frame[COL_P_CHANGE_01] = np.nan
     frame[COL_PASTAVERAGETURNOVER] = np.nan
-    frame[COL_STOPMARK] = np.nan
+    frame[COL_STOPMARK] = ''
 
     for i, code in enumerate(leading_shares):
         frame.loc[code, 'name'] = basics.loc[code, 'name']

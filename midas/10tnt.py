@@ -32,7 +32,7 @@ def _main():
     frame[COL_P_CHANGE_12] = np.nan
     frame[COL_PASTAVERAGETURNOVER] = np.nan
     frame[COL_NORMALIZING_STD] = np.nan
-    frame[COL_STOPMARK] = np.nan
+    frame[COL_STOPMARK] = ''
 
     for i, code in enumerate(basics.index):
         hist_data = ts.get_hist_data(code)
