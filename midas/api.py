@@ -46,3 +46,23 @@ def std_close(hist_data, begin=0, end=5):
 def last_ma5(hist_data):
     return hist_data['ma5'][0]
 
+
+def next_close_to_ma(hist_data, n=5):
+    """
+    使接触ma5的close
+    (a+b+c+d+e)  / 5 = e ==> e = (a+b+c+d) / 4
+    """
+    k = n - 1
+    res = sum(hist_data['close'][0:k]) / k
+    return round(res, 3)
+
+
+def next_close_to_tunnel_top(hist_data, n=5, ratio=3):
+    """
+    使接触到通道顶
+    e - (a+b+c+d+e)  / 5 = ratio * std ==> e = (5 * ratio * std + (a+b+c+d)) / 4
+    """
+    closes = hist_data['close'][0:n-1]
+    std = np.std(closes)
+    res = (n * ratio * std + sum(closes)) / (n - 1)
+    return round(res, 3)
