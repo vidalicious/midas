@@ -47,6 +47,13 @@ def last_ma5(hist_data):
     return hist_data['ma5'][0]
 
 
+def is_cross_ma5(hist_data):
+    ma5 = hist_data['ma5'][0]
+    open = hist_data['open'][0]
+    close = hist_data['close'][0]
+    return open < ma5 < close
+
+
 def next_close_to_ma(hist_data, n=5):
     """
     使接触ma5的close
