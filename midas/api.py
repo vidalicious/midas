@@ -73,3 +73,25 @@ def next_close_to_tunnel_top(hist_data, n=5, ratio=3):
     std = np.std(closes)
     res = (n * ratio * std + sum(closes)) / (n - 1)
     return round(res, 3)
+
+
+def is_COG_continuously_increase(hist_data, begin=0, end=5):
+    """重心一直增加"""
+    pre_COG = 0
+    for i in range(begin, end):
+        COG = (hist_data['open'][i] + hist_data['close'][i]) / 2
+        if COG < pre_COG:
+            return False
+        pre_COG = COG
+
+    return True
+
+
+def is_COG_above_ma5(hist_data, begin=0, end=5):
+    """重心都>ma5"""
+    for i in range(begin, end):
+        COG = (hist_data['open'][i] + hist_data['close'][i]) / 2
+        if COG < hist_data['ma5'][i]:
+            return False
+
+    return True
