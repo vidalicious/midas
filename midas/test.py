@@ -3,7 +3,7 @@ import tushare as ts
 import midas.midas.api as api
 import numpy as np
 
-histData = ts.get_hist_data('000908')
+histData = ts.get_hist_data('002930')
 print(histData)
 # print(api.normalizing_std_close(histData, 1, 11))
 # print([1, 2, 3, 5][:2])

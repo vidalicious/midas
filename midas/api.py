@@ -18,7 +18,13 @@ def hist_p_change(hist_data, begin=0, end=5):
 
 
 def past_average_turnover(hist_data, past_day=5):
-    turnovers = hist_data['turnover'][:past_day]
+    # turnovers = hist_data['turnover'][:past_day]
+    # return round(np.mean(turnovers), 3)
+    return hist_average_turnover(hist_data, begin=0, end=past_day)
+
+
+def hist_average_turnover(hist_data, begin=0, end=5):
+    turnovers = hist_data['turnover'][begin:end]
     return round(np.mean(turnovers), 3)
 
 
