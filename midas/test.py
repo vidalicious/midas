@@ -3,9 +3,9 @@ import tushare as ts
 import midas.midas.api as api
 import numpy as np
 
-hist_data = ts.get_hist_data('002575')
-a = api.hist_p_change(hist_data, begin=24, end=34)
-b = api.normalizing_std_close(hist_data, begin=24, end=34)
+hist_data = ts.get_hist_data('002929')
+a = api.hist_p_change(hist_data, begin=20, end=35)
+b = api.normalizing_std_close(hist_data, begin=20, end=35)
 print(a)
 print(b)
 # print(histData)
