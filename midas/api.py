@@ -12,6 +12,8 @@ def past_hist_p_change(hist_data, past_day=5):
 
 
 def hist_p_change(hist_data, begin=0, end=5):
+    if begin == end:
+        return 0
     p_changes = hist_data['p_change'][begin:end]
     mul = reduce(lambda x, y: x*y, map(lambda x: 1+x/100, p_changes))
     return round((mul - 1) * 100, 3)
@@ -37,6 +39,8 @@ def is_cross_ma5_ma10(hist_data):
 
 
 def normalizing_std_close(hist_data, begin=0, end=5):
+    if begin == end:
+        return 0
     closes = hist_data['close'][begin:end]
     mean = np.mean(closes)
     std = np.std(closes)
