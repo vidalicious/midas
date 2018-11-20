@@ -3,11 +3,16 @@ import tushare as ts
 import midas.midas.api as api
 import numpy as np
 
-hist_data = ts.get_hist_data('002929')
-a = api.hist_p_change(hist_data, begin=20, end=35)
-b = api.normalizing_std_close(hist_data, begin=20, end=35)
+hist_data = ts.get_hist_data('000622')
+a = api.hist_p_change(hist_data, begin=18, end=30)
+b = api.normalizing_std_close(hist_data, begin=18, end=30)
 print(a)
 print(b)
+
+c = api.hist_p_change(hist_data, begin=30, end=50)
+d = api.normalizing_std_close(hist_data, begin=30, end=50)
+print(c)
+print(d)
 # print(histData)
 # print(api.normalizing_std_close(histData, 1, 11))
 # print([1, 2, 3, 5][:2])
