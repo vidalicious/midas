@@ -5,7 +5,7 @@ import numpy as np
 
 import midas.midas.api as api
 
-__version__ = 13
+__version__ = 14
 
 COL_P_CHANGE_RANGE = 'p_change_range'
 COL_P_CHANGE_TILL_NOW = 'p_change_till_now'
@@ -14,7 +14,7 @@ COL_NORMALIZING_STD_TILL_NOW = 'normalizing_std_till_now'
 DELTA_RANGE = (0, 15)
 PERIOD = 20
 COL_STOPMARK = 'stop_mark'
-N = 5
+N = 10
 
 
 # 上证指数
@@ -74,7 +74,7 @@ def _main():
 
         file_name = '../logs/{date}@segment_period_{i}.csv'.format(date=LAST_MARKET_DATE, i=i)
         # print(fileName)
-        with open(file_name, 'w') as file:
+        with open(file_name, 'w', encoding='utf8') as file:
             sorted_frame.to_csv(file)
 
 
