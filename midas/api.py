@@ -30,6 +30,13 @@ def hist_average_turnover(hist_data, begin=0, end=5):
     return round(np.mean(turnovers), 3)
 
 
+def hist_daily_hairy(hist_data, begin=0, end=5):
+    highs = hist_data['high'][begin:end]
+    lows = hist_data['low'][begin:end]
+    hairs = (highs - lows) / lows
+    return round(np.mean(hairs), 3)
+
+
 def is_cross_ma5_ma10(hist_data):
     ma5_0 = hist_data['ma5'][0]
     ma10_0 = hist_data['ma10'][0]

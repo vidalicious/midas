@@ -5,7 +5,7 @@ import numpy as np
 
 hist_data = ts.get_hist_data('000622')
 a = api.hist_p_change(hist_data, begin=18, end=30)
-b = api.normalizing_std_close(hist_data, begin=18, end=30)
+b = api.hist_daily_hairy(hist_data, begin=0, end=5)
 print(a)
 print(b)
 
