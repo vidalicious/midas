@@ -12,7 +12,7 @@ COL_P_CHANGE_RANGE1 = 'p_change_range1'
 COL_NORMALIZING_STD1 = 'normalizing_std1'
 COL_STOPMARK = 'stop_mark'
 DAY_RANGE0 = (0, 1)
-DAY_RANGE1 = (0, 15)
+DAY_RANGE1 = (0, 2)
 
 PAST_AVERAGE_TURNOVER_PERIOD = 3
 
