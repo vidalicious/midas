@@ -6,7 +6,7 @@ import midas.midas._16ladder as ladder
 
 
 if __name__ == '__main__':
-    segment._main()
-    observer._main()
-    ladder._main()
+    # segment._main()
 
+    ladder._main()
+    observer._main()
