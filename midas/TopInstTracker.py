@@ -8,7 +8,7 @@ LAST_MARKET_DATE = ts.get_hist_data('000001').index[0]
 
 indice = ts.get_hist_data('000001').index
 
-for i in range(10):
+for i in range(30):
     date = ts.get_hist_data('000001').index[i]
 
 
@@ -19,7 +19,7 @@ for i in range(10):
     df_b = df_a.groupby('ts_code').sum().round(2)
     print('###### {i} ######'.format(i=i))
 
-    file_name = '../logs/{date}@TopInstTracker.csv'.format(date=date)
+    file_name = '../logs/{date}_last{i}@TopInstTracker.csv'.format(date=date, i=i)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         df_b.to_csv(file)
