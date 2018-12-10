@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+import json
+
 import tushare as ts
 from pandas import DataFrame
 import numpy as np
@@ -49,7 +52,14 @@ def main():
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
                            & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                        ]
+                           ]
+
+    industrys = dict()
+    for industry in data_frame.industry:
+        if industry in industrys:
+            industrys[industry] = industrys[industry] + 1
+        else:
+            industrys[industry] = 1
 
     sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
 
@@ -57,6 +67,9 @@ def main():
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         sorted_frame.to_csv(file)
+        file.writelines('\n\n')
+        for key in industrys:
+            file.writelines('{key} {count}\n'.format(key=key, count=industrys[key]))
 
 
 if __name__ == '__main__':
