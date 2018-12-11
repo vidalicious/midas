@@ -3,16 +3,16 @@ import tushare as ts
 import midas.midas.api as api
 import numpy as np
 
-hist_data = ts.get_hist_data('000622')
-a = api.hist_p_change(hist_data, begin=18, end=30)
-b = api.hist_daily_hairy(hist_data, begin=0, end=5)
-print(a)
-print(b)
-
-c = api.hist_p_change(hist_data, begin=30, end=50)
-d = api.normalizing_std_close(hist_data, begin=30, end=50)
-print(c)
-print(d)
+# hist_data = ts.get_hist_data('000622')
+# a = api.hist_p_change(hist_data, begin=18, end=30)
+# b = api.hist_daily_hairy(hist_data, begin=0, end=5)
+# print(a)
+# print(b)
+#
+# c = api.hist_p_change(hist_data, begin=30, end=50)
+# d = api.normalizing_std_close(hist_data, begin=30, end=50)
+# print(c)
+# print(d)
 # print(histData)
 # print(api.normalizing_std_close(histData, 1, 11))
 # print([1, 2, 3, 5][:2])
@@ -29,3 +29,10 @@ print(d)
 #
 #
 # print(basics)
+
+pro = ts.pro_api()
+daily_basic = pro.daily_basic(ts_code='600604.SH',
+                              start_date='20181023', end_date='20181207')
+daily = pro.daily(ts_code='600604.SH',
+                              start_date='20181023', end_date='20181207')
+pass
