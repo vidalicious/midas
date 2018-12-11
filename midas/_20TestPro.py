@@ -2,7 +2,8 @@ import tushare as ts
 from pandas import DataFrame
 import numpy as np
 
-COL_TURNOVER = 'turnover'
+COL_TURNOVER = 'turnover_rate'
+COL_TURNOVER_F = 'turnover_rate_f'
 
 sampling_count = 100
 
@@ -19,13 +20,15 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    data_frame[COL_TURNOVER] = np.nan
+    for key in [COL_TURNOVER, COL_TURNOVER_F]:
+        data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
         try:
             daily_basic = pro.daily_basic(ts_code=ts_code,
                                           trade_date=LAST_MARKET_DATE)  # start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-            data_frame.loc[i, COL_TURNOVER] = daily_basic.loc[0, 'turnover_rate']
+            for key in [COL_TURNOVER, COL_TURNOVER_F]:
+                data_frame.loc[i, key] = daily_basic.loc[0, key]
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
