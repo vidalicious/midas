@@ -67,16 +67,23 @@ def main():
         else:
             industrys[industry] = 1
 
+    industry_frame = DataFrame()
+    for i, industry in enumerate(industrys):
+        industry_frame.loc[i, 'industry'] = industry
+        industry_frame.loc[i, 'count'] = industrys[industry]
+
     sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
 
     file_name = '../logs/{date}@ContinuouslyUp.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         sorted_frame.to_csv(file)
-        file.writelines('\n\n')
-        for key in industrys:
-            file.writelines('{key} {count}\n'.format(key=key, count=industrys[key]))
+        # for key in industrys:
+        #     file.writelines('{key} {count}\n'.format(key=key, count=industrys[key]))
 
+    file_name = '../logs/{date}@ContinuouslyUp_industry.csv'.format(date=LAST_MARKET_DATE)
+    with open(file_name, 'w', encoding='utf8') as file:
+        industry_frame.to_csv(file)
 
 if __name__ == '__main__':
     main()
