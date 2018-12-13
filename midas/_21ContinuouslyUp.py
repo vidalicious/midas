@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 
 import tushare as ts
 from pandas import DataFrame
@@ -53,6 +54,8 @@ def main():
             print('excetion in {}'.format(i))
             continue
         print('##### {i} #####'.format(i=i))
+        time.sleep(0.1)
+
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
                            & (data_frame[COL_CONTINUOUSLY_UP] > 1)
