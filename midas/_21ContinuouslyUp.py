@@ -54,7 +54,7 @@ def main():
             print('excetion in {}'.format(i))
             continue
         print('##### {i} #####'.format(i=i))
-        time.sleep(0.1)
+        time.sleep(0.05)
 
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
