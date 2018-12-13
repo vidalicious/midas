@@ -54,13 +54,13 @@ def main():
             print('excetion in {}'.format(i))
             continue
         print('##### {i} #####'.format(i=i))
-        time.sleep(0.05)
+        time.sleep(0.1)
 
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
                            & (data_frame[COL_CONTINUOUSLY_UP] > 1)
                            & (data_frame[COL_AVERAGE_TURNOVER] < 5)
-                           & (data_frame[COL_ACCUMULATE_P_CHANGE] > 4)
+                           & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
                            & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
 
