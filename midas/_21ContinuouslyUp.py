@@ -85,5 +85,6 @@ def main():
     with open(file_name, 'w', encoding='utf8') as file:
         industry_frame.to_csv(file)
 
+
 if __name__ == '__main__':
     main()
