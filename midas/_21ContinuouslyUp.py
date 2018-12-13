@@ -56,7 +56,7 @@ def main():
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
                            & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                           & (data_frame[COL_AVERAGE_TURNOVER] < 10)
+                           & (data_frame[COL_AVERAGE_TURNOVER] < 5)
                            & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
 
