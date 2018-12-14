@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from functools import reduce
-
+# 华泰证券深圳荣超商务中心
 
 def daily_continuously_low_up_count(daily=None):
     lows = daily.low
