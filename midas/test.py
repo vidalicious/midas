@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import tushare as ts
-import midas.midas.api as api
+import midas.midas.api_pro as api
 import numpy as np
 
 # hist_data = ts.get_hist_data('000622')
@@ -31,8 +31,10 @@ import numpy as np
 # print(basics)
 
 pro = ts.pro_api()
-daily_basic = pro.daily_basic(ts_code='600604.SH',
-                              start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='600604.SH',
-                              start_date='20181023', end_date='20181207')
+# daily_basic = pro.daily_basic(ts_code='600604.SH',
+#                               start_date='20181023', end_date='20181207')
+daily = pro.daily(ts_code='600866.SH',
+                              start_date='20181201', end_date='20181214')
+
+a = api.daily_break_continuously_high_fall_count(daily)
 pass

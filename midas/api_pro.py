@@ -3,12 +3,23 @@ import numpy as np
 from functools import reduce
 # 华泰证券深圳荣超商务中心
 
+
 def daily_continuously_low_up_count(daily=None):
     lows = daily.low
     for i in range(len(lows)):
         if lows[i] < lows[i + 1]:
             return i
     return len(lows)
+
+
+def daily_break_continuously_high_fall_count(daily=None):
+    highs = daily.high
+    if highs[0] < highs[2]:
+        return 0
+    for i in range(1, len(highs)):
+        if highs[i] > highs[i + 1]:
+            return i - 1    # offset
+    return len(highs)
 
 
 def daily_average_p_change(daily=None, begin=0, end=1):
