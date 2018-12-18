@@ -21,7 +21,7 @@ def main():
     pro = ts.pro_api()
 
     trade_dates = pro.daily(ts_code='000001.SZ').trade_date
-    LAST_MARKET_DATE = trade_dates[0]
+    LAST_MARKET_DATE = trade_dates[1]
 
     stock_basic = pro.stock_basic(list_status='L', fields='ts_code,symbol,name,industry,fullname')
 
