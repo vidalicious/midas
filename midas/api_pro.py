@@ -42,13 +42,16 @@ def daily_accumulate_p_change(daily=None, begin=0, end=1):
 def daily_high_contrast(daily=None):
     opens = daily.open
     closes = daily.close
-    jump = closes[1] - opens[1]
+    jump1 = closes[1] - opens[1]
+    jump2 = opens[0] - closes[1]
     bounce = closes[0] - opens[0]
-    if jump > 0:
+    if jump1 > 0:
         return 0
-    if bounce < 0:
+    if jump2 > 0:
         return 0
-    return round(jump / bounce, 3)
+    if bounce <= 0:
+        return 0
+    return round((jump1 + jump2) / bounce, 3)
 
 
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
