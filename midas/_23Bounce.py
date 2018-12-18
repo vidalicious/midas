@@ -8,8 +8,8 @@ import numpy as np
 
 import midas.midas.api_pro as api
 
-COL_AVERAGE_TURNOVER = 'average_turnover_rate'
-COL_CONTRAST = 'contrast'
+COL_BIGGEST_JUMP = 'biggest_jump'
+COL_LAST_DAILY_CHANGE = 'last_daily_change'
 
 
 sampling_count = 100
@@ -21,7 +21,7 @@ def main():
     pro = ts.pro_api()
 
     trade_dates = pro.daily(ts_code='000001.SZ').trade_date
-    LAST_MARKET_DATE = trade_dates[1]
+    LAST_MARKET_DATE = trade_dates[0]
 
     stock_basic = pro.stock_basic(list_status='L', fields='ts_code,symbol,name,industry,fullname')
 
@@ -29,7 +29,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_AVERAGE_TURNOVER, COL_CONTRAST, 'circ_mv']:
+    for key in [COL_BIGGEST_JUMP, COL_LAST_DAILY_CHANGE, 'circ_mv']:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -42,10 +42,8 @@ def main():
                 data_frame.loc[i, key] = daily_basic.loc[0, key]
 
             daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-            data_frame.loc[i, COL_AVERAGE_TURNOVER] = api.daily_basic_average_turnover_rate(daily_basic=daily_basic, begin=0, end=1)
-            # data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.daily_average_p_change(daily=daily, begin=0, end=end_index)
-            # data_frame.loc[i, COL_ACCUMULATE_P_CHANGE] = api.daily_accumulate_p_change(daily=daily, begin=0, end=end_index)
-            data_frame.loc[i, COL_CONTRAST] = api.daily_high_contrast(daily=daily)
+            data_frame.loc[i, COL_BIGGEST_JUMP] = api.daily_max_jump_p_change(daily=daily, begin=0, end=30)
+            data_frame.loc[i, COL_LAST_DAILY_CHANGE] = round(daily.close[0] - daily.open[0], 3)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
@@ -54,13 +52,13 @@ def main():
 
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
-                           & (data_frame[COL_CONTRAST] < 0)
+                           & (data_frame[COL_LAST_DAILY_CHANGE] > 0)
                            # & (data_frame[COL_AVERAGE_TURNOVER] < 5)
                            # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 0)
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
 
-    sorted_frame = data_frame.sort_values(by=COL_CONTRAST, ascending=True)
+    sorted_frame = data_frame.sort_values(by=COL_BIGGEST_JUMP, ascending=True)
 
     file_name = '../logs/{date}@Bounce.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)

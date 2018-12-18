@@ -54,6 +54,19 @@ def daily_high_contrast(daily=None):
     return round((jump1 + jump2) / bounce, 3)
 
 
+def daily_highest_close(daily=None, begin=0, end=1):
+    closes = daily.close[begin:end]
+    result = closes.max()
+    return result
+
+
+def daily_max_jump_p_change(daily=None, begin=0, end=1):
+    highest_close = daily_highest_close(daily=daily, begin=begin, end=end)
+    last_close = daily.close[0]
+    result = round((last_close / highest_close) - 1, 3)
+    return result
+
+
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
     turnover_rates = daily_basic.turnover_rate
     result = round(np.mean(turnover_rates[begin:end]), 3)
