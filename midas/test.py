@@ -33,8 +33,7 @@ import numpy as np
 pro = ts.pro_api()
 # daily_basic = pro.daily_basic(ts_code='600604.SH',
 #                               start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='600866.SH',
-                              start_date='20181201', end_date='20181214')
+daily = pro.daily(ts_code='603066.SH')
 
 a = api.daily_break_continuously_high_fall_count(daily)
 pass

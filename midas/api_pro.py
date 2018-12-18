@@ -39,6 +39,18 @@ def daily_accumulate_p_change(daily=None, begin=0, end=1):
     return result
 
 
+def daily_high_contrast(daily=None):
+    opens = daily.open
+    closes = daily.close
+    jump = closes[1] - opens[1]
+    bounce = closes[0] - opens[0]
+    if jump > 0:
+        return 0
+    if bounce < 0:
+        return 0
+    return round(jump / bounce, 3)
+
+
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
     turnover_rates = daily_basic.turnover_rate
     result = round(np.mean(turnover_rates[begin:end]), 3)
