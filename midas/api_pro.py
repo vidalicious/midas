@@ -39,21 +39,6 @@ def daily_accumulate_p_change(daily=None, begin=0, end=1):
     return result
 
 
-def daily_high_contrast(daily=None):
-    opens = daily.open
-    closes = daily.close
-    jump1 = closes[1] - opens[1]
-    jump2 = opens[0] - closes[1]
-    bounce = closes[0] - opens[0]
-    if jump1 > 0:
-        return 0
-    if jump2 > 0:
-        return 0
-    if bounce <= 0:
-        return 0
-    return round((jump1 + jump2) / bounce, 3)
-
-
 def daily_highest_close(daily=None, begin=0, end=1):
     closes = daily.close[begin:end]
     result = closes.max()
@@ -64,6 +49,13 @@ def daily_max_jump_p_change(daily=None, begin=0, end=1):
     highest_close = daily_highest_close(daily=daily, begin=begin, end=end)
     last_close = daily.close[0]
     result = round((last_close / highest_close) - 1, 3)
+    return result
+
+
+def daily_inday_p_change(daily=None, index=0):
+    close = daily.close[0]
+    open = daily.open[0]
+    result = round((close / open) - 1, 3)
     return result
 
 

@@ -9,7 +9,7 @@ import numpy as np
 import midas.midas.api_pro as api
 
 COL_BIGGEST_JUMP = 'biggest_jump'
-COL_LAST_DAILY_CHANGE = 'last_daily_change'
+COL_LAST_DAILY_P_CHANGE = 'last_daily_p_change'
 
 
 sampling_count = 100
@@ -29,7 +29,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_BIGGEST_JUMP, COL_LAST_DAILY_CHANGE, 'circ_mv']:
+    for key in [COL_BIGGEST_JUMP, COL_LAST_DAILY_P_CHANGE, 'circ_mv']:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -43,7 +43,7 @@ def main():
 
             daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
             data_frame.loc[i, COL_BIGGEST_JUMP] = api.daily_max_jump_p_change(daily=daily, begin=0, end=30)
-            data_frame.loc[i, COL_LAST_DAILY_CHANGE] = round(daily.close[0] - daily.open[0], 3)
+            data_frame.loc[i, COL_LAST_DAILY_P_CHANGE] = api.daily_inday_p_change(daily=daily, index=0)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
@@ -52,7 +52,7 @@ def main():
 
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
-                           & (data_frame[COL_LAST_DAILY_CHANGE] > 0)
+                           & (data_frame[COL_LAST_DAILY_P_CHANGE] > 0)
                            # & (data_frame[COL_AVERAGE_TURNOVER] < 5)
                            # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 0)
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
