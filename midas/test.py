@@ -2,6 +2,7 @@
 import tushare as ts
 import midas.midas.api_pro as api
 import numpy as np
+import re
 
 # hist_data = ts.get_hist_data('000622')
 # a = api.hist_p_change(hist_data, begin=18, end=30)
@@ -30,10 +31,23 @@ import numpy as np
 #
 # print(basics)
 
-pro = ts.pro_api()
-# daily_basic = pro.daily_basic(ts_code='600604.SH',
-#                               start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='603066.SH')
+# pro = ts.pro_api()
+# # daily_basic = pro.daily_basic(ts_code='600604.SH',
+# #                               start_date='20181023', end_date='20181207')
+# daily = pro.daily(ts_code='603066.SH')
+#
+# a = api.daily_break_continuously_high_fall_count(daily)
+# pass
 
-a = api.daily_break_continuously_high_fall_count(daily)
+pattern = '[a-zA-Z]+'
+search = re.search(pattern, 'fir_AS')
+if search:
+    version = search.group()
+    pass
+
+a = 'AAA-BBB_ccc'.lower()
+pass
+
+a = type(dict()).__name__
+
 pass
