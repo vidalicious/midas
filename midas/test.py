@@ -4,7 +4,7 @@ import midas.midas.api_pro as api
 import numpy as np
 import re
 
-# hist_data = ts.get_hist_data('000622')
+hist_data = ts.get_hist_data('000622')
 # a = api.hist_p_change(hist_data, begin=18, end=30)
 # b = api.hist_daily_hairy(hist_data, begin=0, end=5)
 # print(a)
@@ -37,25 +37,21 @@ pro = ts.pro_api()
 daily = pro.daily(ts_code='002803.SZ')
 
 a = api.daily_max_jump_p_change(daily, end=30)
-# pro = ts.pro_api()
-# # daily_basic = pro.daily_basic(ts_code='600604.SH',
-# #                               start_date='20181023', end_date='20181207')
-# daily = pro.daily(ts_code='603066.SH')
+pro = ts.pro_api()
+daily_basic = pro.daily_basic(ts_code='600604.SH',
+                              start_date='20181023', end_date='20181207')
+daily = pro.daily(ts_code='603066.SH')
+
+a = api.daily_break_continuously_high_fall_count(daily)
+pass
+
+# pattern = '[a-zA-Z]+'
+# search = re.search(pattern, 'fir_AS')
+# if search:
+#     version = search.group()
+#     pass
 #
-# a = api.daily_break_continuously_high_fall_count(daily)
+# a = 'AAA-BBB_ccc'.lower()
 # pass
-
-pattern = '[a-zA-Z]+'
-search = re.search(pattern, 'fir_AS')
-if search:
-    version = search.group()
-    pass
-
-a = 'AAA-BBB_ccc'.lower()
-pass
-
-a = type(dict()).__name__
-
-pass
-pass
-pass
+#
+# a = type(dict()).__name__

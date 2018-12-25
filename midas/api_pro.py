@@ -53,10 +53,21 @@ def daily_max_jump_p_change(daily=None, begin=0, end=1):
 
 
 def daily_inday_p_change(daily=None, index=0):
-    close = daily.close[0]
-    open = daily.open[0]
+    close = daily.close[index]
+    open = daily.open[index]
     result = round((close / open) - 1, 3)
     return result
+
+
+def daily_ma(daily=None, begin=0, end=1, step=5):
+    closes = daily.close[begin:end + step]
+    result = list()
+    for i in range(begin, end):
+        ma = round(np.mean(closes[i:i + step - 1]), 2)
+        result.append(ma)
+
+    return result
+
 
 
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
