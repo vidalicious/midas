@@ -49,5 +49,5 @@ a = 'AAA-BBB_ccc'.lower()
 pass
 
 a = type(dict()).__name__
-
-pass
+stafasdfas
+passdf
