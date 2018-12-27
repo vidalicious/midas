@@ -31,19 +31,19 @@ hist_data = ts.get_hist_data('000622')
 #
 # print(basics)
 
+# pro = ts.pro_api()
+# # daily_basic = pro.daily_basic(ts_code='600604.SH',
+# #                               start_date='20181023', end_date='20181207')
+# daily = pro.daily(ts_code='002803.SZ')
+#
+# a = api.daily_max_jump_p_change(daily, end=30)
 pro = ts.pro_api()
 # daily_basic = pro.daily_basic(ts_code='600604.SH',
 #                               start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='002803.SZ')
-
-a = api.daily_max_jump_p_change(daily, end=30)
-pro = ts.pro_api()
-daily_basic = pro.daily_basic(ts_code='600604.SH',
-                              start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='603066.SH')
-
-a = api.daily_break_continuously_high_fall_count(daily)
-pass
+# daily = pro.daily(ts_code='603066.SH')
+#
+# a = api.daily_break_continuously_high_fall_count(daily)
+# pass
 
 # pattern = '[a-zA-Z]+'
 # search = re.search(pattern, 'fir_AS')
@@ -55,3 +55,6 @@ pass
 # pass
 #
 # a = type(dict()).__name__
+
+a = pro.top_list(trade_date='20181225')
+pass
