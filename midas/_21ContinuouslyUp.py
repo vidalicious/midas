@@ -79,7 +79,7 @@ def main():
     #     industry_frame.loc[i, 'industry'] = industry
     #     industry_frame.loc[i, 'count'] = industrys[industry]
 
-    sorted_frame = data_frame.sort_values(by=COL_ACCUMULATE_P_CHANGE, ascending=False)
+    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
 
     file_name = '../logs/{date}@ContinuouslyUp.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
