@@ -51,7 +51,7 @@ def main():
             data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.daily_average_p_change(daily=daily, begin=0, end=continuous_up)
             data_frame.loc[i, COL_ACCUMULATE_P_CHANGE] = api.daily_accumulate_p_change(daily=daily, begin=0, end=continuous_up)
             data_frame.loc[i, COL_PRE_ACCUMULATE_P_CHANGE] = api.daily_accumulate_p_change(daily=daily, begin=continuous_up, end=continuous_up * 2)
-            data_frame.loc[i, COL_LAST_MA20_GAP] = daily.close[0] - api.daily_ma(daily=daily, begin=0, end=1, step=20)[0]
+            data_frame.loc[i, COL_LAST_MA20_GAP] = round(daily.close[0] - api.daily_ma(daily=daily, begin=0, end=1, step=20)[0], 2)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
