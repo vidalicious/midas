@@ -59,4 +59,5 @@ pass
 # a = type(dict()).__name__
 b = time.time()
 c = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 pass
