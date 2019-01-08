@@ -12,6 +12,14 @@ def daily_continuously_low_up_count(daily=None):
     return len(lows)
 
 
+def daily_continuously_close_up_count(daily=None):
+    closes = daily.close
+    for i in range(len(closes)):
+        if closes[i] < closes[i + 1]:
+            return i
+    return len(closes)
+
+
 def daily_break_continuously_high_fall_count(daily=None):
     highs = daily.high
     if highs[0] < highs[2]:
