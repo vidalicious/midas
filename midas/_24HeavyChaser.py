@@ -10,6 +10,7 @@ import midas.midas.api_pro as api
 
 COL_CONTINUOUSLY_UP = 'continuously_up'
 COL_AVERAGE_P_CHANGE = 'average_p_change'
+COL_LAST_P_CHANGE = 'last_p_change'
 
 sampling_count = 100
 
@@ -26,7 +27,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, 'circ_mv']:
+    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, COL_LAST_P_CHANGE, 'circ_mv']:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -40,6 +41,7 @@ def main():
             continuous_up = api.daily_continuously_close_up_count(daily=daily)
             data_frame.loc[i, COL_CONTINUOUSLY_UP] = continuous_up
             data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.daily_average_p_change(daily=daily, begin=0, end=continuous_up)
+            data_frame.loc[i, COL_LAST_P_CHANGE] = daily.pct_chg[0]
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
@@ -49,7 +51,7 @@ def main():
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
                            & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                           & (data_frame[COL_AVERAGE_P_CHANGE] > 5)
+                           & (data_frame[COL_LAST_P_CHANGE] > 5)
                            ]
 
     sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
