@@ -8,6 +8,7 @@ import numpy as np
 
 import midas.midas.api_pro as api
 
+COL_CONTINUOUSLY_LIMIT_UP = 'continuously_limit_up'
 COL_CONTINUOUSLY_UP = 'continuously_up'
 COL_AVERAGE_P_CHANGE = 'average_p_change'
 COL_LAST_P_CHANGE = 'last_p_change'
@@ -27,7 +28,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, COL_LAST_P_CHANGE, 'circ_mv']:
+    for key in [COL_CONTINUOUSLY_LIMIT_UP, COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, COL_LAST_P_CHANGE, 'circ_mv']:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -39,6 +40,7 @@ def main():
 
             daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
             continuous_up = api.daily_continuously_close_up_count(daily=daily)
+            data_frame.loc[i, COL_CONTINUOUSLY_LIMIT_UP] = api.daily_continuously_limit_up_count(daily=daily)
             data_frame.loc[i, COL_CONTINUOUSLY_UP] = continuous_up
             data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.daily_average_p_change(daily=daily, begin=0, end=continuous_up)
             data_frame.loc[i, COL_LAST_P_CHANGE] = daily.pct_chg[0]
@@ -51,10 +53,10 @@ def main():
     data_frame = data_frame[
                            (data_frame['circ_mv'] < 1000000)
                            # & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                           & (data_frame[COL_LAST_P_CHANGE] > 9)
+                           & (data_frame[COL_LAST_P_CHANGE] > 9.8)
                            ]
 
-    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
+    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_LIMIT_UP, ascending=False)
 
     file_name = '../logs/{date}@HeavyChaser.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)

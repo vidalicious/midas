@@ -20,6 +20,14 @@ def daily_continuously_close_up_count(daily=None):
     return len(closes)
 
 
+def daily_continuously_limit_up_count(daily=None):
+    p_changes = daily.pct_chg
+    for i in range(len(p_changes)):
+        if p_changes[i] < 9.8:
+            return i
+    return len(p_changes)
+
+
 def daily_break_continuously_high_fall_count(daily=None):
     highs = daily.high
     if highs[0] < highs[2]:
