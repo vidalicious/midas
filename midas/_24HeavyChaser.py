@@ -51,9 +51,9 @@ def main():
         time.sleep(0.1)
 
     data_frame = data_frame[
-                           (data_frame['circ_mv'] < 1000000)
+                           # (data_frame['circ_mv'] < 1000000)
                            # & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                           & (data_frame[COL_LAST_P_CHANGE] > 9.8)
+                           (data_frame[COL_LAST_P_CHANGE] > 9.8)
                            ]
 
     sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_LIMIT_UP, ascending=False)
