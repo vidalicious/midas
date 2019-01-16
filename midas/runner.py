@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import midas.midas._14segment as segment
-import midas.midas._15observer as observer
-import midas.midas._16ladder as ladder
+import midas.midas._24HeavyChaser as chaser
+import midas.midas._25WeeklyTrend as trend
 
 
 if __name__ == '__main__':
-    # segment._main()
-
-    ladder._main()
-    observer._main()
+    chaser.main()
+    trend.main()
