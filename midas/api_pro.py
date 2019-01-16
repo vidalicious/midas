@@ -85,8 +85,23 @@ def daily_ma(daily=None, begin=0, end=1, step=5):
     return result
 
 
-
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
     turnover_rates = daily_basic.turnover_rate
     result = round(np.mean(turnover_rates[begin:end]), 3)
+    return result
+
+
+def weekly_continuously_low_up_count(weekly=None):
+    lows = weekly.low
+    for i in range(len(lows)):
+        if lows[i] < lows[i + 1]:
+            return i
+    return len(lows)
+
+
+def weekly_average_p_change(weekly=None, begin=0, end=1):
+    if begin == end:
+        return 0
+    p_changes = weekly.pct_chg
+    result = round(np.mean(p_changes[begin:end]), 3)
     return result
