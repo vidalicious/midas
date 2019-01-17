@@ -10,6 +10,8 @@ import midas.midas.api_pro as api
 
 COL_CONTINUOUSLY_UP = 'continuously_up'
 COL_AVERAGE_P_CHANGE = 'average_p_change'
+COL_AVERAGE_TURNOVER = 'average_turnover_rate'
+
 
 sampling_count = 300
 
@@ -26,7 +28,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE]:
+    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, COL_AVERAGE_TURNOVER]:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -37,6 +39,10 @@ def main():
             continuous_up = api.weekly_continuously_low_up_count(weekly=weekly)
             data_frame.loc[i, COL_CONTINUOUSLY_UP] = continuous_up
             data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.weekly_average_p_change(weekly=weekly, begin=0, end=continuous_up)
+
+            daily_basic = pro.daily_basic(ts_code=ts_code,  # trade_date=LAST_MARKET_DATE
+                                          start_date=trade_dates[10], end_date=LAST_MARKET_DATE)
+            data_frame.loc[i, COL_AVERAGE_TURNOVER] = api.daily_basic_average_turnover_rate(daily_basic=daily_basic, begin=0, end=10)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
