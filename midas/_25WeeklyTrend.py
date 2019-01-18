@@ -36,7 +36,7 @@ def main():
             weekly = pro.weekly(ts_code=ts_code,          #trade_date=LAST_MARKET_DATE
                                      start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
 
-            continuous_up = api.weekly_continuously_low_up_count(weekly=weekly)
+            continuous_up = api.weekly_continuously_weight_up_count(weekly=weekly)
             data_frame.loc[i, COL_CONTINUOUSLY_UP] = continuous_up
             data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.weekly_average_p_change(weekly=weekly, begin=0, end=continuous_up)
 

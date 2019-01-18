@@ -99,6 +99,15 @@ def weekly_continuously_low_up_count(weekly=None):
     return len(lows)
 
 
+def weekly_continuously_weight_up_count(weekly=None):
+    lows = weekly.low
+    highs = weekly.high
+    for i in range(len(lows)):
+        if lows[i] + highs[i] < lows[i + 1] + highs[i + 1]:
+            return i
+    return len(lows)
+
+
 def weekly_average_p_change(weekly=None, begin=0, end=1):
     if begin == end:
         return 0
