@@ -55,7 +55,7 @@ def main():
                            (data_frame[COL_CONTINUOUSLY_UP] > 2)
                            ]
 
-    sorted_frame = data_frame.sort_values(by=COL_AVERAGE_P_CHANGE, ascending=False)
+    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
 
     file_name = '../logs/{date}@WeeklyTrend.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
