@@ -85,6 +85,34 @@ def daily_ma(daily=None, begin=0, end=1, step=5):
     return result
 
 
+def daily_weight_continuously_fall_p_change(daily=None, begin=0):
+    lows = daily.low
+    highs = daily.high
+
+    begin_weight = (lows[begin] + highs[begin]) / 2
+    for i in range(begin, len(lows)):
+        if lows[i] + highs[i] < lows[i + 1] + highs[i + 1]:
+            continue
+        end_weight = (lows[i] + highs[i]) / 2
+        break
+
+    if not end_weight:
+        end_weight = (lows[-1] + highs[-1]) / 2
+
+    result = round(((begin_weight / end_weight) - 1) * 100, 2)
+    return result
+
+
+def daily_weight_p_change(daily=None, begin=0, end=0):
+    lows = daily.low
+    highs = daily.high
+
+    begin_weight = (lows[begin] + highs[begin]) / 2
+    end_weight = (lows[end] + highs[end]) / 2
+    result = round(((begin_weight / end_weight) - 1) * 100, 2)
+    return result
+
+
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
     turnover_rates = daily_basic.turnover_rate
     result = round(np.mean(turnover_rates[begin:end]), 3)
@@ -113,4 +141,14 @@ def weekly_average_p_change(weekly=None, begin=0, end=1):
         return 0
     p_changes = weekly.pct_chg
     result = round(np.mean(p_changes[begin:end]), 3)
+    return result
+
+
+def weekly_weight_p_change(weekly=None, begin=0, end=0):
+    lows = weekly.low
+    highs = weekly.high
+
+    begin_weight = (lows[begin] + highs[begin]) / 2
+    end_weight = (lows[end] + highs[end]) / 2
+    result = round(((begin_weight / end_weight) - 1) * 100, 2)
     return result
