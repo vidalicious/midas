@@ -53,6 +53,7 @@ def main():
                            # (data_frame['circ_mv'] < 1000000)
                            # & (data_frame[COL_CONTINUOUSLY_UP] > 1)
                            (data_frame[COL_CONTINUOUSLY_UP] > 2)
+                           & (data_frame[COL_AVERAGE_P_CHANGE] > 5)
                            ]
 
     sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
