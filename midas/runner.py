@@ -5,5 +5,5 @@ import midas.midas._25WeeklyTrend as trend
 
 
 if __name__ == '__main__':
-    chaser.main()
     trend.main()
+    chaser.main()
