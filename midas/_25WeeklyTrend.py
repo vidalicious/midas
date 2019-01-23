@@ -11,6 +11,7 @@ import midas.midas.api_pro as api
 COL_CONTINUOUSLY_UP = 'continuously_up'
 COL_AVERAGE_P_CHANGE = 'average_p_change'
 COL_AVERAGE_TURNOVER = 'average_turnover_rate'
+COL_LAST_WEIGHT_P_CHANGE = 'LAST_WEIGHT_P_CHANGE'
 
 
 sampling_count = 300
@@ -28,7 +29,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, COL_AVERAGE_TURNOVER]:
+    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_P_CHANGE, COL_AVERAGE_TURNOVER, COL_LAST_WEIGHT_P_CHANGE]:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -42,7 +43,8 @@ def main():
 
             daily_basic = pro.daily_basic(ts_code=ts_code,  # trade_date=LAST_MARKET_DATE
                                           start_date=trade_dates[10], end_date=LAST_MARKET_DATE)
-            data_frame.loc[i, COL_AVERAGE_TURNOVER] = api.daily_basic_average_turnover_rate(daily_basic=daily_basic, begin=0, end=10)
+            data_frame.loc[i, COL_AVERAGE_TURNOVER] = api.daily_basic_average_turnover_rate(daily_basic=daily_basic, begin=0, end=3)
+            data_frame.loc[i, COL_LAST_WEIGHT_P_CHANGE] = api.weekly_weight_p_change(weekly=weekly, begin=0, end=1)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
@@ -52,11 +54,11 @@ def main():
     data_frame = data_frame[
                            # (data_frame['circ_mv'] < 1000000)
                            # & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                           (data_frame[COL_CONTINUOUSLY_UP] > 2)
-                           & (data_frame[COL_AVERAGE_P_CHANGE] > 5)
+                           (data_frame[COL_AVERAGE_TURNOVER] > 5)
+                           & (data_frame[COL_LAST_WEIGHT_P_CHANGE] > 10)
                            ]
 
-    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUSLY_UP, ascending=False)
+    sorted_frame = data_frame.sort_values(by=COL_LAST_WEIGHT_P_CHANGE, ascending=False)
 
     file_name = '../logs/{date}@WeeklyTrend.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
