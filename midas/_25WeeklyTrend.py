@@ -11,6 +11,7 @@ import midas.midas.api_pro as api
 COL_CONTINUOUSLY_UP = 'continuously_up'
 COL_AVERAGE_TURNOVER = 'average_turnover_rate'
 COL_LAST_5DAY_WEIGHT_P_CHANGE = 'LAST_5DAY_WEIGHT_P_CHANGE'
+COL_LAST_DAY_P_CHANGE = 'LAST_DAY_P_CHANGE'
 
 
 sampling_count = 300
@@ -28,7 +29,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_TURNOVER, COL_LAST_5DAY_WEIGHT_P_CHANGE]:
+    for key in [COL_CONTINUOUSLY_UP, COL_AVERAGE_TURNOVER, COL_LAST_5DAY_WEIGHT_P_CHANGE, COL_LAST_DAY_P_CHANGE]:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -48,6 +49,7 @@ def main():
             weight_1 = api.daily_period_weight(daily=daily, begin=period, end=2 * period)
 
             data_frame.loc[i, COL_LAST_5DAY_WEIGHT_P_CHANGE] = round(((weight_0 / weight_1) - 1) * 100, 2)
+            data_frame.loc[i, COL_LAST_DAY_P_CHANGE] = api.daily_accumulate_p_change(daily=daily, begin=0, end=1)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
