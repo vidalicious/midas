@@ -113,6 +113,16 @@ def daily_weight_p_change(daily=None, begin=0, end=0):
     return result
 
 
+def daily_period_weight(daily=None, begin=0, end=0):
+    lows = daily.low[begin:end]
+    highs = daily.high[begin:end]
+
+    low_min = lows.min()
+    high_max = highs.max()
+    result = round((low_min + high_max) / 2, 2)
+    return result
+
+
 def daily_basic_average_turnover_rate(daily_basic=None, begin=0, end=1):
     turnover_rates = daily_basic.turnover_rate
     result = round(np.mean(turnover_rates[begin:end]), 3)
