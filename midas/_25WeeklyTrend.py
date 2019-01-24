@@ -56,12 +56,12 @@ def main():
         print('##### {i} #####'.format(i=i))
         time.sleep(0.1)
 
-    data_frame = data_frame[
-                           # (data_frame['circ_mv'] < 1000000)
-                           # & (data_frame[COL_CONTINUOUSLY_UP] > 1)
-                           (data_frame[COL_AVERAGE_TURNOVER] > 12)
-                           # & ((data_frame[COL_CONTINUOUSLY_UP] < 2) | (data_frame[COL_LAST_DAY_P_CHANGE] < 5))
-                           ]
+    # data_frame = data_frame[
+    #                        # (data_frame['circ_mv'] < 1000000)
+    #                        # & (data_frame[COL_CONTINUOUSLY_UP] > 1)
+    #                        (data_frame[COL_AVERAGE_TURNOVER] > 12)
+    #                        # & ((data_frame[COL_CONTINUOUSLY_UP] < 2) | (data_frame[COL_LAST_DAY_P_CHANGE] < 5))
+    #                        ]
 
     sorted_frame = data_frame.sort_values(by=COL_LAST_5DAY_WEIGHT_P_CHANGE, ascending=False)
 
