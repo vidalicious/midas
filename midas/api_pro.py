@@ -38,6 +38,23 @@ def daily_break_continuously_high_fall_count(daily=None):
     return len(highs)
 
 
+def daily_break_continuously_weight_fall_count(daily=None):
+    highs = daily.high
+    lows = daily.low
+    closes = daily.close
+
+    weights = list()
+    for i in range(len(highs)):
+        weights.append(round((highs[i] + lows[i]) / 2, 2))
+
+    if closes[0] < closes[1]:
+        return 0
+    for i in range(1, len(weights)):
+        if weights[i] > weights[i + 1]:
+            return i - 1    # offset
+    return len(weights)
+
+
 def daily_average_p_change(daily=None, begin=0, end=1):
     if begin == end:
         return 0
