@@ -71,7 +71,7 @@ def main():
     #     industry_frame.loc[i, 'industry'] = industry
     #     industry_frame.loc[i, 'count'] = industrys[industry]
 
-    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUS_FALL, ascending=True)
+    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUS_FALL, ascending=False)
 
     file_name = '../logs/{date}@FallBreaker.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
