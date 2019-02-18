@@ -64,26 +64,27 @@ def daily_converge_continuously_weight_fall_count(daily=None):
         weights.append(round((highs[i] + lows[i]) / 2, 2))
 
     fall_count = len(weights)
-    for i in range(len(weights)):
+    for i in range(len(weights) - 1):
         if weights[i] > weights[i + 1]:
-            fall_count = i - 1    # offset
+            fall_count = i - 1
+            break
 
     if fall_count < 0:
         return -1
 
     weight_diffs = list()
-    for i in range(fall_count - 1):
-        weight_diffs.append(weights[i] - weights[i + 1])
+    for i in range(fall_count + 1):
+        weight_diffs.append(round(weights[i] - weights[i + 1], 2))
 
     is_converge = True
-    for i in range(len(weight_diffs) - 1):
-        if weight_diffs[i] < weight_diffs[i + 1]:
-            is_converge = False
+    if weight_diffs[0] < weight_diffs[1]:
+        is_converge = False
 
     if not is_converge:
         return -1
 
     return fall_count
+
 
 def daily_average_p_change(daily=None, begin=0, end=1):
     if begin == end:

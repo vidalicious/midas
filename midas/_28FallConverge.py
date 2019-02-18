@@ -42,8 +42,8 @@ def main():
             continuous_fall = api.daily_converge_continuously_weight_fall_count(daily=daily)
             # continuous_up = api.daily_continuously_low_up_count(daily=daily)
             data_frame.loc[i, COL_CONTINUOUS_FALL] = continuous_fall
-            data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.daily_average_p_change(daily=daily, begin=1, end=1 + continuous_fall)
-            data_frame.loc[i, COL_ACCUMULATE_P_CHANGE] = api.daily_accumulate_p_change(daily=daily, begin=1, end=1 + continuous_fall)
+            data_frame.loc[i, COL_AVERAGE_P_CHANGE] = api.daily_average_p_change(daily=daily, begin=0, end=1 + continuous_fall)
+            data_frame.loc[i, COL_ACCUMULATE_P_CHANGE] = api.daily_accumulate_p_change(daily=daily, begin=0, end=1 + continuous_fall)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
@@ -57,7 +57,7 @@ def main():
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
 
-    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUS_FALL, ascending=True)
+    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUS_FALL, ascending=False)
 
     file_name = '../logs/{date}@FallConverge.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
