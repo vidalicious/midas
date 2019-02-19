@@ -5,6 +5,7 @@ import numpy as np
 import re
 import time
 import datetime
+import json
 
 hist_data = ts.get_hist_data('000622')
 # a = api.hist_p_change(hist_data, begin=18, end=30)
@@ -61,3 +62,5 @@ b = time.time()
 c = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 pass
+
+print(json.dumps(["vida.gu@cootek.cn", "vida.gu@cootek.cn"]))
