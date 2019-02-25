@@ -28,6 +28,20 @@ def daily_continuously_limit_up_count(daily=None):
     return len(p_changes)
 
 
+def daily_continuously_weight_up_count(daily=None):
+    highs = daily.high
+    lows = daily.low
+
+    weights = list()
+    for i in range(len(highs)):
+        weights.append(round((highs[i] + lows[i]) / 2, 2))
+
+    for i in range(len(weights)):
+        if weights[i] < weights[i + 1]:
+            return i - 1  # offset
+    return len(weights)
+
+
 def daily_break_continuously_high_fall_count(daily=None):
     highs = daily.high
     if highs[0] < highs[2]:
