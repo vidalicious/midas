@@ -64,3 +64,6 @@ trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 pass
 
 print(json.dumps(["vida.gu@cootek.cn", "vida.gu@cootek.cn"]))
+
+for i in range(0, 5):
+    print(i)

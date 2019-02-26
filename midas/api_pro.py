@@ -114,6 +114,41 @@ def daily_free_continuously_weight_fall_count(daily=None):
     return len(weights)
 
 
+def daily_weight_lowest_index(daily=None, begin=0, end=1):
+    if begin == end:
+        return 0
+
+    highs = daily.high
+    lows = daily.low
+
+    weights = list()
+    for i in range(begin, end + 1):
+        weights.append(round((highs[i] + lows[i]) / 2, 2))
+
+    result = weights.index(min(weights)) + begin
+    return result
+
+
+def daily_weight_free_continuously_fall_p_change(daily=None, begin=0):
+    highs = daily.high
+    lows = daily.low
+
+    weights = list()
+    for i in range(len(highs)):
+        weights.append(round((highs[i] + lows[i]) / 2, 2))
+
+    highest_index = len(weights) - 1
+    for i in range(begin, len(weights) - 1):
+        if weights[i] > weights[i + 1]:
+            highest_index = i
+            break
+
+    highest_weight = weights[highest_index]
+    begin_weight = weights[begin]
+    result = round((begin_weight / highest_weight - 1) * 100, 2)
+    return result
+
+
 def daily_average_p_change(daily=None, begin=0, end=1):
     if begin == end:
         return 0
@@ -158,24 +193,6 @@ def daily_ma(daily=None, begin=0, end=1, step=5):
         ma = round(np.mean(closes[i:i + step - 1]), 2)
         result.append(ma)
 
-    return result
-
-
-def daily_weight_continuously_fall_p_change(daily=None, begin=0):
-    lows = daily.low
-    highs = daily.high
-
-    begin_weight = (lows[begin] + highs[begin]) / 2
-    for i in range(begin, len(lows)):
-        if lows[i] + highs[i] < lows[i + 1] + highs[i + 1]:
-            continue
-        end_weight = (lows[i] + highs[i]) / 2
-        break
-
-    if not end_weight:
-        end_weight = (lows[-1] + highs[-1]) / 2
-
-    result = round(((begin_weight / end_weight) - 1) * 100, 2)
     return result
 
 
