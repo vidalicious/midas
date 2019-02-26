@@ -37,7 +37,7 @@ def main():
                 data_frame.loc[i, key] = daily_basic.loc[0, key]
 
             daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-            index = api.daily_weight_lowest_index(daily=daily, begin=0, end=10)
+            index = api.daily_weight_lowest_index(daily=daily, begin=0, end=5)
             data_frame.loc[i, COL_DEEP_INDEX] = index
             data_frame.loc[i, COL_FALL_P_CHANGE] = api.daily_weight_free_continuously_fall_p_change(daily=daily, begin=index)
         except Exception as e:
