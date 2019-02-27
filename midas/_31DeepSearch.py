@@ -10,6 +10,7 @@ import midas.midas.api_pro as api
 
 COL_DEEP_INDEX = 'COL_DEEP_INDEX'
 COL_FALL_P_CHANGE = 'COL_FALL_P_CHANGE'
+COL_CURRENT_PRICE = 'COL_CURRENT_PRICE'
 
 sampling_count = 100
 
@@ -26,7 +27,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_DEEP_INDEX, COL_FALL_P_CHANGE, 'circ_mv']:
+    for key in [COL_DEEP_INDEX, COL_FALL_P_CHANGE, COL_CURRENT_PRICE, 'circ_mv']:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -40,6 +41,7 @@ def main():
             index = api.daily_weight_lowest_index(daily=daily, begin=0, end=5)
             data_frame.loc[i, COL_DEEP_INDEX] = index
             data_frame.loc[i, COL_FALL_P_CHANGE] = api.daily_weight_free_continuously_fall_p_change(daily=daily, begin=index)
+            data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
