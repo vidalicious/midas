@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import midas.midas._24HeavyChaser as chaser
-import midas.midas._22FallBreaker as fallbreaker
-import midas.midas._29FreeFall as freefall
+import midas.midas._31DeepSearch as deep
 
 
 if __name__ == '__main__':
+    deep.main()
     chaser.main()
-    freefall.main()
-    fallbreaker.main()
