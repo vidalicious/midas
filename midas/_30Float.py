@@ -52,7 +52,7 @@ def main():
 
     data_frame = data_frame[
                            (data_frame[COL_CONTINUOUS_RAISE] > 1)
-                           & (data_frame[COL_ACCUMULATE_P_CHANGE] < 10)
+                           # & (data_frame[COL_ACCUMULATE_P_CHANGE] < 10)
                            # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
