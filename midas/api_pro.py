@@ -182,7 +182,7 @@ def daily_max_jump_p_change(daily=None, begin=0, end=1):
 def daily_inday_p_change(daily=None, index=0):
     close = daily.close[index]
     open = daily.open[index]
-    result = round((close / open) - 1, 3)
+    result = round((close / open) - 1, 2)
     return result
 
 

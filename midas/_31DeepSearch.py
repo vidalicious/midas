@@ -11,6 +11,7 @@ import midas.midas.api_pro as api
 COL_DEEP_INDEX = 'COL_DEEP_INDEX'
 COL_FALL_P_CHANGE = 'COL_FALL_P_CHANGE'
 COL_CURRENT_PRICE = 'COL_CURRENT_PRICE'
+COL_INDAY_P_CHANGE = 'COL_INDAY_P_CHANGE'
 
 sampling_count = 100
 
@@ -27,7 +28,7 @@ def main():
     for key in ['ts_code', 'name', 'industry']:
         data_frame[key] = stock_basic[key]
 
-    for key in [COL_DEEP_INDEX, COL_FALL_P_CHANGE, COL_CURRENT_PRICE, 'circ_mv']:
+    for key in [COL_DEEP_INDEX, COL_FALL_P_CHANGE, COL_CURRENT_PRICE, COL_INDAY_P_CHANGE, 'circ_mv']:
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
@@ -38,10 +39,11 @@ def main():
                 data_frame.loc[i, key] = daily_basic.loc[0, key]
 
             daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-            index = api.daily_weight_lowest_index(daily=daily, begin=0, end=5)
+            index = api.daily_weight_lowest_index(daily=daily, begin=0, end=2)
             data_frame.loc[i, COL_DEEP_INDEX] = index
             data_frame.loc[i, COL_FALL_P_CHANGE] = api.daily_weight_free_continuously_fall_p_change(daily=daily, begin=index)
             data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
+            data_frame.loc[i, COL_INDAY_P_CHANGE] = api.daily_inday_p_change(daily=daily, index=0)
         except Exception as e:
             print('excetion in {}'.format(i))
             continue
@@ -50,7 +52,7 @@ def main():
 
     data_frame = data_frame[
                            (data_frame[COL_FALL_P_CHANGE] < 0)
-                           # & (data_frame[COL_ACCUMULATE_P_CHANGE] < 10)
+                           & (data_frame[COL_INDAY_P_CHANGE] > 0)
                            # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
