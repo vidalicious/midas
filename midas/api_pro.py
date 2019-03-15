@@ -144,8 +144,8 @@ def daily_weight_rise_efficiency(daily=None, begin=0, end=1):
     min_index = weights.index(min_weight)
     max_weight = max(weights)
     max_index = weights.index(max_weight)
-    result = round((max_weight / min_weight - 1) * 100 / -(max_index - min_index), 2)
-    return result
+    average_weight_rise = round((max_weight / min_weight - 1) * 100 / -(max_index - min_index), 2)
+    return (average_weight_rise, min_index, max_index)
 
 
 def daily_weight_free_continuously_fall_p_change(daily=None, begin=0):
