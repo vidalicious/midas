@@ -51,7 +51,7 @@ def main():
 
     data_frame = data_frame[
                            (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 0)
-                           & (data_frame[COL_WEIGHT_MAX_INDEX] < 3)
+                           & (data_frame[COL_WEIGHT_MAX_INDEX] == 0)
                            # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
