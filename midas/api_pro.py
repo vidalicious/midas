@@ -141,9 +141,9 @@ def daily_weight_rise_efficiency(daily=None, begin=0, end=1):
         weights.append(round((highs[i] + lows[i]) / 2, 2))
 
     min_weight = min(weights)
-    min_index = weights.index(min_weight)
+    min_index = weights.index(min_weight) + begin
     max_weight = max(weights)
-    max_index = weights.index(max_weight)
+    max_index = weights.index(max_weight) + begin
     average_weight_rise = round((max_weight / min_weight - 1) * 100 / -(max_index - min_index), 2)
     return (average_weight_rise, min_index, max_index)
 
