@@ -131,7 +131,7 @@ def daily_weight_lowest_index(daily=None, begin=0, end=1):
 
 def daily_weight_rise_efficiency(daily=None, begin=0, end=1):
     if begin == end:
-        return 0
+        return (0, begin, begin)
 
     highs = daily.high
     lows = daily.low
