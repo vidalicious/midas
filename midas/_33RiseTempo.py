@@ -41,7 +41,7 @@ def main():
             daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
             (data_frame.loc[i, COL_WEIGHT_RISE_EFFICIENCY],
              data_frame.loc[i, COL_WEIGHT_MIN_INDEX],
-             data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0, end=20)
+             data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0, end=30)
             data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
         except Exception as e:
             print('excetion in {}'.format(i))
@@ -51,7 +51,7 @@ def main():
 
     data_frame = data_frame[
                            (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 0)
-                           & (data_frame[COL_WEIGHT_MAX_INDEX] == 0)
+                           & (data_frame[COL_WEIGHT_MAX_INDEX] < 2)
                            # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
                            # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
                            ]
