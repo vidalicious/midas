@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 import tushare as ts
 
-ts.set_token('c83cc29b149ba2561d4f0efebcb8900da4500af7017ac0df779eaa22')
+ts.set_token('dac6e0d9bb10ac6f7898db08b9321ffa840310f83ca1c5849a628924')
