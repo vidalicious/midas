@@ -32,22 +32,47 @@ def main():
         data_frame[key] = np.nan
 
     for i, ts_code in enumerate(data_frame.ts_code):
-        try:
-            daily_basic = pro.daily_basic(ts_code=ts_code,          #trade_date=LAST_MARKET_DATE
-                                          start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-            for key in ['circ_mv', ]:
-                data_frame.loc[i, key] = daily_basic.loc[0, key]
+        status = 0
+        retry = 5
+        while status != 2 and retry > 0:
+            try:
+                retry = retry - 1
+                daily_basic = pro.daily_basic(ts_code=ts_code,  # trade_date=LAST_MARKET_DATE
+                                              start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+                for key in ['circ_mv', ]:
+                    data_frame.loc[i, key] = daily_basic.loc[0, key]
 
-            daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-            (data_frame.loc[i, COL_WEIGHT_RISE_EFFICIENCY],
-             data_frame.loc[i, COL_WEIGHT_MIN_INDEX],
-             data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0, end=30)
-            data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
-        except Exception as e:
-            print('excetion in {}'.format(i))
-            continue
-        print('##### {i} #####'.format(i=i))
-        time.sleep(0.1)
+                daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+                (data_frame.loc[i, COL_WEIGHT_RISE_EFFICIENCY],
+                 data_frame.loc[i, COL_WEIGHT_MIN_INDEX],
+                 data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0,
+                                                                                             end=30)
+                data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
+                print('##### {i} #####'.format(i=i))
+                time.sleep(0.1)
+                status = 2
+            except Exception as e:
+                print('excetion in {}'.format(i))
+                status = 1
+                continue
+
+
+        # try:
+        #     daily_basic = pro.daily_basic(ts_code=ts_code,          #trade_date=LAST_MARKET_DATE
+        #                                   start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+        #     for key in ['circ_mv', ]:
+        #         data_frame.loc[i, key] = daily_basic.loc[0, key]
+        #
+        #     daily = pro.daily(ts_code=ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+        #     (data_frame.loc[i, COL_WEIGHT_RISE_EFFICIENCY],
+        #      data_frame.loc[i, COL_WEIGHT_MIN_INDEX],
+        #      data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0, end=30)
+        #     data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
+        # except Exception as e:
+        #     print('excetion in {}'.format(i))
+        #     continue
+        # print('##### {i} #####'.format(i=i))
+        # time.sleep(0.1)
 
     data_frame = data_frame[
                            (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 0)
