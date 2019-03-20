@@ -153,6 +153,25 @@ def daily_weight_rise_efficiency(daily=None, begin=0, end=1):
     return (average_weight_rise, min_index, max_index)
 
 
+def daily_weight_eigen_slope(daily=None, begin=0, end=1):
+    if begin == end:
+        return 0
+
+    highs = daily.high
+    lows = daily.low
+
+    weights = list()
+    for i in range(begin, end + 1):
+        weights.append(round((highs[i] + lows[i]) / 2, 2))
+
+    min_weight = min(weights)
+    min_index = weights.index(min_weight) + begin
+    max_weight = max(weights)
+    max_index = weights.index(max_weight) + begin
+    slope = round((max_weight / min_weight - 1) * 100 / -(max_index - min_index), 2)
+    return slope
+
+
 def daily_weight_free_continuously_fall_p_change(daily=None, begin=0):
     highs = daily.high
     lows = daily.low
