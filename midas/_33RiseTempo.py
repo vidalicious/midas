@@ -46,7 +46,7 @@ def main():
                 (data_frame.loc[i, COL_WEIGHT_RISE_EFFICIENCY],
                  data_frame.loc[i, COL_WEIGHT_MIN_INDEX],
                  data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0,
-                                                                                             end=30)
+                                                                                             end=20)
                 data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
                 print('##### {i} #####'.format(i=i))
                 time.sleep(0.1)
@@ -76,6 +76,7 @@ def main():
 
     dragons_frame = data_frame[
                                (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 3)
+                               & data_frame[COL_WEIGHT_MAX_INDEX] < 10
                                ]
     sorted_dragons = dragons_frame.sort_values(by=COL_WEIGHT_RISE_EFFICIENCY, ascending=False)
     file_name = '../logs/{date}@RiseTempo_Dragons.csv'.format(date=LAST_MARKET_DATE)
@@ -83,7 +84,7 @@ def main():
         sorted_dragons.to_csv(file)
 
     dandelion_frame = data_frame[
-        data_frame[COL_WEIGHT_MAX_INDEX] < 2
+        data_frame[COL_WEIGHT_MAX_INDEX] == 0
     ]
 
     sorted_dandelion = dandelion_frame.sort_values(by=COL_WEIGHT_MIN_INDEX, ascending=True)
