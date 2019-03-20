@@ -74,19 +74,36 @@ def main():
         # print('##### {i} #####'.format(i=i))
         # time.sleep(0.1)
 
-    data_frame = data_frame[
-                           (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 0)
-                           & (data_frame[COL_WEIGHT_MAX_INDEX] < 5)
-                           # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
-                           # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
-                           ]
-
-    sorted_frame = data_frame.sort_values(by=COL_WEIGHT_RISE_EFFICIENCY, ascending=False)
-
-    file_name = '../logs/{date}@RiseTempo.csv'.format(date=LAST_MARKET_DATE)
-    # print(fileName)
+    dragons_frame = data_frame[
+                               (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 3)
+                               ]
+    sorted_dragons = dragons_frame.sort_values(by=COL_WEIGHT_RISE_EFFICIENCY, ascending=False)
+    file_name = '../logs/{date}@RiseTempo_Dragons.csv'.format(date=LAST_MARKET_DATE)
     with open(file_name, 'w', encoding='utf8') as file:
-        sorted_frame.to_csv(file)
+        sorted_dragons.to_csv(file)
+
+    dandelion_frame = data_frame[
+        data_frame[COL_WEIGHT_MAX_INDEX] < 2
+    ]
+
+    sorted_dandelion = dandelion_frame.sort_values(by=COL_WEIGHT_MIN_INDEX, ascending=True)
+    file_name = '../logs/{date}@RiseTempo_Dandelion.csv'.format(date=LAST_MARKET_DATE)
+    with open(file_name, 'w', encoding='utf8') as file:
+        sorted_dandelion.to_csv(file)
+
+    # data_frame = data_frame[
+    #                        (data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 0)
+    #                        & ((data_frame[COL_WEIGHT_MAX_INDEX] == 0) | ((data_frame[COL_WEIGHT_RISE_EFFICIENCY] > 3) & (data_frame[COL_WEIGHT_MAX_INDEX] < 5)))
+    #                        # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
+    #                        # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
+    #                        ]
+    #
+    # sorted_frame = data_frame.sort_values(by=COL_WEIGHT_RISE_EFFICIENCY, ascending=False)
+    #
+    # file_name = '../logs/{date}@RiseTempo.csv'.format(date=LAST_MARKET_DATE)
+    # # print(fileName)
+    # with open(file_name, 'w', encoding='utf8') as file:
+    #     sorted_frame.to_csv(file)
 
 
 if __name__ == '__main__':
