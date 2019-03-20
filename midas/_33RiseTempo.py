@@ -46,7 +46,7 @@ def main():
                 (data_frame.loc[i, COL_WEIGHT_RISE_EFFICIENCY],
                  data_frame.loc[i, COL_WEIGHT_MIN_INDEX],
                  data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0,
-                                                                                             end=20)
+                                                                                             end=30)
                 data_frame.loc[i, COL_CURRENT_PRICE] = daily.close[0]
                 print('##### {i} #####'.format(i=i))
                 time.sleep(0.1)
