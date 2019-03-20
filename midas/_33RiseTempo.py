@@ -35,8 +35,8 @@ def main():
         status = 0
         retry = 5
         while status != 2 and retry > 0:
+            retry = retry - 1
             try:
-                retry = retry - 1
                 daily_basic = pro.daily_basic(ts_code=ts_code,  # trade_date=LAST_MARKET_DATE
                                               start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
                 for key in ['circ_mv', ]:
