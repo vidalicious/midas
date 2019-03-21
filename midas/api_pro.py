@@ -28,6 +28,15 @@ def daily_continuously_limit_up_count(daily=None):
     return len(p_changes)
 
 
+def daily_limit_up_count(daily=None, begin=0, end=1):
+    p_changes = daily.pct_chg
+    count = 0
+    for i in range(begin, end):
+        if p_changes[i] > 9.8:
+            count = count + 1
+    return count
+
+
 def daily_continuously_weight_up_count(daily=None):
     highs = daily.high
     lows = daily.low
