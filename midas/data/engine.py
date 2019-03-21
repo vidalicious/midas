@@ -2,6 +2,7 @@
 from functools import wraps
 import logging
 import traceback
+import os
 import sys
 
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -50,10 +51,11 @@ def update_to_db(session):
 
 main_config = {}
 dummy = {}
-# execfile(os.path.join(bin.env.config_path, "main.config"), main_config)
-exec(open("./main.config").read(), dummy, main_config)
+package_path = os.path.dirname(os.path.realpath(__file__))
+config_path = os.path.join(package_path, 'main.config')
+exec(open(config_path).read(), dummy, main_config)
 
-main_db = engine.engine(main_config['main_database'], pool_recycle=3600, echo=False)
+main_db = engine(main_config['main_database'], pool_recycle=3600, echo=False)
 
 
 # session
