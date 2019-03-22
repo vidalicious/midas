@@ -11,7 +11,7 @@ import midas.midas.data.models as models
 from midas.midas.data.engine import main_session
 from midas.midas.data.engine import update_to_db
 
-sampling_count = 100
+sampling_count = 40
 
 
 @update_to_db(main_session)

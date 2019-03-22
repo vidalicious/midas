@@ -17,7 +17,7 @@ COL_EIGEN_SLOPE_DIFF = 'COL_EIGEN_SLOPE_DIFF'
 COL_DAILY_LIMIT_COUNT = 'COL_DAILY_LIMIT_COUNT'
 
 GAP = 5
-sampling_count = 100
+sampling_count = 40
 
 
 def main():
