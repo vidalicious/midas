@@ -22,7 +22,8 @@ hist_data = ts.get_hist_data('000622')
 # print([1, 2, 3, 5][:2])
 # print(1.1 ** 28)
 
-# h = [1, 1.2, 1.2**2, 1.2**3, 1.2**4]
+h = [1, 1.2, 1.2**2, 1.2**3, 1.2**4]
+g = pow(1.02, 10)
 # print(h)
 # print(np.mean(h))
 # print(np.std(h) / np.mean(h))

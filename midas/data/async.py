@@ -59,7 +59,7 @@ def main():
             main_session.add(a_daily)
         main_session.commit()
         print('##### {i} #####'.format(i=count))
-        time.sleep(0.1)
+        time.sleep(0.15)
 
 
 if __name__ == '__main__':
