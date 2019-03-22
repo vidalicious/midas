@@ -22,7 +22,6 @@ def main():
     LAST_MARKET_DATE = daily001[0].trade_date
 
     data_frame = DataFrame()
-    data_frame['asc'] = 0
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
         try:
             for key in models.StockBasicPro.keys:
@@ -43,12 +42,7 @@ def main():
     #                        # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
     #                        ]
 
-    sorted_frame = data_frame.sort_values(by=COL_FITNESS, ascending=False)
-
-    asc = 0
-    for index, row in sorted_frame.iterrows():
-        sorted_frame.loc[index, 'asc'] = asc
-        asc = asc + 1
+    sorted_frame = data_frame.sort_values(by=COL_FITNESS, ascending=False).reset_index(drop=True)
 
     file_name = '../../logs/{date}@Regression.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
