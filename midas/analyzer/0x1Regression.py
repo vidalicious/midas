@@ -11,6 +11,7 @@ import midas.midas.analyzer.api as api
 import midas.midas.data.models as models
 from midas.midas.data.engine import main_session
 
+COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FITNESS = 'COL_FITNESS'
 
 GAP = 5
@@ -29,6 +30,7 @@ def main():
 
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
+            data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_FITNESS] = api.daily_weight_exponential_fitness(daily=daily, begin=0, end=10, exp=2)
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
