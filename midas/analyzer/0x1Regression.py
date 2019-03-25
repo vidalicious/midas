@@ -31,7 +31,10 @@ def main():
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
-            data_frame.loc[i, COL_FITNESS] = api.daily_weight_exponential_fitness(daily=daily, begin=0, end=GAP, exp=2)
+            score = 0
+            for j in range(3):
+                score = score + api.daily_weight_exponential_fitness(daily=daily, begin=j, end=j + GAP, exp=2)
+            data_frame.loc[i, COL_FITNESS] = round(score, 2)
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
