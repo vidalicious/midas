@@ -38,3 +38,12 @@ def daily_weight_exponential_fitness(daily=None, begin=0, end=1, exp=2):
         diff = diff + pow(weights[i] - benchmark[i], 2)
     score = round(1 / diff, 2)
     return score
+
+
+def daily_minus_combo_count(daily=None):
+    for i, item in enumerate(daily):
+        if item.open < item.close or item.low == item.high:
+            break
+
+    result = i
+    return result
