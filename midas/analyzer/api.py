@@ -38,6 +38,27 @@ def daily_weight_rise_efficiency(daily=None, begin=0, end=1):
     return (average_weight_rise, min_index, max_index)
 
 
+def daily_limit_period(daily=None, begin=0, end=1):
+    if begin == end:
+        return 0
+
+    limit_begin = 9999
+    for i in range(begin, end):
+        if daily[i].pct_chg > 9.98:
+            limit_begin = i
+            break
+
+    limit_end = -1
+    for i in range(end, begin, -1):
+        if daily[i].pct_chg > 9.98:
+            limit_end = i
+            break
+
+    if limit_begin <= limit_end:
+        return limit_end - limit_begin + 1
+    return 0
+
+
 def daily_weight_exponential_fitness(daily=None, begin=0, end=1, exp=2):
     if begin == end:
         return 0
