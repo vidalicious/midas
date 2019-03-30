@@ -44,13 +44,13 @@ def daily_limit_period(daily=None, begin=0, end=1):
 
     limit_begin = 9999
     for i in range(begin, end):
-        if daily[i].pct_chg > 9.98:
+        if daily[i].pct_chg > 9.9:
             limit_begin = i
             break
 
     limit_end = -1
-    for i in range(end, begin, -1):
-        if daily[i].pct_chg > 9.98:
+    for i in range(end - 1, begin - 1, -1):
+        if daily[i].pct_chg > 9.9:
             limit_end = i
             break
 
