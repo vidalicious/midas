@@ -11,7 +11,7 @@ import midas.midas.analyzer.api as api
 import midas.midas.data.models as models
 from midas.midas.data.engine import main_session
 
-COL_LIMIT_PERIOD = 'COL_LIMIT_PERIOD'
+COL_CONTINUOUS_LIMIT = 'COL_CONTINUOUS_LIMIT'
 COL_LAST_PCT_CHG = 'COL_LAST_PCT_CHG'
 COL_LASTPRICE = 'COL_LASTPRICE'
 
@@ -32,7 +32,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
-            data_frame.loc[i, COL_LIMIT_PERIOD] = api.daily_limit_period(daily=daily, begin=0, end=15)
+            data_frame.loc[i, COL_CONTINUOUS_LIMIT] = api.daily_continuous_limit_count(daily=daily)
             data_frame.loc[i, COL_LAST_PCT_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
         except Exception as e:
@@ -41,10 +41,10 @@ def main(offset=0):
         print('##### {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LAST_PCT_CHG] > 7)
+                            (data_frame[COL_CONTINUOUS_LIMIT] > 0)
                            ]
 
-    sorted_frame = data_frame.sort_values(by=COL_LIMIT_PERIOD, ascending=False).reset_index(drop=True)
+    sorted_frame = data_frame.sort_values(by=COL_CONTINUOUS_LIMIT, ascending=False).reset_index(drop=True)
 
     file_name = '../../logs/{date}@BrokenPlane.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
