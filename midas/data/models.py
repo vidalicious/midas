@@ -44,5 +44,15 @@ class DailyPro(Base):
     amount = Column(Float)
 
 
+class StockCompanyPro(Base):
+    __tablename__ = "stock_company_pro"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    ts_code = Column(String(100))
+    main_business = Column(String(2000))
+    business_scope = Column(String(2000))
+
+
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
+StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
