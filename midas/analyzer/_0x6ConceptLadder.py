@@ -26,11 +26,16 @@ def main(concepts=[], offset=0):
     data_frame = DataFrame()
     ts_codes = set()
     for concept in concepts:
-        ts_codes_buff = set()
-        for detail in main_session.query(models.ConceptDetailPro).join(models.ConceptPro,
-            models.ConceptDetailPro.code == models.ConceptPro.code).filter(models.ConceptPro.name.like('%{concept}%'.format(concept=concept))).all():
-            ts_codes_buff.add(detail.ts_code)
-        ts_codes = ts_codes & ts_codes_buff
+        details = main_session.query(models.ConceptDetailPro).join(models.ConceptPro,
+            models.ConceptDetailPro.code == models.ConceptPro.code).filter(models.ConceptPro.name.like('%{concept}%'.format(concept=concept))).all()
+        if details:
+            ts_codes_buff = set()
+            for detail in details:
+                ts_codes_buff.add(detail.ts_code)
+            if len(ts_codes) > 0:
+                ts_codes = ts_codes & ts_codes_buff
+            else:
+                ts_codes = ts_codes_buff
 
     for i, ts_code in enumerate(ts_codes):
         try:
@@ -53,7 +58,13 @@ def main(concepts=[], offset=0):
 
     sorted_frame = data_frame.sort_values(by=COL_EIGEN_SLOPE, ascending=False).reset_index(drop=True)
 
-    file_name = '../../logs/{date}@{concept}@ConceptLadder.csv'.format(date=LAST_MARKET_DATE, concept=concept)
+    title = ''
+    for concept in concepts:
+        if len(title) == 0:
+            title = title + concept
+        else:
+            title = title + '+{}'.format(concept)
+    file_name = '../../logs/{date}@{concept}@ConceptLadder.csv'.format(date=LAST_MARKET_DATE, concept=title)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         sorted_frame.to_csv(file)
@@ -61,4 +72,4 @@ def main(concepts=[], offset=0):
 
 
 if __name__ == '__main__':
-    main(concepts=['自由贸易港',])
+    main(concepts=['上海自由贸易港'])
