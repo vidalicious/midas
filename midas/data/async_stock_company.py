@@ -9,14 +9,13 @@ import numpy as np
 import midas.midas.api_pro as api
 import midas.midas.data.models as models
 from midas.midas.data.engine import main_session
-from midas.midas.data.engine import update_to_db
 
 
 def main():
+    pro = ts.pro_api()
     main_session.query(models.StockCompanyPro).delete()
     main_session.commit()
     for exchange in ['SZSE', 'SSE']:
-        pro = ts.pro_api()
         df = pro.stock_company(exchange=exchange, fields='ts_code,main_business,business_scope')
         for i in range(len(df)):
             a_stock_company = models.StockCompanyPro(ts_code=df.loc[i, 'ts_code'],
@@ -28,7 +27,7 @@ def main():
 
     print('##### async stock company finished #####')
 
-        
+
 if __name__ == '__main__':
     main()
 

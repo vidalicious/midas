@@ -53,6 +53,27 @@ class StockCompanyPro(Base):
     business_scope = Column(String(2000))
 
 
+class ConceptPro(Base):
+    __tablename__ = "concept_pro"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    code = Column(String(100))
+    name = Column(String(100))
+
+    keys = ['code', 'name']
+
+
+class ConceptDetailPro(Base):
+    __tablename__ = "concept_detail_pro"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    code = Column(String(100))
+    ts_code = Column(String(100))
+    name = Column(String(100))
+
+
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
 StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
+ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
+ConceptDetailPro.metadata.tables["concept_detail_pro"].create(bind=main_db, checkfirst=True)
