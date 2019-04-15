@@ -16,7 +16,7 @@ COL_CONCEPT = 'COL_CONCEPT'
 COL_AVERAGE_EIGEN_SLOPE = 'COL_AVERAGE_EIGEN_SLOPE'
 
 sampling_count = 40
-GAP = 10
+GAP = 5
 
 
 def main(offset=0):
@@ -61,4 +61,4 @@ def main(offset=0):
 
 
 if __name__ == '__main__':
-    main()
+    main(1)
