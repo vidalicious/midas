@@ -15,6 +15,7 @@ def main():
     pro = ts.pro_api()
 
     main_session.query(models.ConceptPro).delete()
+    main_session.query(models.ConceptDetailPro).delete()
     main_session.commit()
     concepts = pro.concept()
     for i in range(len(concepts)):
