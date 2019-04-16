@@ -56,7 +56,7 @@ def main(concepts=[], offset=0):
             continue
         print('##### {i} #####'.format(i=i))
 
-    sorted_frame = data_frame.sort_values(by=COL_EIGEN_SLOPE, ascending=False).reset_index(drop=True)
+    sorted_frame = data_frame.sort_values(by=COL_LAST_PCT_CHG, ascending=False).reset_index(drop=True)
 
     title = ''
     for concept in concepts:
@@ -72,4 +72,4 @@ def main(concepts=[], offset=0):
 
 
 if __name__ == '__main__':
-    main(concepts=['燃料电池'])
+    main(concepts=['5G'])

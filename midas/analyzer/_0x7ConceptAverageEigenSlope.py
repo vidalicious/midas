@@ -61,4 +61,4 @@ def main(offset=0):
 
 
 if __name__ == '__main__':
-    main(1)
+    main()
