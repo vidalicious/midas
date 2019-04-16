@@ -72,4 +72,4 @@ def main(concepts=[], offset=0):
 
 
 if __name__ == '__main__':
-    main(concepts=['5G'])
+    main(concepts=['央企改革','无人驾驶'])
