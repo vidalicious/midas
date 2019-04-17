@@ -72,12 +72,15 @@ def main(concepts=[], offset=0):
 
 
 if __name__ == '__main__':
-    main(concepts=['无人驾驶'])
-    main(concepts=['5G'])
-    main(concepts=['军工'])
-    main(concepts=['养猪'])
-    main(concepts=['燃料电池'])
-    main(concepts=['工业大麻'])
-    main(concepts=['一带一路'])
-    main(concepts=['区块链'])
-    main(concepts=['强势人气股'])
+    # main(concepts=['无人驾驶'])
+    # main(concepts=['5G'])
+    # main(concepts=['军工'])
+    # main(concepts=['养猪'])
+    # main(concepts=['燃料电池'])
+    # main(concepts=['工业大麻'])
+    # main(concepts=['一带一路'])
+    # main(concepts=['区块链'])
+    # main(concepts=['强势人气股'])
+    # main(concepts=['染料'])
+    main(concepts=['独角兽'])
+
