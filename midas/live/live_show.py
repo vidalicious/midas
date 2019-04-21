@@ -26,10 +26,10 @@ def main():
                 response = requests.get('http://hq.sinajs.cn/list={}'.format(query_key))
                 res = response.text.split(',')
                 chg = round((float(res[3]) / float(res[2]) - 1) * 100, 2)
-                formatted = '{index} {code} {name} 今开:{open} 昨收:{yesterday} 当前百分比:{chg} 当前:{current} 成交股数:{stocks} 成交额:{amount} {date} ' \
+                formatted = '{index} {code} {name} 今开:{open} 昨收:{yesterday} 当前百分比:{chg} 当前:{current} 成交股数:{stocks}手 成交额:{amount}万 {date} ' \
                             '{timestamp}\n'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name, open=res[1],
                                                  yesterday=res[2],
-                                                 chg=chg, current=res[3], stocks=res[8], amount=res[9], date=res[30],
+                                                 chg=chg, current=res[3], stocks=round(float(res[8]) / 100, 0), amount=round(float(res[9]) / 10000, 2), date=res[30],
                                                  timestamp=res[31])
                 f.write(formatted)
                 print(formatted)
@@ -54,6 +54,7 @@ def main():
 # print(
 #
 # )
+
 
 if __name__ == '__main__':
     main()

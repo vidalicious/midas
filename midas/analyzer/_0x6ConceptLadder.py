@@ -51,6 +51,13 @@ def main(concepts=[], offset=0):
             data_frame.loc[i, COL_LAST_PCT_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
 
+            cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
+                                                                  models.ConceptPro.code == models.ConceptDetailPro.code).filter(
+                models.ConceptDetailPro.ts_code == ts_code).all()
+            concept_value = ''
+            for con in cons:
+                concept_value = concept_value + '{c}, '.format(c=con.name)
+            data_frame.loc[i, 'concept'] = concept_value
         except Exception as e:
             print('excetion in index:{index} {code}'.format(index=i, code=ts_code))
             continue
@@ -72,15 +79,17 @@ def main(concepts=[], offset=0):
 
 
 if __name__ == '__main__':
-    main(concepts=['无人驾驶'])
-    main(concepts=['5G'])
-    main(concepts=['军工'])
-    main(concepts=['养猪'])
-    main(concepts=['燃料电池'])
-    main(concepts=['工业大麻'])
-    main(concepts=['一带一路'])
-    main(concepts=['区块链'])
-    main(concepts=['强势人气股'])
-    main(concepts=['染料'])
-    main(concepts=['独角兽'])
+    # main(concepts=['无人驾驶'])
+    # main(concepts=['5G'])
+    # main(concepts=['军工'])
+    # main(concepts=['养猪'])
+    # main(concepts=['燃料电池'])
+    # main(concepts=['工业大麻'])
+    # main(concepts=['一带一路'])
+    # main(concepts=['区块链'])
+    # main(concepts=['强势人气股'])
+    # main(concepts=['染料'])
+    # main(concepts=['独角兽'])
+    # main(concepts=['5G','央企改革'])
+    # main(concepts=['光', '5G','石墨烯'])
 
