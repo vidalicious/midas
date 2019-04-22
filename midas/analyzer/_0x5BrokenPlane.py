@@ -37,7 +37,7 @@ def main(offset=0):
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
 
             cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
-                                                                  models.ConceptPro.code == models.ConceptDetailPro.code).filter(
+                                                              models.ConceptPro.code == models.ConceptDetailPro.code).filter(
                 models.ConceptDetailPro.ts_code == stock_basic.ts_code).all()
             concept_value = ''
             for con in cons:

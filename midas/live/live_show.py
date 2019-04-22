@@ -44,7 +44,7 @@ sampling_count = 40
 def main():
     date = time.strftime("%Y-%m-%d", time.localtime())
     f = open('../../logs/{date}@liveshow.txt'.format(date=date), 'a', encoding='utf8')
-    f_note = open('../../logs/{date}@liveshow_note.txt'.format(date=date), 'a', encoding='utf8')
+    # f_note = open('../../logs/{date}@liveshow_note.txt'.format(date=date), 'a', encoding='utf8')
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[0].trade_date
 
@@ -83,14 +83,15 @@ def main():
                                                                                      amount=round(float(res[9]) / 10000, 2), date=res[30], timestamp=res[31], conti_limit=continuous_limit,
                                                                                      concept=concept_value)
 
-                    f_note.write(formatted)
+                    f.write(formatted)
+                    f.flush()
             except Exception as e:
                 print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code,
                                                                        name=stock_basic.name))
                 continue
 
         f.write('\n############################################################################\n\n')
-        f_note.write('\n############################################################################\n\n')
+        f.flush()
 
     while int(time.strftime("%H%M%S", time.localtime())) < 150000:
         for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
@@ -122,7 +123,8 @@ def main():
                                                                                          yesterday=res[2], chg=chg, current=res[3], date=res[30], timestamp=res[31], conti_limit=continuous_limit,
                                                                                          concept=concept_value)
                         print(formatted)
-                        f_note.write(formatted)
+                        f.write(formatted)
+                        f.flush()
                     stock_live.chg = chg
                     stock_live.timestamp = datetime.datetime.now()
                 else:
@@ -134,7 +136,6 @@ def main():
                 continue
         main_session.commit()
     f.close()
-    f_note.close()
 
 # value = requests.get('http://hq.sinajs.cn/list=sz000001')
 # a = value.text.split(',')

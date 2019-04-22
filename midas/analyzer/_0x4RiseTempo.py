@@ -37,6 +37,14 @@ def main(offset=0):
              data_frame.loc[i, COL_WEIGHT_MAX_INDEX]) = api.daily_weight_rise_efficiency(daily=daily, begin=0, end=10)
 
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
+
+            cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
+                                                              models.ConceptPro.code == models.ConceptDetailPro.code).filter(
+                models.ConceptDetailPro.ts_code == stock_basic.ts_code).all()
+            concept_value = ''
+            for con in cons:
+                concept_value = concept_value + '{c}, '.format(c=con.name)
+            data_frame.loc[i, 'concept'] = concept_value
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
