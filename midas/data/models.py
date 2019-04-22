@@ -72,8 +72,18 @@ class ConceptDetailPro(Base):
     name = Column(String(100))
 
 
+class StockLive(Base):
+    __tablename__ = "stock_live"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    ts_code = Column(String(100))
+    chg = Column(Float)
+    timestamp = Column(DateTime, default=datetime.datetime.now)
+
+
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
 StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
 ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
 ConceptDetailPro.metadata.tables["concept_detail_pro"].create(bind=main_db, checkfirst=True)
+StockLive.metadata.tables["stock_live"].create(bind=main_db, checkfirst=True)
