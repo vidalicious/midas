@@ -9,5 +9,6 @@ if __name__ == '__main__':
     reg.main()
     reg1.main()
     pivot.main()
+    pivot.main(-2)
     broken.main()
     tempo.main()

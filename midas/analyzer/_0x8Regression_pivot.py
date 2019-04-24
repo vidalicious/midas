@@ -49,8 +49,8 @@ def main(exp=0):
             continue
         print('##### {i} #####'.format(i=i))
 
-    # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
-    # data_frame = data_frame.iloc[:200]
+    data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.iloc[:200]
 
     data_frame = data_frame.sort_values(by=COL_FITNESS, ascending=False).reset_index(drop=True)
 
