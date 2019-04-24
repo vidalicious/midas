@@ -68,6 +68,26 @@ def daily_weight_exponential_fitness(daily=None, begin=0, end=1, exp=2):
     return score
 
 
+def daily_weight_max_chg_gap(daily=None, begin=0, end=1):
+    if begin == end:
+        return 0
+
+    weights = list()
+    for item in daily[begin:end]:
+        weights.append(round((item.high + item.low) / 2, 2))
+
+    min_weight = min(weights)
+    min_index = weights.index(min_weight) + begin
+    max_weight = max(weights)
+    max_index = weights.index(max_weight) + begin
+    chg = round((max_weight / min_weight - 1) * 100, 2)
+    if max_index < min_index:
+        result = chg
+    else:
+        result = -chg
+    return result
+
+
 def daily_minus_combo_count(daily=None):
     for i, item in enumerate(daily):
         if item.open < item.close or item.low == item.high:

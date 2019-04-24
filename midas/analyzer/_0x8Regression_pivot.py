@@ -13,12 +13,13 @@ from midas.midas.data.engine import main_session
 
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FITNESS = 'COL_FITNESS'
+COL_MAXGAP = 'COL_MAXGAP'
 
 GAP = 5
-sampling_count = 40
+sampling_count = 100
 
 
-def main():
+def main(exp=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[0].trade_date
 
@@ -32,8 +33,9 @@ def main():
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
-            score = api.daily_weight_exponential_fitness(daily=daily, begin=0, end=GAP, exp=0)
+            score = api.daily_weight_exponential_fitness(daily=daily, begin=0, end=GAP, exp=exp)
             data_frame.loc[i, COL_FITNESS] = round(score, 2)
+            data_frame.loc[i, COL_MAXGAP] = api.daily_weight_max_chg_gap(daily=daily, begin=0, end=100)
 
             cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
                                                               models.ConceptPro.code == models.ConceptDetailPro.code).filter(
@@ -47,19 +49,15 @@ def main():
             continue
         print('##### {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                        (data_frame[COL_EIGEN_SLOPE_0] > 0)
-    #                        & (data_frame[COL_EIGEN_SLOPE_1] > 0)                           # & (data_frame[COL_DAILY_LIMIT_COUNT] == 0)
-    #                        # & (data_frame[COL_ACCUMULATE_P_CHANGE] > 5)
-    #                        # & (data_frame[COL_PRE_ACCUMULATE_P_CHANGE] < data_frame[COL_ACCUMULATE_P_CHANGE])
-    #                        ]
+    data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.iloc[:200]
 
-    sorted_frame = data_frame.sort_values(by=COL_FITNESS, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_FITNESS, ascending=False).reset_index(drop=True)
 
-    file_name = '../../logs/{date}@Regression_pivot.csv'.format(date=LAST_MARKET_DATE)
+    file_name = '../../logs/{date}@Regression_pivot_exp{exp}.csv'.format(date=LAST_MARKET_DATE, exp=exp)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
-        sorted_frame.to_csv(file)
+        data_frame.to_csv(file)
 
 
 if __name__ == '__main__':
