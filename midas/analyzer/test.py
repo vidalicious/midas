@@ -32,7 +32,13 @@ import midas.midas.analyzer._0x3MinusCombo as combo
 #
 # a = api.daily_limit_period(daily=daily, begin=0, end=15)
 # pass
-pro = ts.pro_api()
-df = pro.concept()
-a = pro.concept_detail(id='TS2', fields='ts_code,name')
-pass
+# pro = ts.pro_api()
+# df = pro.concept()
+# a = pro.concept_detail(id='TS2', fields='ts_code,name')
+# pass
+
+for i in range(1):
+    print(i)
+
+a = [0, 1, 2,3,4]
+print(a[0:4])

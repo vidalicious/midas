@@ -1,4 +1,21 @@
 # -*- coding: utf-8 -*-
+import numpy as np
+
+
+def daily_close_ma(daily=None, step=5):
+    if len(daily) < step:
+        raise Exception('invalid daily data')
+
+    closes = list()
+    for item in daily:
+        closes.append(item.close)
+
+    result = list()
+    for i in range(len(daily) - step + 1):
+        ma = round(np.mean(closes[i:i + step]), 2)
+        result.append(ma)
+
+    return result
 
 
 def daily_weight_eigen_slope(daily=None, begin=0, end=1):
