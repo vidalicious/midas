@@ -11,21 +11,19 @@ import midas.midas.analyzer.api as api
 import midas.midas.data.models as models
 from midas.midas.data.engine import main_session
 
-COL_MA = 'COL_MA'
-COL_MA_CLOSE_GAP = 'COL_MA_CLOSE_GAP'
 COL_MA_5 = 'COL_MA_5'
 COL_MA_10 = 'COL_MA_10'
 COL_MA_20 = 'COL_MA_20'
-COL_MA_GAP = 'COL_MA_GAP'
 COL_MA_5_SLOPE = 'COL_MA_5_SLOPE'
 COL_MA_10_SLOPE = 'COL_MA_10_SLOPE'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
+COL_MA_CLOSE_GAP = 'COL_MA_CLOSE_GAP'
 
 sampling_count = 40
 
 
-def main(ma=10, offset=0):
+def main(offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
 
@@ -38,16 +36,17 @@ def main(ma=10, offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
-            data_frame.loc[i, COL_MA] = api.daily_close_ma(daily=daily, step=ma)[0]
-            data_frame.loc[i, COL_LASTPRICE] = daily[0].close
-            data_frame.loc[i, COL_MA_CLOSE_GAP] = round((data_frame.loc[i, COL_LASTPRICE] / data_frame.loc[i, COL_MA] - 1) * 100, 2)
+            ma_5 = api.daily_close_ma(daily=daily, step=5)
             ma_10 = api.daily_close_ma(daily=daily, step=10)
-            data_frame.loc[i, COL_MA_10] = ma_10[0]
             ma_20 = api.daily_close_ma(daily=daily, step=20)
+            data_frame.loc[i, COL_MA_5] = ma_5[0]
+            data_frame.loc[i, COL_MA_10] = ma_10[0]
             data_frame.loc[i, COL_MA_20] = ma_20[0]
-            data_frame.loc[i, COL_MA_GAP] = round((data_frame.loc[i, COL_MA_10] / data_frame.loc[i, COL_MA_20] - 1) * 100, 2)
+            data_frame.loc[i, COL_MA_5_SLOPE] = round((ma_5[0] / ma_5[1] - 1) * 100, 2)
             data_frame.loc[i, COL_MA_10_SLOPE] = round((ma_10[0] / ma_10[1] - 1) * 100, 2)
             data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_LASTPRICE] = daily[0].close
+            data_frame.loc[i, COL_MA_CLOSE_GAP] = round((data_frame.loc[i, COL_LASTPRICE] / data_frame.loc[i, COL_MA_20] - 1) * 100, 2)
             cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
                                                               models.ConceptPro.code == models.ConceptDetailPro.code).filter(
                 models.ConceptDetailPro.ts_code == stock_basic.ts_code).all()
@@ -61,8 +60,9 @@ def main(ma=10, offset=0):
         print('##### {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_CLOSE_GAP] > -3)
-                            & (data_frame[COL_MA_GAP] > 0)
+                            (data_frame[COL_MA_5] > data_frame[COL_MA_10])
+                            & (data_frame[COL_MA_10] > data_frame[COL_MA_20])
+                            & (data_frame[COL_MA_5_SLOPE] > data_frame[COL_MA_10_SLOPE])
                             & (data_frame[COL_MA_10_SLOPE] > data_frame[COL_MA_20_SLOPE])
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
@@ -70,11 +70,11 @@ def main(ma=10, offset=0):
 
     data_frame = data_frame.sort_values(by=COL_MA_CLOSE_GAP, ascending=True).reset_index(drop=True)
 
-    file_name = '../../logs/{date}@Close_ma_dive_ma{ma}.csv'.format(date=LAST_MARKET_DATE, ma=ma)
+    file_name = '../../logs/{date}@MA_walker.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
 
 if __name__ == '__main__':
-    main(20, offset=2)
+    main(offset=2)
