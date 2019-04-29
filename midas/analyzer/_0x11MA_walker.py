@@ -62,8 +62,9 @@ def main(offset=0):
     data_frame = data_frame[
                             (data_frame[COL_MA_5] > data_frame[COL_MA_10])
                             & (data_frame[COL_MA_10] > data_frame[COL_MA_20])
-                            & (data_frame[COL_MA_5_SLOPE] > data_frame[COL_MA_10_SLOPE])
-                            & (data_frame[COL_MA_10_SLOPE] > data_frame[COL_MA_20_SLOPE])
+                            # & (data_frame[COL_MA_5_SLOPE] > data_frame[COL_MA_10_SLOPE])
+                            # & (data_frame[COL_MA_10_SLOPE] > data_frame[COL_MA_20_SLOPE])
+                            & (data_frame[COL_MA_CLOSE_GAP] > 0)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
