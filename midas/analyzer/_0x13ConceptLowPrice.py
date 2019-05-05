@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # main(concepts=['区块链'])
     # main(concepts=['强势人气股'])
     # main(concepts=['染料'])
-    main(concepts=['OLED'])
+    main(concepts=['业绩预增'])
     # main(concepts=['5G','央企改革'])
     # main(concepts=['光', '5G','石墨烯'])
 

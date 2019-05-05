@@ -42,3 +42,6 @@ for i in range(1):
 
 a = [0, 1, 2,3,4]
 print(a[0:4])
+
+b = 12 ** (1 / 86)
+print(b)
