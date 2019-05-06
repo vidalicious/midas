@@ -13,13 +13,12 @@ from midas.midas.data.engine import update_to_db
 
 sampling_count = 40
 
+pro = ts.pro_api()
+trade_dates = pro.daily(ts_code='000001.SZ').trade_date
+LAST_MARKET_DATE = trade_dates[0]
 
-@update_to_db(main_session)
-def main():
-    pro = ts.pro_api()
-    trade_dates = pro.daily(ts_code='000001.SZ').trade_date
-    LAST_MARKET_DATE = trade_dates[0]
 
+def async_stock_basic():
     main_session.query(models.StockBasicPro).delete()
     main_session.commit()
     stock_basic = pro.stock_basic(list_status='L', fields='ts_code,symbol,name,industry,fullname')
@@ -34,6 +33,8 @@ def main():
     main_session.commit()
     print('##### async stock basic finished #####')
 
+
+def async_daily():
     main_session.query(models.DailyPro).delete()
     main_session.commit()
     for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
@@ -60,6 +61,12 @@ def main():
         main_session.commit()
         print('##### {i} #####'.format(i=count))
         time.sleep(0.15)
+
+
+@update_to_db(main_session)
+def main():
+    async_stock_basic()
+    async_daily()
 
 
 if __name__ == '__main__':

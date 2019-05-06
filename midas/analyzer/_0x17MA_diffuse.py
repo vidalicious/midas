@@ -14,6 +14,9 @@ from midas.midas.data.engine import main_session
 COL_MA_5 = 'COL_MA_5'
 COL_MA_10 = 'COL_MA_10'
 COL_MA_20 = 'COL_MA_20'
+COL_MA_5_SLOPE = 'COL_MA_5_SLOPE'
+COL_MA_10_SLOPE = 'COL_MA_10_SLOPE'
+COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
 
 sampling_count = 40
@@ -38,6 +41,9 @@ def main(offset=0):
             data_frame.loc[i, COL_MA_5] = ma_5[0]
             data_frame.loc[i, COL_MA_10] = ma_10[0]
             data_frame.loc[i, COL_MA_20] = ma_20[0]
+            data_frame.loc[i, COL_MA_5_SLOPE] = round((ma_5[0] / ma_5[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_MA_10_SLOPE] = round((ma_10[0] / ma_10[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
                                                               models.ConceptPro.code == models.ConceptDetailPro.code).filter(
@@ -51,16 +57,18 @@ def main(offset=0):
             continue
         print('##### {i} #####'.format(i=i))
 
-    data_frame = data_frame[(data_frame[COL_LASTPRICE] < data_frame[COL_MA_5])
-                            & (data_frame[COL_MA_5] > data_frame[COL_MA_10])
+    data_frame = data_frame[
+                            (data_frame[COL_MA_5] > data_frame[COL_MA_10])
                             & (data_frame[COL_MA_10] > data_frame[COL_MA_20])
+                            & (data_frame[COL_MA_5_SLOPE] > data_frame[COL_MA_10_SLOPE])
+                            & (data_frame[COL_MA_10_SLOPE] > data_frame[COL_MA_20_SLOPE])
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
     data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
 
-    file_name = '../../logs/{date}@MA_5_10_20.csv'.format(date=LAST_MARKET_DATE)
+    file_name = '../../logs/{date}@MA_diffuse.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)

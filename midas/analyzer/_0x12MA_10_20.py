@@ -14,6 +14,7 @@ from midas.midas.data.engine import main_session
 COL_MA_10 = 'COL_MA_10'
 COL_MA_20 = 'COL_MA_20'
 COL_LASTPRICE = 'COL_LASTPRICE'
+COL_INDAY_CHG = 'COL_INDAY_CHG'
 
 sampling_count = 40
 
@@ -36,6 +37,7 @@ def main(offset=0):
             data_frame.loc[i, COL_MA_10] = ma_10[0]
             data_frame.loc[i, COL_MA_20] = ma_20[0]
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
+            data_frame.loc[i, COL_INDAY_CHG] = round(daily[0].close - daily[0].open, 2)
             cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
                                                               models.ConceptPro.code == models.ConceptDetailPro.code).filter(
                 models.ConceptDetailPro.ts_code == stock_basic.ts_code).all()
@@ -50,6 +52,8 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_MA_10] > data_frame[COL_MA_20])
+                            & (data_frame[COL_LASTPRICE] < data_frame[COL_MA_10])
+                            & (data_frame[COL_INDAY_CHG] > 0)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
