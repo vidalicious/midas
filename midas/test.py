@@ -62,6 +62,9 @@ pass
 b = time.time()
 c = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date
+
+d = pro.daily_basic(ts_code='000001.SZ', trade_date='20190509') #, fields='ts_code,trade_date,turnover_rate,volume_ratio,pe,pb'
+e = d.loc[0, 'ts_code']
 pass
 
 print(json.dumps(["vida.gu@cootek.cn", "vida.gu@cootek.cn"]))

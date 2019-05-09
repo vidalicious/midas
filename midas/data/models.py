@@ -44,6 +44,21 @@ class DailyPro(Base):
     amount = Column(Float)
 
 
+class DailyBasicPro(Base):
+    __tablename__ = "daily_basic_pro"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    ts_code = Column(String(100))
+    trade_date = Column(Integer)
+    turnover_rate = Column(Float)  # 换手率
+    turnover_rate_f = Column(Float)  # 换手率（自由流通股）
+    total_share = Column(Float)  # 总股本（万股）
+    float_share = Column(Float)  # 流通股本（万股）
+    free_share = Column(Float)  # 自由流通股本（万）
+    total_mv = Column(Float)  # 总市值（万元）
+    circ_mv = Column(Float)  # 流通市值（万元）
+
+
 class StockCompanyPro(Base):
     __tablename__ = "stock_company_pro"
 
@@ -83,6 +98,7 @@ class StockLive(Base):
 
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
+DailyBasicPro.metadata.tables["daily_basic_pro"].create(bind=main_db, checkfirst=True)
 StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
 ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
 ConceptDetailPro.metadata.tables["concept_detail_pro"].create(bind=main_db, checkfirst=True)

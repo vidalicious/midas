@@ -52,6 +52,11 @@ def main(offset=0):
             for con in cons:
                 concept_value = concept_value + '{c}, '.format(c=con.name)
             data_frame.loc[i, 'concept'] = concept_value
+
+            daily_basic = main_session.query(models.DailyBasicPro).filter(models.DailyBasicPro.ts_code == stock_basic.ts_code).first()
+            if daily_basic:
+                data_frame.loc[i, 'circ_mv'] = '{}亿'.format(round(daily_basic.circ_mv / 10000, 2))
+
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
@@ -68,6 +73,7 @@ def main(offset=0):
     # data_frame = data_frame.iloc[:200]
 
     data_frame = data_frame.sort_values(by=COL_MA_5_SLOPE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, 'concept', 'circ_mv']]
 
     file_name = '../../logs/{date}@MA_diffuse.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)

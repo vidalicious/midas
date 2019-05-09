@@ -63,10 +63,37 @@ def async_daily():
         time.sleep(0.15)
 
 
+def async_daily_basic():
+    main_session.query(models.DailyBasicPro).delete()
+    main_session.commit()
+    for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
+        try:
+            daily_basic = pro.daily_basic(ts_code=sbp.ts_code, trade_date=LAST_MARKET_DATE)
+            a_daily_basic = models.DailyBasicPro(ts_code=daily_basic.loc[0, 'ts_code'],
+                                                 trade_date=daily_basic.loc[0, 'trade_date'],
+                                                 turnover_rate=float(daily_basic.loc[0, 'turnover_rate']),
+                                                 turnover_rate_f=float(daily_basic.loc[0, 'turnover_rate_f']),
+                                                 total_share=float(daily_basic.loc[0, 'total_share']),
+                                                 float_share=float(daily_basic.loc[0, 'float_share']),
+                                                 free_share=float(daily_basic.loc[0, 'free_share']),
+                                                 total_mv=float(daily_basic.loc[0, 'total_mv']),
+                                                 circ_mv=float(daily_basic.loc[0, 'circ_mv']))
+        except Exception as e:
+            print('excetion in {}'.format(count))
+            continue
+
+        main_session.add(a_daily_basic)
+        main_session.commit()
+        print('##### {i} #####'.format(i=count))
+        time.sleep(0.15)
+
+
+
 @update_to_db(main_session)
 def main():
-    async_stock_basic()
-    async_daily()
+    # async_stock_basic()
+    # async_daily()
+    async_daily_basic()
 
 
 if __name__ == '__main__':
