@@ -13,6 +13,8 @@ from midas.midas.data.engine import main_session
 
 COL_MA_10 = 'COL_MA_10'
 COL_MA_20 = 'COL_MA_20'
+COL_MA_10_SLOPE = 'COL_MA_10_SLOPE'
+COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_INDAY_CHG = 'COL_INDAY_CHG'
 
@@ -36,6 +38,8 @@ def main(offset=0):
             ma_20 = api.daily_close_ma(daily=daily, step=20)
             data_frame.loc[i, COL_MA_10] = ma_10[0]
             data_frame.loc[i, COL_MA_20] = ma_20[0]
+            data_frame.loc[i, COL_MA_10_SLOPE] = round((ma_10[0] / ma_10[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_INDAY_CHG] = round(daily[0].close - daily[0].open, 2)
             cons = main_session.query(models.ConceptPro).join(models.ConceptDetailPro,
@@ -58,7 +62,7 @@ def main(offset=0):
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
 
     file_name = '../../logs/{date}@MA_10_20.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
