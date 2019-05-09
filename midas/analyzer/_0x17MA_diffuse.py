@@ -67,7 +67,7 @@ def main(offset=0):
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_MA_5_SLOPE, ascending=False).reset_index(drop=True)
 
     file_name = '../../logs/{date}@MA_diffuse.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
