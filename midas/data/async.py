@@ -88,11 +88,10 @@ def async_daily_basic():
         time.sleep(0.15)
 
 
-
 @update_to_db(main_session)
 def main():
-    # async_stock_basic()
-    # async_daily()
+    async_stock_basic()
+    async_daily()
     async_daily_basic()
 
 
