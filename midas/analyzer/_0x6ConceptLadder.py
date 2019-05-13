@@ -66,7 +66,7 @@ def main(concepts=[], offset=0):
         print('##### {i} #####'.format(i=i))
 
     data_frame = data_frame.sort_values(by=COL_LAST_PCT_CHG, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, 'concept', 'circ_mv']]
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_LAST_PCT_CHG, 'concept', 'circ_mv']]
 
     title = ''
     for concept in concepts:
@@ -84,15 +84,17 @@ def main(concepts=[], offset=0):
 if __name__ == '__main__':
     # main(concepts=['无人驾驶'])
     # main(concepts=['5G'])
-    main(concepts=['军工'])
+    # main(concepts=['军工'])
     # main(concepts=['养猪'])
     # main(concepts=['燃料电池'])
     # main(concepts=['工业大麻'])
     # main(concepts=['一带一路'])
     main(concepts=['区块链'])
+    main(concepts=['创投'])
+    main(concepts=['自由贸易港'])
     # main(concepts=['强势人气股'])
     # main(concepts=['染料'])
     # main(concepts=['OLED'])
     # main(concepts=['5G','央企改革'])
     # main(concepts=['光', '5G','石墨烯'])
-    main(concepts=['云计算'])
+    # main(concepts=['云计算'])
