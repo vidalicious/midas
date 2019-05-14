@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # main(concepts=['一带一路'])
     main(concepts=['区块链'])
     main(concepts=['创投'])
-    main(concepts=['自由贸易港'])
+    main(concepts=['高送转','化工'])
     # main(concepts=['强势人气股'])
     # main(concepts=['染料'])
     # main(concepts=['OLED'])
