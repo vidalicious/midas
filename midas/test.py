@@ -6,68 +6,26 @@ import re
 import time
 import datetime
 import json
+import requests
 
-hist_data = ts.get_hist_data('000622')
-# a = api.hist_p_change(hist_data, begin=18, end=30)
-# b = api.hist_daily_hairy(hist_data, begin=0, end=5)
-# print(a)
-# print(b)
-#
-# c = api.hist_p_change(hist_data, begin=30, end=50)
-# d = api.normalizing_std_close(hist_data, begin=30, end=50)
-# print(c)
-# print(d)
-# print(histData)
-# print(api.normalizing_std_close(histData, 1, 11))
-# print([1, 2, 3, 5][:2])
-# print(1.1 ** 28)
 
-h = [1, 1.2, 1.2**2, 1.2**3, 1.2**4]
-g = pow(1.02, 10)
-# print(h)
-# print(np.mean(h))
-# print(np.std(h) / np.mean(h))
-#
-# print((1.2**5 - np.mean(h)) / np.std(h))
+headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'APPCODE ' + 'a541d723a1874f329f0e63dd3c6cdac4'
+}
 
-# basics = ts.get_stock_basics()
-#
-#
-# print(basics)
-
-pro = ts.pro_api()
-# daily_basic = pro.daily_basic(ts_code='600604.SH',
-#                               start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='002803.SZ')
-
-a = api.daily_max_jump_p_change(daily, end=30)
-pro = ts.pro_api()
-daily_basic = pro.daily_basic(ts_code='600604.SH',
-                              start_date='20181023', end_date='20181207')
-daily = pro.daily(ts_code='603066.SH')
-
-a = api.daily_break_continuously_high_fall_count(daily)
-pass
-
-# pattern = '[a-zA-Z]+'
-# search = re.search(pattern, 'fir_AS')
-# if search:
-#     version = search.group()
-#     pass
-#
-# a = 'AAA-BBB_ccc'.lower()
-# pass
-#
-# a = type(dict()).__name__
-b = time.time()
-c = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-trade_dates = pro.daily(ts_code='000001.SZ').trade_date
-
-d = pro.daily_basic(ts_code='000001.SZ', trade_date='20190509') #, fields='ts_code,trade_date,turnover_rate,volume_ratio,pe,pb'
-e = d.loc[0, 'ts_code']
-pass
-
-print(json.dumps(["vida.gu@cootek.cn", "vida.gu@cootek.cn"]))
-
-for i in range(0, 5):
-    print(i)
+json = {
+    "prod_code_obj_grp": [
+        {
+            "prod_code": "300362",
+            "hq_type_code": "XSHE"
+        },
+        {
+            "prod_code": "300218",
+            "hq_type_code": "XSHE"
+        },
+    ]
+}
+url = 'http://costdis.market.alicloudapi.com/quote/v2/qplus/cost_distribution/get_stock_chip'
+a = requests.post(url=url, headers=headers, json=json)
+print(a.json())
