@@ -44,6 +44,23 @@ class DailyPro(Base):
     amount = Column(Float)
 
 
+class WeeklyPro(Base):
+    __tablename__ = "weekly_pro"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    ts_code = Column(String(100))
+    trade_date = Column(Integer)
+    open = Column(Float)
+    high = Column(Float)
+    low = Column(Float)
+    close = Column(Float)
+    pre_close = Column(Float)
+    change = Column(Float)
+    pct_chg = Column(Float)
+    vol = Column(Float)
+    amount = Column(Float)
+
+
 class DailyBasicPro(Base):
     __tablename__ = "daily_basic_pro"
 
@@ -98,6 +115,7 @@ class StockLive(Base):
 
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
+WeeklyPro.metadata.tables["weekly_pro"].create(bind=main_db, checkfirst=True)
 DailyBasicPro.metadata.tables["daily_basic_pro"].create(bind=main_db, checkfirst=True)
 StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
 ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
