@@ -14,6 +14,7 @@ from midas.midas.data.engine import main_session
 COL_MA_20 = 'COL_MA_20'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
+COL_ACCUMULATE = 'COL_ACCUMULATE'
 
 sampling_count = 40
 
@@ -32,8 +33,10 @@ def main(offset=0):
                                                                models.WeeklyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.WeeklyPro.trade_date.desc()).limit(sampling_count).all()
             ma_20 = api.daily_close_ma(daily=weekly, step=20)
+            ma_20_diff_1 = api.differ(ma_20)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
-            data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_MA_20_SLOPE] = ma_20_diff_1[0] #round((ma_20[0] / ma_20[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_ACCUMULATE] = api.positive_accumulate(ma_20_diff_1)
             data_frame.loc[i, COL_LASTPRICE] = weekly[0].close
 
         except Exception as e:
@@ -48,7 +51,7 @@ def main(offset=0):
     # data_frame = data_frame.iloc[:200]
 
     data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE]]
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE]]
 
     file_name = '../../logs/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)

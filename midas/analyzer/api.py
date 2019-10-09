@@ -112,3 +112,19 @@ def daily_minus_combo_count(daily=None):
 
     result = i
     return result
+
+
+def differ(sequence=None):
+    res = []
+    for i in range(len(sequence) - 1):
+        res.append((sequence[i] / sequence[i + 1] - 1) * 100)
+    return res
+
+
+def positive_accumulate(sequence=None):
+    res = 0
+    for i, item in enumerate(sequence):
+        if item < 0:
+            break
+        res = res + item
+    return res
