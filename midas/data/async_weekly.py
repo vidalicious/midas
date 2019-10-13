@@ -38,11 +38,14 @@ def async_weekly():
     main_session.query(models.WeeklyPro).delete()
     main_session.commit()
     for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
-        try:
-            weekly = pro.weekly(ts_code=sbp.ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-        except Exception as e:
-            print('excetion in {}'.format(count))
-            continue
+        if_pass = False
+        while not if_pass:
+            try:
+                weekly = pro.weekly(ts_code=sbp.ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+                if_pass = True
+            except Exception as e:
+                print('excetion in {}'.format(count))
+                continue
 
         for i in range(len(weekly)):
             a_weekly = models.WeeklyPro(ts_code=weekly.loc[i, 'ts_code'],
@@ -60,7 +63,7 @@ def async_weekly():
             main_session.add(a_weekly)
         main_session.commit()
         print('##### {i} #####'.format(i=count))
-        time.sleep(0.3)
+        time.sleep(0.2)
 
 
 @update_to_db(main_session)

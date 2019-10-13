@@ -35,8 +35,8 @@ def main(offset=0):
             ma_20 = api.daily_close_ma(daily=weekly, step=20)
             ma_20_diff_1 = api.differ(ma_20)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
-            data_frame.loc[i, COL_MA_20_SLOPE] = ma_20_diff_1[0] #round((ma_20[0] / ma_20[1] - 1) * 100, 2)
-            data_frame.loc[i, COL_ACCUMULATE] = api.positive_accumulate(ma_20_diff_1)
+            data_frame.loc[i, COL_MA_20_SLOPE] = round(ma_20_diff_1[0], 2)
+            data_frame.loc[i, COL_ACCUMULATE] = round(api.positive_accumulate(ma_20_diff_1), 2)
             data_frame.loc[i, COL_LASTPRICE] = weekly[0].close
 
         except Exception as e:
