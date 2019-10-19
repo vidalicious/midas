@@ -46,11 +46,12 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_MA_20_SLOPE] > 0)
+                            & (data_frame[COL_ACCUMULATE] > 10)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_ACCUMULATE, ascending=True).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE]]
 
     file_name = '../../logs/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE)
