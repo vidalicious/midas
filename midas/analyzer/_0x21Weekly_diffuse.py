@@ -15,8 +15,9 @@ COL_MA_20 = 'COL_MA_20'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_ACCUMULATE = 'COL_ACCUMULATE'
+COL_CONTINUOUS_COUNT = 'COL_CONTINUOUS_COUNT'
 
-sampling_count = 40
+sampling_count = 200
 
 
 def main(offset=0):
@@ -36,7 +37,9 @@ def main(offset=0):
             ma_20_diff_1 = api.differ(ma_20)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
             data_frame.loc[i, COL_MA_20_SLOPE] = round(ma_20_diff_1[0], 2)
-            data_frame.loc[i, COL_ACCUMULATE] = round(api.positive_accumulate(ma_20_diff_1), 2)
+            continuous_count = api.continuous_positive_count(ma_20_diff_1)
+            data_frame.loc[i, COL_CONTINUOUS_COUNT] = continuous_count
+            data_frame.loc[i, COL_ACCUMULATE] = round(weekly[0].close / weekly[continuous_count].close, 2)
             data_frame.loc[i, COL_LASTPRICE] = weekly[0].close
 
         except Exception as e:
@@ -46,13 +49,14 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_MA_20_SLOPE] > 0)
-                            & (data_frame[COL_ACCUMULATE] > 10)
+                            & (data_frame[COL_MA_20_SLOPE] > 2)
+                            # & (data_frame[COL_ACCUMULATE] > 10)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_ACCUMULATE, ascending=True).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE]]
+    data_frame = data_frame.sort_values(by=COL_ACCUMULATE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE, COL_CONTINUOUS_COUNT]]
 
     file_name = '../../logs/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)

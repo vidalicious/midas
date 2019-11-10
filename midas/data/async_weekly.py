@@ -11,7 +11,7 @@ import midas.midas.data.models as models
 from midas.midas.data.engine import main_session
 from midas.midas.data.engine import update_to_db
 
-sampling_count = 200
+sampling_count = 1000
 
 pro = ts.pro_api()
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date

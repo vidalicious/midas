@@ -24,6 +24,9 @@
 # df = pro.concept()
 # a = pro.concept_detail(id='TS2', fields='ts_code,name')
 # pass
+import tushare as ts
+pro = ts.pro_api()
+trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 
 for i in range(1):
     print(i)

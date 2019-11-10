@@ -121,10 +121,8 @@ def differ(sequence=None):
     return res
 
 
-def positive_accumulate(sequence=None):
-    res = 0
+def continuous_positive_count(sequence=None):
     for i, item in enumerate(sequence):
         if item < 0:
-            break
-        res = res + item
-    return res
+            return i
+    return i
