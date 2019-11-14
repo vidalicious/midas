@@ -38,11 +38,14 @@ def async_daily():
     main_session.query(models.DailyPro).delete()
     main_session.commit()
     for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
-        try:
-            daily = pro.daily(ts_code=sbp.ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
-        except Exception as e:
-            print('excetion in {}'.format(count))
-            continue
+        if_pass = False
+        while not if_pass:
+            try:
+                daily = pro.daily(ts_code=sbp.ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+                if_pass = True
+            except Exception as e:
+                print('excetion in {}'.format(count))
+                continue
 
         for i in range(len(daily)):
             a_daily = models.DailyPro(ts_code=daily.loc[i, 'ts_code'],

@@ -126,3 +126,14 @@ def continuous_positive_count(sequence=None):
         if item < 0:
             return i
     return i
+
+
+def avg_vibration_chg(sequence=None):
+    total_vibration = 0
+    for i, item in enumerate(sequence):
+        high_chg = item.high / item.pre_close
+        low_chg = item.low / item.pre_close
+        vibration = high_chg - low_chg
+        total_vibration += vibration
+
+    return total_vibration / (i + 1)
