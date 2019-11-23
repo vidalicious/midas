@@ -17,13 +17,16 @@ COL_LASTPRICE = 'COL_LASTPRICE'
 COL_ACCUMULATE = 'COL_ACCUMULATE'
 COL_CONTINUOUS_COUNT = 'COL_CONTINUOUS_COUNT'
 COL_DAILY_VIBRATION = 'COL_DAILY_VIBRATION'
+COL_DAILY_AGGRESSIVE_ACCUMULATION = 'COL_DAILY_AGGRESSIVE_ACCUMULATION'
+COL_DAILY_NEGATIVE_ACCUMULATION = 'COL_DAILY_NEGATIVE_ACCUMULATION'
+COL_DAILY_AGGRESSIVE_RATE = 'COL_DAILY_AGGRESSIVE_RATE'
 
 sampling_count = 200
 
 
 def main(offset=0):
-    weekly001 = main_session.query(models.WeeklyPro).filter(models.WeeklyPro.ts_code == '000001.SZ').order_by(models.WeeklyPro.trade_date.desc()).all()
-    LAST_MARKET_DATE = weekly001[offset].trade_date
+    daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
+    LAST_MARKET_DATE = daily001[offset].trade_date
 
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
@@ -46,7 +49,9 @@ def main(offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_DAILY_VIBRATION] = round(api.avg_vibration_chg(daily[:20]), 2)
-
+            data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] = round(api.aggressive_chg_accumulation(daily[:10]), 2)
+            data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] = round(api.negative_chg_accumulation(daily[:10]), 2)
+            data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(- data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION], 2)
 
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
@@ -56,13 +61,14 @@ def main(offset=0):
     data_frame = data_frame[
                             (data_frame[COL_MA_20_SLOPE] > 0)
                             & (data_frame[COL_MA_20_SLOPE] > 2)
-                            # & (data_frame[COL_ACCUMULATE] > 10)
+                            & (data_frame[COL_DAILY_VIBRATION] > 5)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_ACCUMULATE, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE, COL_CONTINUOUS_COUNT, COL_DAILY_VIBRATION]]
+    data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_RATE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE,
+                                     COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE]]
 
     file_name = '../../logs/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE)
     # print(fileName)
