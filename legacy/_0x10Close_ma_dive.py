@@ -6,10 +6,10 @@ import tushare as ts
 from pandas import DataFrame
 import numpy as np
 
-import midas.midas.analyzer.api as api
+import midas.core.analyzer.api as api
 
-import midas.midas.data.models as models
-from midas.midas.data.engine import main_session
+import midas.core.data.models as models
+from midas.core.data.engine import main_session
 
 COL_MA = 'COL_MA'
 COL_MA_CLOSE_GAP = 'COL_MA_CLOSE_GAP'

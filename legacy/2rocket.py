@@ -4,8 +4,8 @@ import time
 from pandas import DataFrame
 import numpy as np
 
-from midas.midas.api import past_hist_p_change as phpc
-from midas.midas.api import past_average_turnover as pat
+from midas.legacy.api import past_hist_p_change as phpc
+from midas.legacy.api import past_average_turnover as pat
 
 __version__ = 2
 

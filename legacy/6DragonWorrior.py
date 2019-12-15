@@ -3,8 +3,8 @@ import tushare as ts
 from pandas import DataFrame
 import numpy as np
 
-from midas.midas.api import hist_p_change as hpc
-from midas.midas.api import past_average_turnover as pat
+from midas.legacy.api import hist_p_change as hpc
+from midas.legacy.api import past_average_turnover as pat
 
 __version__ = 6
 
