@@ -41,21 +41,22 @@ def main(offset=0):
             ma_20_diff_1 = api.differ(ma_20)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
             data_frame.loc[i, COL_MA_20_SLOPE] = round(ma_20_diff_1[0], 2)
-            continuous_count = api.continuous_positive_count(ma_20_diff_1)
-            data_frame.loc[i, COL_CONTINUOUS_COUNT] = continuous_count
-            data_frame.loc[i, COL_ACCUMULATE] = round(weekly[0].close / weekly[continuous_count].close, 2)
-            data_frame.loc[i, COL_LASTPRICE] = weekly[0].close
+            # continuous_count = api.continuous_positive_count(ma_20_diff_1)
+            # data_frame.loc[i, COL_CONTINUOUS_COUNT] = continuous_count
+            # data_frame.loc[i, COL_ACCUMULATE] = round(weekly[0].close / weekly[continuous_count].close, 2)
+            # data_frame.loc[i, COL_LASTPRICE] = weekly[0].close
 
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(models.DailyPro.trade_date.desc()).limit(sampling_count).all()
-            data_frame.loc[i, COL_DAILY_VIBRATION] = round(api.avg_vibration_chg(daily[:20]), 2)
+            # data_frame.loc[i, COL_DAILY_VIBRATION] = round(api.avg_vibration_chg(daily[:20]), 2)
+            data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] = round(api.aggressive_chg_accumulation(daily[:5]), 2)
             data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] = round(api.negative_chg_accumulation(daily[:5]), 2)
 
             if data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] < 0:
                 data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(- data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION], 2)
             else:
-                data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(- data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION], 2)
+                data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION], 2)
 
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
