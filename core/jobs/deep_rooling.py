@@ -9,3 +9,7 @@ def main():
     base.main()
     weekly.main()
     diffuse.main()
+
+
+if __name__ == '__main__':
+    main()

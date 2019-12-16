@@ -28,7 +28,7 @@ class DeepRollingDaemon(daemonize.Daemon):
 
     def _run(self):
         scheduler = BlockingScheduler()
-        scheduler.add_job(task('deeprolling'), 'cron', day_of_week='mon-sat', hour=11, minute=32)
+        scheduler.add_job(task('deeprolling'), 'cron', day_of_week='mon-sat', hour=17, minute=00)
         scheduler.start()
 
 
