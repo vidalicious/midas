@@ -1,2 +1,9 @@
+#jetbrain's project setting files
+.idea/
+tmp/*
+log/*
 *.pyc
-.idea
+.vscode/
+__pycache__
+
+!.gitkeep
