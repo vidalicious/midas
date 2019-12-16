@@ -18,7 +18,7 @@ def task(name):
     if name == 'deeprolling':
         return deep_rolling.main
 
-    return lambda x: x
+    return lambda x: None
 
 
 class DeepRollingDaemon(daemonize.Daemon):
