@@ -10,6 +10,8 @@ import midas.core.analyzer.api as api
 
 import midas.core.data.models as models
 from midas.core.data.engine import main_session
+import midas.bin.env as env
+
 
 COL_MA_20 = 'COL_MA_20'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
@@ -76,7 +78,7 @@ def main(offset=0):
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE,
                                      COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE]]
 
-    file_name = '../../logs/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE)
+    file_name = '{logs_path}/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
