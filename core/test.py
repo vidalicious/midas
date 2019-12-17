@@ -30,6 +30,6 @@ trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 LAST_MARKET_DATE = trade_dates[0]
 BEGIN_MARKET_DATE = trade_dates[100]
 
-df = pro.top10_floatholders(ts_code='600615.SH', start_date=BEGIN_MARKET_DATE, end_date=LAST_MARKET_DATE)
+df = pro.top10_floatholders(ts_code='600052.SH', start_date=BEGIN_MARKET_DATE, end_date=LAST_MARKET_DATE)
 
 pass

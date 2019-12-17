@@ -46,7 +46,7 @@ def async_float_holders():
     main_session.query(models.FloatHolderPro).delete()
     main_session.commit()
 
-    key_words = ['基金', '资产管理', '中央']
+    key_words = ['基金', '资产管理', '中央', '信托']
     region_tree = build_actree(key_words)
 
     for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
