@@ -32,4 +32,6 @@ BEGIN_MARKET_DATE = trade_dates[100]
 
 df = pro.top10_floatholders(ts_code='600052.SH', start_date=BEGIN_MARKET_DATE, end_date=LAST_MARKET_DATE)
 
+daily = pro.daily(ts_code='600052.SH', start_date=trade_dates[100], end_date=LAST_MARKET_DATE)
+
 pass

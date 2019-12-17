@@ -60,7 +60,7 @@ def async_daily():
                                       )
             main_session.add(a_daily)
         main_session.commit()
-        print('##### {i} #####'.format(i=count))
+        print('##### async_daily {i} #####'.format(i=count))
         time.sleep(0.2)
 
 
@@ -86,7 +86,7 @@ def async_daily_basic():
 
         main_session.add(a_daily_basic)
         main_session.commit()
-        print('##### {i} #####'.format(i=count))
+        print('##### async_daily_basic {i} #####'.format(i=count))
         time.sleep(0.2)
 
 

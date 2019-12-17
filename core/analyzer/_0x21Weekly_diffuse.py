@@ -44,10 +44,6 @@ def main(offset=0):
             ma_20_diff_1 = api.differ(ma_20)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
             data_frame.loc[i, COL_MA_20_SLOPE] = round(ma_20_diff_1[0], 2)
-            # continuous_count = api.continuous_positive_count(ma_20_diff_1)
-            # data_frame.loc[i, COL_CONTINUOUS_COUNT] = continuous_count
-            # data_frame.loc[i, COL_ACCUMULATE] = round(weekly[0].close / weekly[continuous_count].close, 2)
-            # data_frame.loc[i, COL_LASTPRICE] = weekly[0].close
 
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(models.DailyPro.trade_date.desc()).limit(sampling_count).all()
@@ -65,16 +61,15 @@ def main(offset=0):
             h_list = []
             for item in holders:
                 h_list.append(item.holder_name)
-            data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = '\n'.join(h_list)
+            data_frame.loc[i, COL_FLOAT_HOLDERS] = '\n'.join(h_list)
 
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### {i} #####'.format(i=i))
+        print('##### weekly diffuse {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 0)
-                            & (data_frame[COL_MA_20_SLOPE] > 2)
+                            (data_frame[COL_MA_20_SLOPE] > 2)
                             # & (data_frame[COL_DAILY_VIBRATION] > 5)
                             & (data_frame[COL_DAILY_AGGRESSIVE_RATE] > 0)
                            ]
@@ -82,8 +77,8 @@ def main(offset=0):
     # data_frame = data_frame.iloc[:200]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_RATE, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE,
-                                     COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE, COL_FLOAT_HOLDERS]]
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE,
+                                    COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     # print(fileName)

@@ -60,7 +60,7 @@ def async_weekly():
                                       )
             main_session.add(a_weekly)
         main_session.commit()
-        print('##### {i} #####'.format(i=count))
+        print('##### async_weekly {i} #####'.format(i=count))
         time.sleep(0.2)
 
 

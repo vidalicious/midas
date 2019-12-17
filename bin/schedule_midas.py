@@ -15,8 +15,10 @@ import midas.core.jobs.deep_rooling as deep_rolling
 
 
 def task(name):
-    if name == 'deeprolling':
-        return deep_rolling.main
+    if name == 'daily':
+        return deep_rolling.mon2fri
+    elif name == 'weekly':
+        return deep_rolling.sat
 
     return lambda x: None
 
@@ -28,7 +30,8 @@ class DeepRollingDaemon(daemonize.Daemon):
 
     def _run(self):
         scheduler = BlockingScheduler()
-        scheduler.add_job(task('deeprolling'), 'cron', day_of_week='mon-sat', hour=17, minute=00)
+        scheduler.add_job(task('daily'), 'cron', day_of_week='mon-fri', hour=17, minute=00)
+        scheduler.add_job(task('weekly'), 'cron', day_of_week='sat', hour=13, minute=00)
         scheduler.start()
 
 
