@@ -14,6 +14,7 @@ trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 LAST_MARKET_DATE = trade_dates[0]
 
 
+@update_to_db(main_session)
 def async_stock_basic():
     main_session.query(models.StockBasicPro).delete()
     main_session.commit()
@@ -30,6 +31,7 @@ def async_stock_basic():
     print('##### async stock basic finished #####')
 
 
+@update_to_db(main_session)
 def async_daily():
     main_session.query(models.DailyPro).delete()
     main_session.commit()
@@ -59,9 +61,10 @@ def async_daily():
             main_session.add(a_daily)
         main_session.commit()
         print('##### {i} #####'.format(i=count))
-        time.sleep(0.15)
+        time.sleep(0.2)
 
 
+@update_to_db(main_session)
 def async_daily_basic():
     main_session.query(models.DailyBasicPro).delete()
     main_session.commit()
@@ -84,10 +87,9 @@ def async_daily_basic():
         main_session.add(a_daily_basic)
         main_session.commit()
         print('##### {i} #####'.format(i=count))
-        time.sleep(0.15)
+        time.sleep(0.2)
 
 
-@update_to_db(main_session)
 def main():
     async_stock_basic()
     async_daily()

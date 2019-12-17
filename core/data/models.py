@@ -104,6 +104,15 @@ class ConceptDetailPro(Base):
     name = Column(String(100))
 
 
+class FloatHolderPro(Base):
+    __tablename__ = "float_holder_pro"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    ts_code = Column(String(100))
+    ann_date = Column(Integer)
+    holder_name = Column(String(200))
+
+
 class StockLive(Base):
     __tablename__ = "stock_live"
 
@@ -120,4 +129,6 @@ DailyBasicPro.metadata.tables["daily_basic_pro"].create(bind=main_db, checkfirst
 StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
 ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
 ConceptDetailPro.metadata.tables["concept_detail_pro"].create(bind=main_db, checkfirst=True)
+FloatHolderPro.metadata.tables["float_holder_pro"].create(bind=main_db, checkfirst=True)
+
 StockLive.metadata.tables["stock_live"].create(bind=main_db, checkfirst=True)

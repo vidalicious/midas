@@ -2,12 +2,14 @@
 import time
 
 import tushare as ts
+import ahocorasick
 
 import midas.core.data.models as models
 from midas.core.data.engine import main_session
 from midas.core.data.engine import update_to_db
 
-sampling_count = 1000
+
+
 
 pro = ts.pro_api()
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date
@@ -31,43 +33,45 @@ def async_stock_basic():
     print('##### async stock basic finished #####')
 
 
+def build_actree(word_list):
+    actree = ahocorasick.Automaton()
+    for index, word in enumerate(word_list):
+        actree.add_word(word, (index, word))
+    actree.make_automaton()
+    return actree
+
+
 @update_to_db(main_session)
-def async_weekly():
-    main_session.query(models.WeeklyPro).delete()
+def async_float_holders():
+    main_session.query(models.FloatHolderPro).delete()
     main_session.commit()
+
+    key_words = ['基金', '资产管理', '中央']
+    region_tree = build_actree(key_words)
+
     for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
         if_pass = False
         while not if_pass:
             try:
-                weekly = pro.weekly(ts_code=sbp.ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+                float_holders = pro.top10_floatholders(ts_code=sbp.ts_code, start_date=trade_dates[100], end_date=LAST_MARKET_DATE)
                 if_pass = True
             except Exception as e:
                 print('excetion in {}'.format(count))
                 continue
 
-        for i in range(len(weekly)):
-            a_weekly = models.WeeklyPro(ts_code=weekly.loc[i, 'ts_code'],
-                                      trade_date=weekly.loc[i, 'trade_date'],
-                                      open=float(weekly.loc[i, 'open']),
-                                      high=float(weekly.loc[i, 'high']),
-                                      low=float(weekly.loc[i, 'low']),
-                                      close=float(weekly.loc[i, 'close']),
-                                      pre_close=float(weekly.loc[i, 'pre_close']),
-                                      change=float(weekly.loc[i, 'change']),
-                                      pct_chg=float(weekly.loc[i, 'pct_chg']),
-                                      vol=float(weekly.loc[i, 'vol']),
-                                      amount=float(weekly.loc[i, 'amount'])
-                                      )
-            main_session.add(a_weekly)
+        for i in range(len(float_holders)):
+            matches = list(region_tree.iter(float_holders.loc[i, 'holder_name']))
+            if matches:
+                a_float_holder = models.FloatHolderPro(
+                    ts_code=float_holders.loc[i, 'ts_code'],
+                    ann_date=float_holders.loc[i, 'ann_date'],
+                    holder_name=float_holders.loc[i, 'holder_name']
+                )
+                main_session.add(a_float_holder)
         main_session.commit()
         print('##### {i} #####'.format(i=count))
         time.sleep(0.2)
 
 
-def main():
-    async_stock_basic()
-    async_weekly()
-
-
 if __name__ == '__main__':
-    main()
+    async_float_holders()

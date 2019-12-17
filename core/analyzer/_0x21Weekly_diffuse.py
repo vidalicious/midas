@@ -22,6 +22,7 @@ COL_DAILY_VIBRATION = 'COL_DAILY_VIBRATION'
 COL_DAILY_AGGRESSIVE_ACCUMULATION = 'COL_DAILY_AGGRESSIVE_ACCUMULATION'
 COL_DAILY_NEGATIVE_ACCUMULATION = 'COL_DAILY_NEGATIVE_ACCUMULATION'
 COL_DAILY_AGGRESSIVE_RATE = 'COL_DAILY_AGGRESSIVE_RATE'
+COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 
 sampling_count = 200
 
@@ -60,6 +61,12 @@ def main(offset=0):
             else:
                 data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION], 2)
 
+            holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
+            h_list = []
+            for item in holders:
+                h_list.append(item.holder_name)
+            data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = '\n'.join(h_list)
+
         except Exception as e:
             print('excetion in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
@@ -76,7 +83,7 @@ def main(offset=0):
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_RATE, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE, COL_ACCUMULATE,
-                                     COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE]]
+                                     COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     # print(fileName)
