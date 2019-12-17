@@ -16,12 +16,12 @@ import midas.bin.env as env
 COL_MA_20 = 'COL_MA_20'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
-COL_ACCUMULATE = 'COL_ACCUMULATE'
-COL_CONTINUOUS_COUNT = 'COL_CONTINUOUS_COUNT'
-COL_DAILY_VIBRATION = 'COL_DAILY_VIBRATION'
+# COL_ACCUMULATE = 'COL_ACCUMULATE'
+# COL_CONTINUOUS_COUNT = 'COL_CONTINUOUS_COUNT'
+# COL_DAILY_VIBRATION = 'COL_DAILY_VIBRATION'
 COL_DAILY_AGGRESSIVE_ACCUMULATION = 'COL_DAILY_AGGRESSIVE_ACCUMULATION'
-COL_DAILY_NEGATIVE_ACCUMULATION = 'COL_DAILY_NEGATIVE_ACCUMULATION'
-COL_DAILY_AGGRESSIVE_RATE = 'COL_DAILY_AGGRESSIVE_RATE'
+# COL_DAILY_NEGATIVE_ACCUMULATION = 'COL_DAILY_NEGATIVE_ACCUMULATION'
+# COL_DAILY_AGGRESSIVE_RATE = 'COL_DAILY_AGGRESSIVE_RATE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 
 sampling_count = 200
@@ -50,12 +50,12 @@ def main(offset=0):
             # data_frame.loc[i, COL_DAILY_VIBRATION] = round(api.avg_vibration_chg(daily[:20]), 2)
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] = round(api.aggressive_chg_accumulation(daily[:5]), 2)
-            data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] = round(api.negative_chg_accumulation(daily[:5]), 2)
+            # data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] = round(api.negative_chg_accumulation(daily[:5]), 2)
 
-            if data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] < 0:
-                data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(- data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION], 2)
-            else:
-                data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION], 2)
+            # if data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION] < 0:
+            #     data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(- data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / data_frame.loc[i, COL_DAILY_NEGATIVE_ACCUMULATION], 2)
+            # else:
+            #     data_frame.loc[i, COL_DAILY_AGGRESSIVE_RATE] = round(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION], 2)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
             h_list = []
@@ -71,14 +71,14 @@ def main(offset=0):
     data_frame = data_frame[
                             (data_frame[COL_MA_20_SLOPE] > 2)
                             # & (data_frame[COL_DAILY_VIBRATION] > 5)
-                            & (data_frame[COL_DAILY_AGGRESSIVE_RATE] > 0)
+                            & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_RATE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_MA_20_SLOPE,
-                                    COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_DAILY_AGGRESSIVE_RATE, COL_FLOAT_HOLDERS]]
+                                    COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Weekly_diffuse.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     # print(fileName)
