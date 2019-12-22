@@ -11,7 +11,7 @@ sys.path.append(parent_path)
 
 import midas.bin.env as env
 import midas.core.utilities.daemonize as daemonize
-import midas.core.jobs.deep_rooling as deep_rolling
+import midas.core.jobs.deep_rolling as deep_rolling
 
 
 def task(name):

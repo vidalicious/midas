@@ -28,4 +28,6 @@ def main():
 
 if __name__ == '__main__':
     # main()
+    # mon2fri()
+    sat()
     pass
