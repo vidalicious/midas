@@ -11,14 +11,14 @@ sys.path.append(parent_path)
 
 import midas.bin.env as env
 import midas.core.utilities.daemonize as daemonize
-import midas.core.jobs.deep_rolling as deep_rolling
+import midas.core.jobs.demon_hunter as demon_hunter
 
 
 def task(name):
     if name == 'daily':
-        return deep_rolling.mon2fri
+        return demon_hunter.working_day
     elif name == 'weekly':
-        return deep_rolling.sat
+        return demon_hunter.weekend
 
     return lambda x: None
 
@@ -31,7 +31,7 @@ class DeepRollingDaemon(daemonize.Daemon):
     def _run(self):
         scheduler = BlockingScheduler()
         scheduler.add_job(task('daily'), 'cron', day_of_week='mon-fri', hour=17, minute=00)
-        scheduler.add_job(task('weekly'), 'cron', day_of_week='sat', hour=13, minute=00)
+        scheduler.add_job(task('weekly'), 'cron', day_of_week='sat', hour=17, minute=00)
         scheduler.start()
 
 
