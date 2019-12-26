@@ -23,7 +23,7 @@ def task(name):
     return lambda x: None
 
 
-class DeepRollingDaemon(daemonize.Daemon):
+class ScheduleDaemon(daemonize.Daemon):
     def __init__(self):
         super(DeepRollingDaemon, self).__init__(pidfile='{tmppath}/scheduler_deep_rolling.pid'.format(tmppath=env.tmp_path),
                                                 stdout='{tmppath}/scheduler_dev.stdout'.format(tmppath=env.tmp_path))
@@ -36,18 +36,14 @@ class DeepRollingDaemon(daemonize.Daemon):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        if 'deeprolling' == sys.argv[1]:
-            daemon = DeepRollingDaemon()
-        else:
-            print('unknown project')
-            sys.exit(2)
+    if len(sys.argv) == 2:
+        daemon = ScheduleDaemon()
 
-        if 'start' == sys.argv[2]:
+        if 'start' == sys.argv[1]:
             daemon.start()
-        elif 'stop' == sys.argv[2]:
+        elif 'stop' == sys.argv[1]:
             daemon.stop()
-        elif 'restart' == sys.argv[2]:
+        elif 'restart' == sys.argv[1]:
             daemon.stop()
             daemon.start()
         else:
@@ -55,5 +51,5 @@ if __name__ == "__main__":
             sys.exit(2)
         sys.exit(0)
     else:
-        print('usage: %s deeprolling start|stop|restart', sys.argv[0])
+        print('usage: %s start|stop|restart', sys.argv[0])
         sys.exit(2)
