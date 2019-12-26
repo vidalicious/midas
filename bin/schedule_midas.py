@@ -25,7 +25,7 @@ def task(name):
 
 class ScheduleDaemon(daemonize.Daemon):
     def __init__(self):
-        super(DeepRollingDaemon, self).__init__(pidfile='{tmppath}/scheduler_deep_rolling.pid'.format(tmppath=env.tmp_path),
+        super(ScheduleDaemon, self).__init__(pidfile='{tmppath}/scheduler_deep_rolling.pid'.format(tmppath=env.tmp_path),
                                                 stdout='{tmppath}/scheduler_dev.stdout'.format(tmppath=env.tmp_path))
 
     def _run(self):
