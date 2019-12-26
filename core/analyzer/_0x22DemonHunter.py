@@ -13,6 +13,7 @@ from midas.core.data.engine import main_session
 import midas.bin.env as env
 
 
+COL_MA_20 = 'COL_MA_20'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_DAILY_AGGRESSIVE_ACCUMULATION = 'COL_DAILY_AGGRESSIVE_ACCUMULATION'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -29,6 +30,13 @@ def main(offset=0):
         try:
             for key in models.StockBasicPro.keys:
                 data_frame.loc[i, key] = getattr(stock_basic, key)
+
+            weekly = main_session.query(models.WeeklyPro).filter(models.WeeklyPro.ts_code == stock_basic.ts_code,
+                                                               models.WeeklyPro.trade_date <= LAST_MARKET_DATE).order_by(
+                models.WeeklyPro.trade_date.desc()).limit(sampling_count).all()
+            ma_20 = api.daily_close_ma(daily=weekly, step=20)
+            # ma_20_diff_1 = api.differ(ma_20)
+            data_frame.loc[i, COL_MA_20] = ma_20[0]
 
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(models.DailyPro.trade_date.desc()).limit(sampling_count).all()
@@ -47,7 +55,8 @@ def main(offset=0):
         print('##### demon hunter {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
+                            (data_frame[COL_MA_20] > 0)
+                            & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
