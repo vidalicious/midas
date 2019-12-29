@@ -57,7 +57,7 @@ def main(offset=0):
         print('##### demon hunter {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 0)
+                            (data_frame[COL_MA_20_SLOPE] > 2)
                             & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
                            ]
 
