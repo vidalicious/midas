@@ -69,7 +69,7 @@ def async_float_holders():
                 )
                 main_session.add(a_float_holder)
         main_session.commit()
-        print('##### {i} #####'.format(i=count))
+        print('##### async_float_holders {i} #####'.format(i=count))
         time.sleep(0.2)
 
 
