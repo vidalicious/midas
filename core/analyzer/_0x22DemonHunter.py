@@ -56,10 +56,10 @@ def main(offset=0):
             continue
         print('##### demon hunter {i} #####'.format(i=i))
 
-    data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 2)
-                            & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
-                           ]
+    # data_frame = data_frame[
+    #                         (data_frame[COL_MA_20_SLOPE] > 2)
+    #                         & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
+    #                        ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE,
