@@ -16,6 +16,7 @@ import midas.bin.env as env
 COL_MA_20 = 'COL_MA_20'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_LASTPRICE = 'COL_LASTPRICE'
+COL_PCT_CHG = 'COL_PCT_CHG'
 COL_DAILY_AGGRESSIVE_ACCUMULATION = 'COL_DAILY_AGGRESSIVE_ACCUMULATION'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 
@@ -43,6 +44,7 @@ def main(offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
+            data_frame.loc[i, COL_PCT_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] = round(api.aggressive_chg_accumulation(daily[:5]), 2)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
@@ -57,8 +59,7 @@ def main(offset=0):
         print('##### demon hunter {i} #####'.format(i=i))
 
     # data_frame = data_frame[
-    #                         (data_frame[COL_MA_20_SLOPE] > 2)
-    #                         & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
+    #                         (data_frame[COL_PCT_CHG] > 9)
     #                        ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
@@ -69,6 +70,15 @@ def main(offset=0):
     # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
+
+    # data_frame = data_frame[
+    #                         (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
+    #                         & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] <22)
+    #                        ]
+    # file_name = '{logs_path}/{date}@demon_hunter_seed.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    # # print(fileName)
+    # with open(file_name, 'w', encoding='utf8') as file:
+    #     data_frame.to_csv(file)
 
 
 if __name__ == '__main__':
