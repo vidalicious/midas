@@ -26,12 +26,16 @@ import tushare as ts
 
 
 pro = ts.pro_api()
-trade_dates = pro.daily(ts_code='000001.SZ').trade_date
-LAST_MARKET_DATE = trade_dates[0]
-BEGIN_MARKET_DATE = trade_dates[100]
-
-df = pro.top10_floatholders(ts_code='600052.SH', start_date=BEGIN_MARKET_DATE, end_date=LAST_MARKET_DATE)
-
-daily = pro.daily(ts_code='600052.SH', start_date=trade_dates[100], end_date=LAST_MARKET_DATE)
+df1 = pro.top_inst(trade_date='20200414', ts_code='000001.SZ')
+df2 = pro.top_list(trade_date='20200414')
+a = df1.to_dict()
+b = df2.to_dict()
+# trade_dates = pro.daily(ts_code='000001.SZ').trade_date
+# LAST_MARKET_DATE = trade_dates[0]
+# BEGIN_MARKET_DATE = trade_dates[100]
+#
+# df = pro.top10_floatholders(ts_code='600052.SH', start_date=BEGIN_MARKET_DATE, end_date=LAST_MARKET_DATE)
+#
+# daily = pro.daily(ts_code='600052.SH', start_date=trade_dates[100], end_date=LAST_MARKET_DATE)
 
 pass

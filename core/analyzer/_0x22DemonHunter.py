@@ -63,13 +63,19 @@ def main(offset=0):
     #                        ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE,
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_PCT_CHG, COL_LASTPRICE,
                                     COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@demon_hunter.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    # print(fileName)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
+
+    df_limit = data_frame[
+                            (data_frame[COL_PCT_CHG] > 9)
+                         ]
+    file_name = '{logs_path}/{date}@demon_hunter_limit.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    with open(file_name, 'w', encoding='utf8') as file:
+        df_limit.to_csv(file)
 
     # data_frame = data_frame[
     #                         (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
@@ -82,4 +88,4 @@ def main(offset=0):
 
 
 if __name__ == '__main__':
-    main(offset=0)
+    main(offset=9)
