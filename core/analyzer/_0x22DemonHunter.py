@@ -88,4 +88,4 @@ def main(offset=0):
 
 
 if __name__ == '__main__':
-    main(offset=9)
+    main(offset=0)
