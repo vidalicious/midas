@@ -56,4 +56,5 @@ def main(offset=0, date=None):
 if __name__ == '__main__':
     # for i in range(5):
     #     main(offset=i)
-    main(date='20191025')
+    # main(date='20191025')
+    main(offset=0)
