@@ -23,7 +23,7 @@ def main(offset=0, date=None):
     df_list = pro.top_list(trade_date=LAST_MARKET_DATE)
     df_list = df_list[
                      (df_list['pct_change'] > 9)
-                     & (df_list['net_rate'] > 0)
+                     # & (df_list['net_rate'] > 0)
                      ]
     df_list = df_list.reset_index(drop=True)
     for i in range(len(df_list)):
