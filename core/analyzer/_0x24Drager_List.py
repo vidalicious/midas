@@ -45,7 +45,7 @@ def main(offset=0, date=None):
         df_list.loc[i, 'float_values'] = int(df_list.loc[i, 'float_values'])
         df_list.loc[i, 'amount_in_values'] = round(df_list.loc[i, 'net_amount'] / df_list.loc[i, 'float_values'], 2)
 
-    df_list = df_list.sort_values(by='float_values', ascending=True).reset_index(drop=True)
+    df_list = df_list.sort_values(by='buy_sell_rate', ascending=False).reset_index(drop=True)
     df_list = df_list.loc[:, ['trade_date', 'ts_code', 'name', 'close', 'pct_change', 'net_amount', 'amount_rate', 'float_values', 'reason', 'buy_sell_rate', 'amount_in_values']]
 
     file_name = '{logs_path}/{date}@Drager_List.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
