@@ -157,3 +157,12 @@ def negative_chg_accumulation(sequence=None):
             res += item.pct_chg
 
     return res
+
+
+def limit_chg_accumulation(sequence=None):
+    res = 0
+    for i, item in enumerate(sequence):
+        if item.pct_chg > 9.9:
+            res += item.pct_chg
+
+    return res
