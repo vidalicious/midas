@@ -55,8 +55,8 @@ def main(offset=0):
         print('##### two plus {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LIMIT_COUNT_2] == 2 and data_frame[COL_LIMIT_COUNT_5] == 2)
-                            | (data_frame[COL_LIMIT_COUNT_1] == 1 and data_frame[COL_LIMIT_COUNT_3] == 2 and data_frame[COL_LIMIT_COUNT_5] == 2)
+                            ((data_frame[COL_LIMIT_COUNT_2] == 2) & (data_frame[COL_LIMIT_COUNT_5] == 2))
+                            | ((data_frame[COL_LIMIT_COUNT_1] == 1) & (data_frame[COL_LIMIT_COUNT_3] == 2) & (data_frame[COL_LIMIT_COUNT_5] == 2))
                            ]
 
     data_frame = data_frame.sort_values(by=COL_PCT_CHG, ascending=True).reset_index(drop=True)
