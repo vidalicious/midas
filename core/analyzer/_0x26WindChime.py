@@ -63,7 +63,7 @@ def main(offset=0):
     df_limit = data_frame[
                             (data_frame[COL_PCT_CHG] > 9)
                          ]
-    file_name = '{logs_path}/{date}@WindChime_limit.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@WindChime_hot.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         df_limit.to_csv(file)
 
