@@ -106,5 +106,6 @@ def main(offset=0):
 
 
 if __name__ == '__main__':
-    for i in range(20, -1, -1):
-        main(offset=i)
+    # for i in range(20, -1, -1):
+    #     main(offset=i)
+    main(offset=0)
