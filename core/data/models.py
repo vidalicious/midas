@@ -108,7 +108,7 @@ class FloatHolderPro(Base):
     __tablename__ = "float_holder_pro"
 
     id = Column(BIGINT, primary_key=True, autoincrement=True)
-    ts_code = Column(String(100))
+    ts_code = Column(Integer)
     ann_date = Column(Integer)
     holder_name = Column(String(200))
 
@@ -122,6 +122,22 @@ class StockLive(Base):
     timestamp = Column(DateTime, default=datetime.datetime.now)
 
 
+class Analyst(Base):
+    __tablename__ = "analyst"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    trade_date = Column(Integer)
+    up_count = Column(Integer)
+    down_count = Column(Integer)
+    up_limit_count = Column(Integer)
+    down_limit_count = Column(Integer)
+    over_5_limit_count = Column(Integer)
+    max_limit_count = Column(Integer)
+    max_limit_stock = Column(Integer)
+
+    keys = ['trade_date', 'up_count', 'down_count', 'up_limit_count', 'down_limit_count', 'over_5_limit_count', 'max_limit_count', 'max_limit_stock']
+
+
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
 WeeklyPro.metadata.tables["weekly_pro"].create(bind=main_db, checkfirst=True)
@@ -130,5 +146,6 @@ StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkf
 ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
 ConceptDetailPro.metadata.tables["concept_detail_pro"].create(bind=main_db, checkfirst=True)
 FloatHolderPro.metadata.tables["float_holder_pro"].create(bind=main_db, checkfirst=True)
+Analyst.metadata.tables["analyst"].create(bind=main_db, checkfirst=True)
 
 StockLive.metadata.tables["stock_live"].create(bind=main_db, checkfirst=True)

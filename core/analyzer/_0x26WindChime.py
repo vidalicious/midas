@@ -48,33 +48,56 @@ def main(offset=0):
             continue
         print('##### wind chime {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_PCT_CHG] > 9)
-    #                        ]
+    up_count = 0
+    down_count = 0
+    up_limit_count = 0
+    down_limit_count = 0
+    over_5_limit_count = 0
+    max_limit_count = 0
+    max_limit_stock = None
 
-    data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_PCT_CHG, COL_LASTPRICE,
-                                    COL_DAILY_AGGRESSIVE_ACCUMULATION, COL_FLOAT_HOLDERS]]
+    for i in range(len(data_frame)):
+        if data_frame.loc[i, COL_PCT_CHG] > 0:
+            up_count += 1
+        else:
+            down_count += 1
+
+        if data_frame.loc[i, COL_PCT_CHG] > 9.8:
+            up_limit_count += 1
+        if data_frame.loc[i, COL_PCT_CHG] < -9.8:
+            down_limit_count += 1
+
+        if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > 5:
+            over_5_limit_count += 1
+        if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > max_limit_count:
+            max_limit_count = int(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8)
+            max_limit_stock = '{ts_code} {name}'.format(ts_code=data_frame.loc[i, 'ts_code'], name=data_frame.loc[i, 'name'])
+
+        print('wind chime analyse in index:{index}'.format(index=i))
+
+    main_session.query(models.Analyst).filter(models.Analyst.trade_date == LAST_MARKET_DATE).delete()
+    a_analyst = models.Analyst(
+        trade_date=LAST_MARKET_DATE,
+        up_count=up_count,
+        down_count=down_count,
+        up_limit_count=up_limit_count,
+        down_limit_count=down_limit_count,
+        over_5_limit_count=over_5_limit_count,
+        max_limit_count=max_limit_count,
+        max_limit_stock=max_limit_stock
+    )
+    main_session.add(a_analyst)
+    main_session.commit()
+
+    analysts = main_session.query(models.Analyst).order_by(models.Analyst.trade_date.desc()).all()
+    analyst_df = DataFrame()
+    for i, analyst in enumerate(analysts):
+        for key in models.Analyst.keys:
+            analyst_df.loc[i, key] = getattr(analyst, key)
 
     file_name = '{logs_path}/{date}@WindChime.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
-        data_frame.to_csv(file)
-
-    df_limit = data_frame[
-                            (data_frame[COL_PCT_CHG] > 9)
-                         ]
-    file_name = '{logs_path}/{date}@WindChime_hot.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    with open(file_name, 'w', encoding='utf8') as file:
-        df_limit.to_csv(file)
-
-    # data_frame = data_frame[
-    #                         (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] > 0)
-    #                         & (data_frame[COL_DAILY_AGGRESSIVE_ACCUMULATION] <22)
-    #                        ]
-    # file_name = '{logs_path}/{date}@demon_hunter_seed.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    # # print(fileName)
-    # with open(file_name, 'w', encoding='utf8') as file:
-    #     data_frame.to_csv(file)
+        analyst_df.to_csv(file)
 
 
 if __name__ == '__main__':

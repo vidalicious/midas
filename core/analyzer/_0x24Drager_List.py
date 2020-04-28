@@ -27,18 +27,6 @@ def main(offset=0, date=None):
                      ]
     df_list = df_list.reset_index(drop=True)
     for i in range(len(df_list)):
-        # ts_code = df_list.loc[i, 'ts_code']
-        # df_inst = pro.top_inst(trade_date=LAST_MARKET_DATE, ts_code=ts_code)
-        # dic = df_inst.to_dict()
-        # buys = dic['buy']
-        # sells = dic['sell']
-        # total_buy = 0
-        # total_sell = 0
-        # for k, v in buys.items():
-        #     total_buy += v
-        # for k, v in sells.items():
-        #     total_sell += v
-        # avg = (total_buy - total_sell) / len(df_inst)
         buy_sell_rate = (df_list.loc[i, 'l_buy'] - df_list.loc[i, 'l_sell']) / df_list.loc[i, 'l_sell']
         df_list.loc[i, 'buy_sell_rate'] = round(buy_sell_rate, 2)
         df_list.loc[i, 'net_amount'] = int(df_list.loc[i, 'net_amount'])
