@@ -64,14 +64,15 @@ def main(offset=0):
 
         if data_frame.loc[i, COL_PCT_CHG] > 9.8:
             up_limit_count += 1
+
+            if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > 5:
+                over_5_limit_count += 1
+            if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > max_limit_count:
+                max_limit_count = int(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8)
+                max_limit_stock = '{ts_code} {name}'.format(ts_code=data_frame.loc[i, 'ts_code'], name=data_frame.loc[i, 'name'])
+
         if data_frame.loc[i, COL_PCT_CHG] < -9.8:
             down_limit_count += 1
-
-        if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > 5:
-            over_5_limit_count += 1
-        if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > max_limit_count:
-            max_limit_count = int(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8)
-            max_limit_stock = '{ts_code} {name}'.format(ts_code=data_frame.loc[i, 'ts_code'], name=data_frame.loc[i, 'name'])
 
         print('wind chime analyse in index:{index}'.format(index=i))
 
