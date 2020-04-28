@@ -27,6 +27,8 @@ def main(offset=0):
 
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
+        if stock_basic.ts_code.startswith('688'):
+            continue
         try:
             for key in models.StockBasicPro.keys:
                 data_frame.loc[i, key] = getattr(stock_basic, key)
@@ -47,6 +49,8 @@ def main(offset=0):
             print('wind chime exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
         print('##### wind chime {i} #####'.format(i=i))
+
+    data_frame = data_frame.reset_index(drop=True)
 
     up_count = 0
     down_count = 0
@@ -102,4 +106,5 @@ def main(offset=0):
 
 
 if __name__ == '__main__':
-    main(offset=0)
+    for i in range(20, -1, -1):
+        main(offset=i)

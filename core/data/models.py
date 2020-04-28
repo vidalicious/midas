@@ -133,7 +133,7 @@ class Analyst(Base):
     down_limit_count = Column(Integer)
     over_5_limit_count = Column(Integer)
     max_limit_count = Column(Integer)
-    max_limit_stock = Column(Integer)
+    max_limit_stock = Column(String(100))
 
     keys = ['trade_date', 'up_count', 'down_count', 'up_limit_count', 'down_limit_count', 'over_5_limit_count', 'max_limit_count', 'max_limit_stock']
 
