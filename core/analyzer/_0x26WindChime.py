@@ -74,13 +74,13 @@ def main(offset=0):
             up_limit_count += 1
 
             accumulate_limit_count = data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8
-            if accumulate_limit_count > 4:
+            if accumulate_limit_count > 5:
                 limit_count_over5 += 1
-            elif accumulate_limit_count > 3:
+            elif accumulate_limit_count > 4:
                 limit_count_4 += 1
-            elif accumulate_limit_count > 2:
+            elif accumulate_limit_count > 3:
                 limit_count_3 += 1
-            elif accumulate_limit_count > 1:
+            elif accumulate_limit_count > 2:
                 limit_count_2 += 1
             else:
                 limit_count_1 += 1

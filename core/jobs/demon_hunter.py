@@ -10,9 +10,9 @@ import midas.core.analyzer._0x24Drager_List as drager
 
 
 def working_day():
-    # base.async_stock_basic()
-    # base.async_daily()
-    # demon_hunter.main()
+    base.async_stock_basic()
+    base.async_daily()
+    demon_hunter.main()
     wind_chime.main()
     two_plus.main()
     drager.main()
