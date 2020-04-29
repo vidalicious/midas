@@ -56,7 +56,11 @@ def main(offset=0):
     down_count = 0
     up_limit_count = 0
     down_limit_count = 0
-    over_5_limit_count = 0
+    limit_count_1 = 0
+    limit_count_2 = 0
+    limit_count_3 = 0
+    limit_count_4 = 0
+    limit_count_over5 = 0
     max_limit_count = 0
     max_limit_stock = None
 
@@ -69,8 +73,18 @@ def main(offset=0):
         if data_frame.loc[i, COL_PCT_CHG] > 9.8:
             up_limit_count += 1
 
-            if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > 5:
-                over_5_limit_count += 1
+            accumulate_limit_count = data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8
+            if accumulate_limit_count > 4:
+                limit_count_over5 += 1
+            elif accumulate_limit_count > 3:
+                limit_count_4 += 1
+            elif accumulate_limit_count > 2:
+                limit_count_3 += 1
+            elif accumulate_limit_count > 1:
+                limit_count_2 += 1
+            else:
+                limit_count_1 += 1
+
             if data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8 > max_limit_count:
                 max_limit_count = int(data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] / 9.8)
                 max_limit_stock = '{ts_code} {name}'.format(ts_code=data_frame.loc[i, 'ts_code'], name=data_frame.loc[i, 'name'])
@@ -87,10 +101,15 @@ def main(offset=0):
         down_count=down_count,
         up_limit_count=up_limit_count,
         down_limit_count=down_limit_count,
-        over_5_limit_count=over_5_limit_count,
+        limit_count_1=limit_count_1,
+        limit_count_2=limit_count_2,
+        limit_count_3=limit_count_3,
+        limit_count_4=limit_count_4,
+        limit_count_over5=limit_count_over5,
         max_limit_count=max_limit_count,
         max_limit_stock=max_limit_stock
     )
+
     main_session.add(a_analyst)
     main_session.commit()
 
