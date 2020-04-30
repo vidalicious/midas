@@ -54,7 +54,7 @@ def main(offset=0):
         print('##### weekly tidal {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 2)
+                            (data_frame[COL_MA_20_SLOPE] > 0)
                             & (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
