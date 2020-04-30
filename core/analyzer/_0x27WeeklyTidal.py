@@ -15,6 +15,7 @@ import midas.bin.env as env
 
 COL_MA_20 = 'COL_MA_20'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
+COL_MA_20_SLOPE_CHANGE = 'COL_MA_20_SLOPE_CHANGE'
 # COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 
@@ -36,8 +37,10 @@ def main(offset=0):
                 models.WeeklyPro.trade_date.desc()).limit(sampling_count).all()
             ma_20 = api.daily_close_ma(daily=weekly, step=20)
             ma_20_diff_1 = api.differ(ma_20)
+            ma_20_diff_2 = api.differ(ma_20_diff_1)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
             data_frame.loc[i, COL_MA_20_SLOPE] = round(ma_20_diff_1[0], 2)
+            data_frame.loc[i, COL_MA_20_SLOPE_CHANGE] = round(ma_20_diff_2[0], 2)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
             h_list = []
@@ -51,13 +54,14 @@ def main(offset=0):
         print('##### weekly tidal {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 2)
+                            # (data_frame[COL_MA_20_SLOPE] > 1)
+                            (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_FLOAT_HOLDERS]]
+    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE_CHANGE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_MA_20_SLOPE_CHANGE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@WeeklyTidal.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     # print(fileName)
