@@ -29,12 +29,16 @@ def main(offset=0):
 
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
+        if stock_basic.ts_code.startswith('688'):
+            continue
         try:
-            for key in models.StockBasicPro.keys:
-                data_frame.loc[i, key] = getattr(stock_basic, key)
-
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(models.DailyPro.trade_date.desc()).limit(sampling_count).all()
+            # 新股
+            if len(daily) < 30:
+                continue
+            for key in models.StockBasicPro.keys:
+                data_frame.loc[i, key] = getattr(stock_basic, key)
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_PCT_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_DAILY_AGGRESSIVE_ACCUMULATION] = round(api.aggressive_chg_accumulation(daily[:15]), 2)
@@ -50,9 +54,9 @@ def main(offset=0):
             continue
         print('##### demon hunter {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_PCT_CHG] > 9)
-    #                        ]
+    data_frame = data_frame[
+                            (data_frame[COL_PCT_CHG] > 9)
+                           ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_AGGRESSIVE_ACCUMULATION, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_PCT_CHG, COL_LASTPRICE,
@@ -62,12 +66,12 @@ def main(offset=0):
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    df_limit = data_frame[
-                            (data_frame[COL_PCT_CHG] > 9)
-                         ]
-    file_name = '{logs_path}/{date}@demon_hunter_hot.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    with open(file_name, 'w', encoding='utf8') as file:
-        df_limit.to_csv(file)
+    # df_limit = data_frame[
+    #                         (data_frame[COL_PCT_CHG] > 9)
+    #                      ]
+    # file_name = '{logs_path}/{date}@demon_hunter_hot.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    # with open(file_name, 'w', encoding='utf8') as file:
+    #     df_limit.to_csv(file)
 
 
 if __name__ == '__main__':

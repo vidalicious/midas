@@ -55,12 +55,12 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_MA_20_SLOPE] > 0)
-                            & (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
+                            # & (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
                            ]
     # data_frame = data_frame.sort_values(by=COL_MAXGAP, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.iloc[:200]
 
-    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE_CHANGE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_MA_20_SLOPE_CHANGE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@WeeklyTidal.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)

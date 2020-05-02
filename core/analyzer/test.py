@@ -28,6 +28,15 @@ import tushare as ts
 pro = ts.pro_api()
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date
 
+import midas.core.analyzer.api as api
+
+import midas.core.data.models as models
+from midas.core.data.engine import main_session
+import midas.bin.env as env
+daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '002979.SZ'
+                                                   ).all()
+
+print()
 for i in range(1):
     print(i)
 
