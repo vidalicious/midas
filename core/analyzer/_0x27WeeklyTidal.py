@@ -63,8 +63,15 @@ def main(offset=0):
     data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_MA_20_SLOPE_CHANGE, COL_FLOAT_HOLDERS]]
 
-    file_name = '{logs_path}/{date}@WeeklyTidal.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    # print(fileName)
+    file_name = '{logs_path}/{date}@WeeklyTidal_Velocity.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    with open(file_name, 'w', encoding='utf8') as file:
+        data_frame.to_csv(file)
+
+    data_frame = data_frame[
+                            (data_frame[COL_MA_20_SLOPE] > 1)
+                           ]
+    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE_CHANGE, ascending=False).reset_index(drop=True)
+    file_name = '{logs_path}/{date}@WeeklyTidal_Acceleration.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
