@@ -39,8 +39,8 @@ def main(offset=0):
             ma_20_diff_1 = api.differ(ma_20)
             ma_20_diff_2 = api.differ(ma_20_diff_1)
             data_frame.loc[i, COL_MA_20] = ma_20[0]
-            data_frame.loc[i, COL_MA_20_SLOPE] = round(ma_20_diff_1[0], 2)
-            data_frame.loc[i, COL_MA_20_SLOPE_CHANGE] = round(ma_20_diff_2[0], 2)
+            data_frame.loc[i, COL_MA_20_SLOPE] = ma_20_diff_1[0]
+            data_frame.loc[i, COL_MA_20_SLOPE_CHANGE] = ma_20_diff_2[0]
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
             h_list = []
