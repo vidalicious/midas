@@ -7,7 +7,7 @@ import midas.core.analyzer._0x22DemonHunter as demon_hunter
 import midas.core.analyzer._0x26WindChime as wind_chime
 import midas.core.analyzer._0x25TwoPlus as two_plus
 import midas.core.analyzer._0x24Drager_List as drager
-import midas.core.analyzer._0x27WeeklyTidal as tidal
+import midas.core.analyzer._0x27Tidal as tidal
 
 
 def working_day():

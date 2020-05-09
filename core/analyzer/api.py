@@ -166,3 +166,11 @@ def limit_chg_count(sequence=None):
             res += 1
 
     return res
+
+
+def crimson_rate(sequence=None):
+    crimson = 0
+    for i, item in enumerate(sequence):
+        if item.close > item.open:
+            crimson += 1
+    return crimson / len(sequence)
