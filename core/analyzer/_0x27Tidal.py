@@ -77,7 +77,7 @@ def main(offset=0):
                             & (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
                            ]
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE_CHANGE] > 50)
+                            (data_frame[COL_MA_20_SLOPE_CHANGE] > 100)
                             | (data_frame[COL_CRIMSON_RATE] > 0.7)
                             ]
     data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE_CHANGE, ascending=False).reset_index(drop=True)
