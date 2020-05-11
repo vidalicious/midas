@@ -14,6 +14,7 @@ def working_day():
     base.async_stock_basic()
     base.async_daily()
     demon_hunter.main()
+    tidal.main()
     wind_chime.main()
     two_plus.main()
     drager.main()
