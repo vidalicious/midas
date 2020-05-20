@@ -174,3 +174,9 @@ def crimson_rate(sequence=None):
         if item.close > item.open:
             crimson += 1
     return crimson / len(sequence)
+
+
+def pct_chg_std(sequence=None):
+    chgs = [i.pct_chg for i in sequence]
+    std = np.std(chgs)
+    return std
