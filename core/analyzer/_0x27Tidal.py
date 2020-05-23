@@ -61,7 +61,7 @@ def main(offset=0):
         print('##### tidal {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 1)
+                            (data_frame[COL_MA_20_SLOPE] > 2)
                             & (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
                            ]
     data_frame = data_frame[
