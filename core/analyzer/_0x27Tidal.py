@@ -61,7 +61,7 @@ def main(offset=0):
         print('##### tidal {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MA_20_SLOPE] > 2)
+                            (data_frame[COL_MA_20_SLOPE] > 0)
                             & (data_frame[COL_MA_20_SLOPE_CHANGE] > 0)
                            ]
     data_frame = data_frame[
@@ -70,7 +70,7 @@ def main(offset=0):
                             | (data_frame[COL_CRIMSON_RATE] > 0.7)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE_CHANGE, ascending=False).reset_index(drop=True)
     data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_MA_20_SLOPE_CHANGE, COL_CRIMSON_RATE, COL_PCT_CHG_STD]]
 
     file_name = '{logs_path}/{date}@Tidal.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
