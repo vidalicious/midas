@@ -49,11 +49,11 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_CRIMSON_RATE] = round(api.crimson_rate(daily[:15]), 2)
             data_frame.loc[i, COL_PCT_CHG_STD] = round(api.pct_chg_std(daily[:15]), 2)
-            # holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
-            # h_list = []
-            # for item in holders:
-            #     h_list.append(item.holder_name)
-            # data_frame.loc[i, COL_FLOAT_HOLDERS] = '\n'.join(h_list)
+            holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
+            h_list = []
+            for item in holders:
+                h_list.append(item.holder_name)
+            data_frame.loc[i, COL_FLOAT_HOLDERS] = '\n'.join(h_list)
 
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
@@ -71,7 +71,7 @@ def main(offset=0):
                            ]
 
     data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE_CHANGE, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_MA_20_SLOPE_CHANGE, COL_CRIMSON_RATE, COL_PCT_CHG_STD]]
+    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_MA_20, COL_MA_20_SLOPE, COL_MA_20_SLOPE_CHANGE, COL_CRIMSON_RATE, COL_PCT_CHG_STD, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Tidal.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
