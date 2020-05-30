@@ -180,3 +180,9 @@ def pct_chg_std(sequence=None):
     chgs = [i.pct_chg for i in sequence]
     std = np.std(chgs)
     return std
+
+
+def weekly_break(sequence=None):
+    weekly_closes = [i.close for i in sequence]
+    index = weekly_closes.index(max(weekly_closes))
+    return index == 0 and sequence[0].pct_chg > 0.1
