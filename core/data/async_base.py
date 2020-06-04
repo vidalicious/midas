@@ -7,7 +7,7 @@ import midas.core.data.models as models
 from midas.core.data.engine import main_session
 from midas.core.data.engine import update_to_db
 
-sampling_count = 100
+sampling_count = 150
 
 pro = ts.pro_api()
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date

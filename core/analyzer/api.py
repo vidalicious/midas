@@ -186,3 +186,11 @@ def weekly_break(sequence=None):
     weekly_closes = [i.close for i in sequence]
     index = weekly_closes.index(max(weekly_closes))
     return index == 0 and sequence[0].pct_chg > 0.1
+
+
+def daily_break(sequence=None):
+    if len(sequence) > 120:
+        daily_closes = [i.close for i in sequence]
+        index = daily_closes.index(max(daily_closes))
+        return index == 0
+    return False
