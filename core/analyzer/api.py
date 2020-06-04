@@ -189,8 +189,15 @@ def weekly_break(sequence=None):
 
 
 def daily_break(sequence=None):
-    if len(sequence) > 120:
+    if len(sequence) >= 120:
         daily_closes = [i.close for i in sequence]
         index = daily_closes.index(max(daily_closes))
         return index == 0
     return False
+
+
+def no_limit(sequence=None):
+    for i, item in enumerate(sequence):
+        if item.pct_chg > 9.8:
+            return False
+    return True
