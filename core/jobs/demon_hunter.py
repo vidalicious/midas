@@ -47,6 +47,6 @@ def total():
 
 
 if __name__ == '__main__':
-    working_day()
+    # working_day()
     # weekend()
-    # total()
+    total()

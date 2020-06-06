@@ -36,12 +36,10 @@ import midas.bin.env as env
 daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '002979.SZ'
                                                    ).all()
 
+daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(
+    models.DailyPro.trade_date.desc()).all()
+
+dates = [daily001[i].trade_date for i in range(150)]
+a = dates.index(20200512)
+b = dates.index(20200123)
 print()
-for i in range(1):
-    print(i)
-
-a = [0, 1, 2,3,4]
-print(a[0:4])
-
-b = 12 ** (1 / 86)
-print(b)
