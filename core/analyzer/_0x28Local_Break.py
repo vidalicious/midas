@@ -14,6 +14,7 @@ import midas.bin.env as env
 
 
 COL_DAILY_BREAK = 'COL_DAILY_BREAK'
+COL_DAILY_BREAK_OFFSET1 = 'COL_DAILY_BREAK_OFFSET1'
 COL_NO_LIMIT = 'COL_NO_LIMIT'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -36,6 +37,7 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily[:120])
+            data_frame.loc[i, COL_DAILY_BREAK_OFFSET1] = api.daily_break(daily[1:120 + 1])
             data_frame.loc[i, COL_NO_LIMIT] = api.no_limit(daily[:10])
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
@@ -55,12 +57,19 @@ def main(offset=0):
                            ]
 
     data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
-    data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
+    # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Local_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
+    data_frame = data_frame[
+                            (data_frame[COL_DAILY_BREAK_OFFSET1] == False)
+                           ]
+    data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
+    file_name = '{logs_path}/{date}@Local_Break_differ.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    with open(file_name, 'w', encoding='utf8') as file:
+        data_frame.to_csv(file)
 
 if __name__ == '__main__':
     main(offset=0)
