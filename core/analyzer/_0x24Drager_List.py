@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import time
+import math
 
 import tushare as ts
 from pandas import DataFrame
@@ -30,8 +31,8 @@ def main(offset=0, date=None):
         buy_sell_rate = (df_list.loc[i, 'l_buy'] - df_list.loc[i, 'l_sell']) / df_list.loc[i, 'l_sell']
         df_list.loc[i, 'buy_sell_rate'] = round(buy_sell_rate, 2)
         df_list.loc[i, 'net_amount'] = int(df_list.loc[i, 'net_amount'])
-        df_list.loc[i, 'float_values'] = int(df_list.loc[i, 'float_values'])
-        df_list.loc[i, 'amount_in_values'] = round(df_list.loc[i, 'net_amount'] / df_list.loc[i, 'float_values'], 2)
+        df_list.loc[i, 'float_values'] = int(df_list.loc[i, 'float_values']) if not math.isnan(df_list.loc[i, 'float_values']) else 0
+        df_list.loc[i, 'amount_in_values'] = round(df_list.loc[i, 'net_amount'] / df_list.loc[i, 'float_values'], 2) if df_list.loc[i, 'float_values'] !=0 else 0
 
     df_list = df_list.sort_values(by='buy_sell_rate', ascending=False).reset_index(drop=True)
     df_list = df_list.loc[:, ['trade_date', 'ts_code', 'name', 'close', 'pct_change', 'net_amount', 'amount_rate', 'float_values', 'reason', 'buy_sell_rate', 'amount_in_values']]
