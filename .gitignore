@@ -5,5 +5,5 @@ log/*
 *.pyc
 .vscode/
 __pycache__
-
+buffer/*
 !.gitkeep
