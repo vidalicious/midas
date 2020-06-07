@@ -190,6 +190,7 @@ def weekly_break(sequence=None):
 
 def daily_break(sequence=None, local_scale=120):
     if len(sequence) >= local_scale:
+        sequence = sequence[:local_scale]
         daily_closes = [i.close for i in sequence]
         index = daily_closes.index(max(daily_closes))
         return index == 0
