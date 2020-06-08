@@ -19,7 +19,7 @@ def working_day():
     local_break.main()
     wind_chime.main()
     two_plus.main()
-    drager.main()
+    # drager.main()
 
 
 def weekend():
@@ -30,7 +30,7 @@ def weekend():
     local_break.main()
     wind_chime.main()
     two_plus.main()
-    drager.main()
+    # drager.main()
 
 
 def total():
@@ -43,10 +43,10 @@ def total():
     local_break.main()
     wind_chime.main()
     two_plus.main()
-    drager.main()
+    # drager.main()
 
 
 if __name__ == '__main__':
-    # working_day()
+    working_day()
     # weekend()
-    total()
+    # total()
