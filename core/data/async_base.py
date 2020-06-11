@@ -92,7 +92,7 @@ def async_daily_basic():
 
 def main():
     async_stock_basic()
-    async_daily()
+    # async_daily()
     # async_daily_basic()
 
 

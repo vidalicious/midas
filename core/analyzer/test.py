@@ -33,13 +33,18 @@ import midas.core.analyzer.api as api
 import midas.core.data.models as models
 from midas.core.data.engine import main_session
 import midas.bin.env as env
-daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '002979.SZ'
-                                                   ).all()
+# daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '002979.SZ'
+#                                                    ).all()
+#
+# daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(
+#     models.DailyPro.trade_date.desc()).all()
+#
+# dates = [daily001[i].trade_date for i in range(150)]
+# a = dates.index(20200512)
+# b = dates.index(20200123)
+# print()
 
-daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(
-    models.DailyPro.trade_date.desc()).all()
+basic = main_session.query(models.StockBasicPro).all()
+for item in basic:
 
-dates = [daily001[i].trade_date for i in range(150)]
-a = dates.index(20200512)
-b = dates.index(20200123)
-print()
+    print('{code} {name} {industry}'.format(code=item.ts_code, name=item.name, industry=item.industry))
