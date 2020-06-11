@@ -8,7 +8,7 @@ import midas.core.analyzer._0x26WindChime as wind_chime
 import midas.core.analyzer._0x25TwoPlus as two_plus
 import midas.core.analyzer._0x24Drager_List as drager
 import midas.core.analyzer._0x27Tidal as tidal
-import midas.core.analyzer._0x28Local_Break as local_break
+import midas.core.analyzer._0x29Medical_Break as medical_break
 
 
 def working_day():
@@ -16,7 +16,7 @@ def working_day():
     base.async_daily()
     demon_hunter.main()
     tidal.main()
-    local_break.main()
+    medical_break.main()
     wind_chime.main()
     two_plus.main()
     # drager.main()
