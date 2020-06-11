@@ -204,8 +204,8 @@ def no_limit(sequence=None):
     return True
 
 
-def is_medical(industry):
-    for key in ['医', '药', '健康', '基因', '血制品', '生物']:
-        if key in industry:
+def is_medical(message):
+    for key in ['医', '药', '健康', '基因', '生物']:
+        if key in message:
             return True
     return False
