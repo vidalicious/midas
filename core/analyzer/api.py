@@ -202,3 +202,10 @@ def no_limit(sequence=None):
         if item.pct_chg > 9.8:
             return False
     return True
+
+
+def is_medical(industry):
+    for key in ['医', '药', '健康', '基因', '血制品', '生物']:
+        if key in industry:
+            return True
+    return False
