@@ -209,3 +209,9 @@ def is_medical(message):
         if key in message:
             return True
     return False
+
+
+def amplitude(sequence=None):
+    closes = [i.close for i in sequence]
+    amplitude = (max(closes) / min(closes) - 1) * 100
+    return amplitude
