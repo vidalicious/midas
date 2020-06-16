@@ -75,20 +75,20 @@ def main(offset=0):
         name = data_frame.loc[i, 'name']
         plot(ts_code=ts_code, name=name, last_date=LAST_MARKET_DATE, doc='medical_break', file_prefix=i)
 
-    data_frame = data_frame[
-                            (data_frame[COL_DAILY_BREAK_OFFSET1] == False)
-                           ]
-    data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
-    file_name = '{logs_path}/{date}@Medical_Break_differ.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    with open(file_name, 'w', encoding='utf8') as file:
-        data_frame.to_csv(file)
-
-    shutil.rmtree('../../buffer/medical_break/medical_break_differ')
-    os.mkdir('../../buffer/medical_break/medical_break_differ')
-    for i in range(len(data_frame)):
-        ts_code = data_frame.loc[i, 'ts_code']
-        name = data_frame.loc[i, 'name']
-        plot(ts_code=ts_code, name=name, last_date=LAST_MARKET_DATE, doc='medical_break_differ', file_prefix=i)
+    # data_frame = data_frame[
+    #                         (data_frame[COL_DAILY_BREAK_OFFSET1] == False)
+    #                        ]
+    # data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
+    # file_name = '{logs_path}/{date}@Medical_Break_differ.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    # with open(file_name, 'w', encoding='utf8') as file:
+    #     data_frame.to_csv(file)
+    #
+    # shutil.rmtree('../../buffer/medical_break/medical_break_differ')
+    # os.mkdir('../../buffer/medical_break/medical_break_differ')
+    # for i in range(len(data_frame)):
+    #     ts_code = data_frame.loc[i, 'ts_code']
+    #     name = data_frame.loc[i, 'name']
+    #     plot(ts_code=ts_code, name=name, last_date=LAST_MARKET_DATE, doc='medical_break_differ', file_prefix=i)
 
 
 def plot(ts_code, name, last_date, doc, file_prefix=0):
@@ -98,7 +98,7 @@ def plot(ts_code, name, last_date, doc, file_prefix=0):
                                                        models.DailyPro.trade_date <= last_date).order_by(
         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
-    data = [item.close for item in daily][120::-1]
+    data = [item.close for item in daily][60::-1]
     data =  pd.DataFrame(data, columns=[ts_code])
 
     sns.lineplot(data=data, palette="tab10", linewidth=1.5).get_figure().savefig('../../buffer/medical_break/{doc}/{prefix}_{ts_code}_{name}@{date}.png'

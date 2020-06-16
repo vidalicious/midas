@@ -81,7 +81,7 @@ def plot(ts_code, name, last_date, doc, file_prefix=0):
                                                        models.DailyPro.trade_date <= last_date).order_by(
         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
-    data = [item.close for item in daily][120::-1]
+    data = [item.close for item in daily][60::-1]
     data =  pd.DataFrame(data, columns=[ts_code])
 
     sns.lineplot(data=data, palette="tab10", linewidth=1.5).get_figure().savefig('../../buffer/micro_amplitude/{doc}/{prefix}_{ts_code}_{name}@{date}.png'
