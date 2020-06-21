@@ -6,6 +6,7 @@ import tushare as ts
 import midas.core.data.models as models
 from midas.core.data.engine import main_session
 from midas.core.data.engine import update_to_db
+from pandas import DataFrame
 
 sampling_count = 150
 
@@ -39,11 +40,14 @@ def async_daily():
         if_pass = False
         while not if_pass:
             try:
-                daily = pro.daily(ts_code=sbp.ts_code, start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
+                daily = ts.pro_bar(ts_code=sbp.ts_code, adj='qfq', start_date=trade_dates[sampling_count], end_date=LAST_MARKET_DATE)
                 if_pass = True
             except Exception as e:
-                print('excetion in {}'.format(count))
+                print('exception in {}'.format(count))
                 continue
+
+        if not isinstance(daily, DataFrame):
+            continue
 
         for i in range(len(daily)):
             a_daily = models.DailyPro(ts_code=daily.loc[i, 'ts_code'],
@@ -91,8 +95,8 @@ def async_daily_basic():
 
 
 def main():
-    async_stock_basic()
-    # async_daily()
+    # async_stock_basic()
+    async_daily()
     # async_daily_basic()
 
 

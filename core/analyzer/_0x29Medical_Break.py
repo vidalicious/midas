@@ -5,6 +5,7 @@ import time
 import tushare as ts
 from pandas import DataFrame
 import numpy as np
+import math
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -68,32 +69,49 @@ def main(offset=0):
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    shutil.rmtree('../../buffer/medical_break/medical_break')
-    os.mkdir('../../buffer/medical_break/medical_break')
-    for i in range(len(data_frame)):
-        ts_code = data_frame.loc[i, 'ts_code']
-        name = data_frame.loc[i, 'name']
-        plot(ts_code=ts_code, name=name, last_date=LAST_MARKET_DATE, doc='medical_break', file_prefix=i)
+    plot_gether(data_frame=data_frame, last_date=LAST_MARKET_DATE)
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_DAILY_BREAK_OFFSET1] == False)
-    #                        ]
-    # data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
-    # file_name = '{logs_path}/{date}@Medical_Break_differ.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
-    # with open(file_name, 'w', encoding='utf8') as file:
-    #     data_frame.to_csv(file)
-    #
-    # shutil.rmtree('../../buffer/medical_break/medical_break_differ')
-    # os.mkdir('../../buffer/medical_break/medical_break_differ')
+    # shutil.rmtree('../../buffer/medical_break/medical_break')
+    # os.mkdir('../../buffer/medical_break/medical_break')
     # for i in range(len(data_frame)):
     #     ts_code = data_frame.loc[i, 'ts_code']
     #     name = data_frame.loc[i, 'name']
-    #     plot(ts_code=ts_code, name=name, last_date=LAST_MARKET_DATE, doc='medical_break_differ', file_prefix=i)
+    #     plot(ts_code=ts_code, name=name, last_date=LAST_MARKET_DATE, doc='medical_break', file_prefix=i)
 
 
-def plot(ts_code, name, last_date, doc, file_prefix=0):
+# def plot(ts_code, name, last_date, doc, file_prefix=0):
+#     sns.set(style="whitegrid")
+#
+#     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
+#                                                        models.DailyPro.trade_date <= last_date).order_by(
+#         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
+#
+#     data = [item.close for item in daily][60::-1]
+#     data =  pd.DataFrame(data, columns=[ts_code])
+#
+#     sns.lineplot(data=data, palette="tab10", linewidth=1.5).get_figure().savefig('../../buffer/medical_break/{doc}/{prefix}_{ts_code}_{name}@{date}.png'
+#         .format(doc=doc, ts_code=ts_code, name=name, date=last_date, prefix=file_prefix))
+#     plt.clf()
+#     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
+
+
+def plot_gether(data_frame, last_date):
+    columns = 5
+    rows = math.ceil(len(data_frame) / columns)
+
+    plt.figure(figsize=(columns * 5, rows * 5 / 2))
     sns.set(style="whitegrid")
+    for i in range(len(data_frame)):
+        ts_code = data_frame.loc[i, 'ts_code']
+        name = data_frame.loc[i, 'name']
+        plt.subplot(rows, columns, i + 1)
+        plot_single(ts_code=ts_code, name=name, last_date=last_date)
 
+    plt.tight_layout()
+    plt.savefig('../../buffer/medical_break/{date}_medical_break.png'.format(date=last_date))
+
+
+def plot_single(ts_code, name, last_date):
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
                                                        models.DailyPro.trade_date <= last_date).order_by(
         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
@@ -101,9 +119,9 @@ def plot(ts_code, name, last_date, doc, file_prefix=0):
     data = [item.close for item in daily][60::-1]
     data =  pd.DataFrame(data, columns=[ts_code])
 
-    sns.lineplot(data=data, palette="tab10", linewidth=1.5).get_figure().savefig('../../buffer/medical_break/{doc}/{prefix}_{ts_code}_{name}@{date}.png'
-        .format(doc=doc, ts_code=ts_code, name=name, date=last_date, prefix=file_prefix))
-    plt.clf()
+    plt.title('{ts_code} {name}'.format(ts_code=ts_code, name=name), fontsize=100, fontproperties='Heiti TC')
+    sns.lineplot(data=data, palette="tab10", linewidth=1.5)
+    # plt.clf()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
 

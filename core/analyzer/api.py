@@ -197,6 +197,15 @@ def daily_break(sequence=None, local_scale=120):
     return False
 
 
+def daily_pit(sequence=None, local_scale=20):
+    if len(sequence) >= local_scale:
+        sequence = sequence[:local_scale]
+        daily_closes = [i.close for i in sequence]
+        index = daily_closes.index(min(daily_closes))
+        return 2 < index < 10
+    return False
+
+
 def no_limit(sequence=None):
     for i, item in enumerate(sequence):
         if item.pct_chg > 9.8:
