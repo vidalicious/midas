@@ -10,15 +10,15 @@ import midas.core.analyzer._0x24Drager_List as drager
 import midas.core.analyzer._0x27Tidal as tidal
 import midas.core.analyzer._0x28Local_Break as local_break
 import midas.core.analyzer._0x29Medical_Break as medical_break
-import midas.core.analyzer._0x30Micro_Amplitude as micro_amplitude
+import midas.core.analyzer._0x32Medical_Ergodic as medical_ergodic
 
 
 def working_day():
     base.async_stock_basic()
     base.async_daily()
     medical_break.main()
+    medical_ergodic.main()
     local_break.main()
-    micro_amplitude.main()
     demon_hunter.main()
     tidal.main()
     wind_chime.main()
@@ -30,8 +30,8 @@ def weekend():
     weekly.async_weekly()
     holders.async_float_holders()
     medical_break.main()
+    medical_ergodic.main()
     local_break.main()
-    micro_amplitude.main()
     demon_hunter.main()
     tidal.main()
     wind_chime.main()
@@ -45,8 +45,8 @@ def total():
     weekly.async_weekly()
     holders.async_float_holders()
     medical_break.main()
+    medical_ergodic.main()
     local_break.main()
-    micro_amplitude.main()
     demon_hunter.main()
     tidal.main()
     wind_chime.main()
@@ -55,6 +55,6 @@ def total():
 
 
 if __name__ == '__main__':
-    # working_day()
+    working_day()
     # weekend()
-    total()
+    # total()

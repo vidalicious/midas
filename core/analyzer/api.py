@@ -215,7 +215,7 @@ def no_limit(sequence=None):
 
 def is_medical(message):
     for key in ['医', '药', '健康', '基因', '生物']:
-        if key in message:
+        if key in message and '农药' not in message:
             return True
     return False
 
