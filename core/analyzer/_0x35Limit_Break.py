@@ -18,6 +18,7 @@ import shutil
 import os
 
 
+COL_DAILY_BREAK = 'COL_DAILY_BREAK'
 COL_RECENT_LIMIT = 'COL_RECENT_LIMIT'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -39,6 +40,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
+            data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
             data_frame.loc[i, COL_RECENT_LIMIT] = api.recent_limit(daily)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
@@ -53,7 +55,8 @@ def main(offset=0):
         print('##### limit break {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_RECENT_LIMIT] == True)
+                            (data_frame[COL_DAILY_BREAK] == True)
+                            & (data_frame[COL_RECENT_LIMIT] == True)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
