@@ -12,6 +12,7 @@ import midas.core.analyzer._0x28Local_Break as local_break
 import midas.core.analyzer._0x29Medical_Break as medical_break
 import midas.core.analyzer._0x34Drink_Break as drink_break
 # import midas.core.analyzer._0x32Medical_Ergodic as medical_ergodic
+import midas.core.analyzer._0x35Limit_Break as limit_break
 
 
 def working_day():
@@ -19,10 +20,10 @@ def working_day():
     base.async_daily()
     medical_break.main()
     drink_break.main()
+    limit_break.main()
     wind_chime.main()
     local_break.main()
     demon_hunter.main()
-    tidal.main()
     two_plus.main()
     # drager.main()
 
@@ -32,10 +33,10 @@ def weekend():
     holders.async_float_holders()
     medical_break.main()
     drink_break.main()
+    limit_break.main()
     wind_chime.main()
     local_break.main()
     demon_hunter.main()
-    tidal.main()
     two_plus.main()
     # drager.main()
 
@@ -47,10 +48,10 @@ def total():
     holders.async_float_holders()
     medical_break.main()
     drink_break.main()
+    limit_break.main()
     wind_chime.main()
     local_break.main()
     demon_hunter.main()
-    tidal.main()
     two_plus.main()
     # drager.main()
 

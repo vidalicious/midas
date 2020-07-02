@@ -231,3 +231,12 @@ def amplitude(sequence=None):
     closes = [i.close for i in sequence]
     amplitude = (max(closes) / min(closes) - 1) * 100
     return amplitude
+
+
+def recent_limit(sequence=None):
+    chgs = [i.pct_chg for i in sequence]
+    for i in range(3):
+        if chgs[i] > 9.8:
+            return True
+    return False
+
