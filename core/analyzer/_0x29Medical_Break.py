@@ -44,7 +44,7 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
-            data_frame.loc[i, COL_DAILY_BREAK_OFFSET1] = api.daily_break(daily[1:], local_scale=60)
+            # data_frame.loc[i, COL_DAILY_BREAK_OFFSET1] = api.daily_break(daily[1:], local_scale=60)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
             h_list = []

@@ -220,6 +220,13 @@ def is_medical(message):
     return False
 
 
+def is_drink(message):
+    for key in ['白酒', '红黄酒']:
+        if key in message:
+            return True
+    return False
+
+
 def amplitude(sequence=None):
     closes = [i.close for i in sequence]
     amplitude = (max(closes) / min(closes) - 1) * 100
