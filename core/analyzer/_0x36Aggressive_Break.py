@@ -19,7 +19,7 @@ import os
 
 
 COL_DAILY_BREAK = 'COL_DAILY_BREAK'
-COL_RECENT_LIMIT = 'COL_RECENT_LIMIT'
+COL_RECENT_AGGRESSIVE = 'COL_RECENT_AGGRESSIVE'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
@@ -42,29 +42,29 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
-            data_frame.loc[i, COL_RECENT_LIMIT] = api.recent_limit(daily)
+            data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_limit(daily)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
-            h_list = []
+            h_set = set()
             for item in holders:
-                h_list.append(item.holder_name)
-            data_frame.loc[i, COL_FLOAT_HOLDERS] = '\n'.join(h_list)
-            data_frame.loc[i, COL_HOLDERS_COUNT] = len(h_list)
+                h_set.add(item.holder_name)
+            data_frame.loc[i, COL_FLOAT_HOLDERS] = '\n'.join(h_set)
+            data_frame.loc[i, COL_HOLDERS_COUNT] = len(h_set)
 
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### limit break {i} #####'.format(i=i))
+        print('##### aggressive break {i} #####'.format(i=i))
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_BREAK] == True)
-                            & (data_frame[COL_RECENT_LIMIT] == True)
+                            & (data_frame[COL_RECENT_AGGRESSIVE] == True)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_HOLDERS_COUNT, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
-    file_name = '{logs_path}/{date}@Limit_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Aggressive_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -84,7 +84,7 @@ def plot_gether(data_frame, last_date):
         plot_single(ts_code=ts_code, name=name, last_date=last_date, holders_count=data_frame.loc[i, COL_HOLDERS_COUNT])
 
     plt.tight_layout()
-    plt.savefig('../../buffer/limit_break/{date}_limit_break.png'.format(date=last_date))
+    plt.savefig('../../buffer/aggressive_break/{date}_aggressive_break.png'.format(date=last_date))
 
 
 def plot_single(ts_code, name, last_date, holders_count):

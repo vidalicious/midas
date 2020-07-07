@@ -240,3 +240,10 @@ def recent_limit(sequence=None):
             return True
     return False
 
+
+def recent_aggressive(sequence=None):
+    chgs = [i.pct_chg for i in sequence]
+    for i in range(3):
+        if chgs[i] > 5:
+            return True
+    return False
