@@ -1,53 +1,55 @@
-import talib
+# import talib
 import numpy as np
 import tushare as ts
 import matplotlib.pyplot as plt
-import mplfinance as mpf
+import mpl_finance as mpf
+from mpl_finance import candlestick_ohlc
 from pandas import DataFrame
 from datetime import datetime
 
 
 data = ts.get_k_data('399300', index=True, start='2017-01-01', end='2017-06-31')
-sma_10 = talib.SMA(np.array(data['close']), 10)
-sma_30 = talib.SMA(np.array(data['close']), 30)
+# sma_10 = talib.SMA(np.array(data['close']), 10)
+# sma_30 = talib.SMA(np.array(data['close']), 30)
 
-# fig = plt.figure(figsize=(24, 8))
-# ax = fig.add_subplot(1, 1, 1)
-# ax.set_xticks(range(0, len(data['date']), 10))
-# ax.set_xticklabels(data['date'][::10])
+fig = plt.figure(figsize=(24, 8))
+ax = fig.add_subplot(1, 1, 1)
+ax.set_xticks(range(0, len(data['date']), 10))
+ax.set_xticklabels(data['date'][::10])
 # ax.plot(sma_10, label='10 日均线')
 # ax.plot(sma_30, label='30 日均线')
 # ax.legend(loc='upper left')
+plt.title('test title')
+mpf.candlestick2_ochl(ax, data['open'], data['close'], data['high'], data['low'],
+                     width=0.5, colorup='r', colordown='green',
+                     alpha=0.6)
+plt.grid()
+plt.show()
 
-# mpf.plot(ax, data['open'], data['close'], data['high'], data['low'],
-#                      width=0.5, colorup='r', colordown='green',
-#                      alpha=0.6, type='candle')
-
-
-df = DataFrame()
-for i in range(len(data)):
-    # a = datetime.strptime(data.loc[i, 'date'], '%Y-%m-%d')
-    date = datetime.strptime(data.loc[i, 'date'], '%Y-%m-%d')
-    # df.loc[date, 'Date'] = datetime.strptime(data.loc[i, 'date'], '%Y-%m-%d')
-    df.loc[date, 'Open'] = data.loc[i, 'open']
-    df.loc[date, 'High'] = data.loc[i, 'high']
-    df.loc[date, 'Low'] = data.loc[i, 'low']
-    df.loc[date, 'Close'] = data.loc[i, 'close']
-    pass
-
-color_sytle = mpf.make_marketcolors(
-	up='red',
-	down='green',
-	# edge='i',
-	# wick='i',
-	# volume='in',
-	inherit=True)
-style = mpf.make_mpf_style(
-	marketcolors=color_sytle)
-# type='candle', type='line', type='renko', or type='pnf'
-# data = data.loc[:, ['date', 'open', 'high', 'low', 'close']]
-# data.rename(columns={'date':'Date', 'open':'Open', 'high':'High', 'low': 'Low', 'close': 'Close'}, inplace = True)
-mpf.plot(df, type='candle', style=style, title='test label')
+# df = DataFrame()
+# for i in range(len(data)):
+#     # a = datetime.strptime(data.loc[i, 'date'], '%Y-%m-%d')
+#     date = datetime.strptime(data.loc[i, 'date'], '%Y-%m-%d')
+#     # df.loc[date, 'Date'] = datetime.strptime(data.loc[i, 'date'], '%Y-%m-%d')
+#     df.loc[date, 'Open'] = data.loc[i, 'open']
+#     df.loc[date, 'High'] = data.loc[i, 'high']
+#     df.loc[date, 'Low'] = data.loc[i, 'low']
+#     df.loc[date, 'Close'] = data.loc[i, 'close']
+#     pass
+#
+# color_sytle = mpf.make_marketcolors(
+# 	up='red',
+# 	down='green',
+# 	# edge='i',
+# 	# wick='i',
+# 	# volume='in',
+# 	inherit=True)
+# style = mpf.make_mpf_style(
+# 	marketcolors=color_sytle)
+# # type='candle', type='line', type='renko', or type='pnf'
+# # data = data.loc[:, ['date', 'open', 'high', 'low', 'close']]
+# # data.rename(columns={'date':'Date', 'open':'Open', 'high':'High', 'low': 'Low', 'close': 'Close'}, inplace = True)
+# mpf.plot(df, type='candle', style=style, title='test label')
 
 
 

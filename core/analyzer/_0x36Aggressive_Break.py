@@ -16,6 +16,7 @@ from midas.core.data.engine import main_session
 import midas.bin.env as env
 import shutil
 import os
+import mpl_finance as mpf
 
 
 COL_DAILY_BREAK = 'COL_DAILY_BREAK'
@@ -68,7 +69,7 @@ def main(offset=0):
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    plot_gether(data_frame=data_frame, last_date=LAST_MARKET_DATE)
+    plot_candle_gather(data_frame=data_frame, last_date=LAST_MARKET_DATE)
 
 
 def plot_gether(data_frame, last_date):
@@ -98,6 +99,45 @@ def plot_single(ts_code, name, last_date, holders_count):
     plt.title('{ts_code} {name}'.format(ts_code=ts_code, name=name), fontsize=100, fontproperties='Heiti TC')
     sns.lineplot(data=data, palette="tab10", linewidth=1.5)
     # plt.clf()
+    print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
+
+
+def plot_candle_gather(data_frame, last_date):
+    columns = 3
+    rows = math.ceil(len(data_frame) / columns)
+
+    fig = plt.figure(figsize=(columns * 5, rows * 5 / 2))
+    for i in range(len(data_frame)):
+        ts_code = data_frame.loc[i, 'ts_code']
+        name = data_frame.loc[i, 'name']
+        ax = fig.add_subplot(rows, columns, i + 1)
+        plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, holders_count=data_frame.loc[i, COL_HOLDERS_COUNT])
+
+    plt.tight_layout()
+    plt.savefig('../../buffer/aggressive_break/{date}_aggressive_break.png'.format(date=last_date))
+
+def plot_candle(ax, ts_code, name, last_date, holders_count):
+    daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
+                                                       models.DailyPro.trade_date <= last_date).order_by(
+        models.DailyPro.trade_date.desc()).limit(sampling_count).all()
+
+    df = DataFrame()
+    for i, item in enumerate(daily[60::-1]):
+        df.loc[i, 'date'] = item.trade_date
+        df.loc[i, 'open'] = item.open
+        df.loc[i, 'close'] = item.close
+        df.loc[i, 'high'] = item.high
+        df.loc[i, 'low'] = item.low
+
+    ax.set_xticks(range(0, len(df['date']), 20))
+    ax.set_xticklabels(df['date'][::20])
+
+    plt.title('{ts_code} {name} holders: {holders_count}'.format(ts_code=ts_code, name=name, holders_count=int(holders_count)),
+              fontproperties='Heiti TC')
+    mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
+                          width=0.5, colorup='red', colordown='green',
+                          alpha=0.5)
+    plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
 
