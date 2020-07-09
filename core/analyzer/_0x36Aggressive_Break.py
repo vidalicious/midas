@@ -137,7 +137,7 @@ def plot_candle(ax, ts_code, name, last_date, holders_count):
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)
-    plt.grid()
+    # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
 
