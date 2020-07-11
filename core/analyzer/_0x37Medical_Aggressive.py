@@ -21,6 +21,7 @@ import mpl_finance as mpf
 
 COL_DAILY_BREAK = 'COL_DAILY_BREAK'
 COL_RECENT_AGGRESSIVE = 'COL_RECENT_AGGRESSIVE'
+COL_IS_MEDICAL = 'COL_IS_MEDICAL'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
@@ -37,6 +38,8 @@ def main(offset=0):
         try:
             for key in models.StockBasicPro.keys:
                 data_frame.loc[i, key] = getattr(stock_basic, key)
+
+            data_frame.loc[i, COL_IS_MEDICAL] = api.is_medical(stock_basic.industry)
 
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
@@ -55,17 +58,18 @@ def main(offset=0):
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### aggressive break {i} #####'.format(i=i))
+        print('##### medical aggressive {i} #####'.format(i=i))
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_BREAK] == True)
                             & (data_frame[COL_RECENT_AGGRESSIVE] == True)
+                            & (data_frame[COL_IS_MEDICAL] == True)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_HOLDERS_COUNT, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
-    file_name = '{logs_path}/{date}@Aggressive_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Medical_Aggressive.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -84,7 +88,7 @@ def plot_candle_gather(data_frame, last_date):
         plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, holders_count=data_frame.loc[i, COL_HOLDERS_COUNT])
 
     plt.tight_layout()
-    plt.savefig('../../buffer/aggressive_break/{date}_aggressive_break.png'.format(date=last_date))
+    plt.savefig('../../buffer/medical_aggressive/{date}_medical_aggressive.png'.format(date=last_date))
 
 def plot_candle(ax, ts_code, name, last_date, holders_count):
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,

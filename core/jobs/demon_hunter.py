@@ -14,11 +14,13 @@ import midas.core.analyzer._0x34Drink_Break as drink_break
 # import midas.core.analyzer._0x32Medical_Ergodic as medical_ergodic
 import midas.core.analyzer._0x35Limit_Break as limit_break
 import midas.core.analyzer._0x36Aggressive_Break as aggressive_break
+import midas.core.analyzer._0x37Medical_Aggressive as medical_aggressive
 
 
 def working_day():
     base.async_stock_basic()
     base.async_daily()
+    medical_aggressive.main()
     aggressive_break.main()
     wind_chime.main()
     demon_hunter.main()
@@ -28,6 +30,7 @@ def working_day():
 def weekend():
     weekly.async_weekly()
     holders.async_float_holders()
+    medical_aggressive.main()
     aggressive_break.main()
     wind_chime.main()
     demon_hunter.main()
@@ -39,6 +42,7 @@ def total():
     base.async_daily()
     weekly.async_weekly()
     holders.async_float_holders()
+    medical_aggressive.main()
     aggressive_break.main()
     wind_chime.main()
     demon_hunter.main()
