@@ -189,21 +189,17 @@ def weekly_break(sequence=None):
 
 
 def daily_break(sequence=None, local_scale=120):
-    if len(sequence) >= local_scale:
-        sequence = sequence[:local_scale]
-        daily_closes = [i.close for i in sequence]
-        index = daily_closes.index(max(daily_closes))
-        return index < 3
-    return False
+    sequence = sequence[:local_scale]
+    daily_closes = [i.close for i in sequence]
+    index = daily_closes.index(max(daily_closes))
+    return index < 3
 
 
 def daily_pit(sequence=None, local_scale=20):
-    if len(sequence) >= local_scale:
-        sequence = sequence[:local_scale]
-        daily_closes = [i.close for i in sequence]
-        index = daily_closes.index(min(daily_closes))
-        return 2 < index < 10
-    return False
+    sequence = sequence[:local_scale]
+    daily_closes = [i.close for i in sequence]
+    index = daily_closes.index(min(daily_closes))
+    return 2 < index < 10
 
 
 def no_limit(sequence=None):

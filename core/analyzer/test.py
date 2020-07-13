@@ -24,6 +24,11 @@
 # df = pro.concept()
 # a = pro.concept_detail(id='TS2', fields='ts_code,name')
 # pass
+
+a = [1, 2, 3, 4, 5, 6, 7]
+b = a[:50]
+
+
 import tushare as ts
 pro = ts.pro_api()
 trade_dates = pro.daily(ts_code='000001.SZ').trade_date
