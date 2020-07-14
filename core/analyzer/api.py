@@ -232,7 +232,7 @@ def amplitude(sequence=None):
 def recent_limit(sequence=None):
     chgs = [i.pct_chg for i in sequence]
     for i in range(3):
-        if chgs[i] > 9.8:
+        if chgs[i] > 9:
             return True
     return False
 
