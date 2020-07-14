@@ -49,7 +49,7 @@ def main(offset=0):
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
             data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_limit(daily)
 
-            daily_local_min = api.daily_local_min(sequence=daily, local_scale=60)
+            daily_local_min = api.daily_local_min(sequence=daily, local_scale=10)
             data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
