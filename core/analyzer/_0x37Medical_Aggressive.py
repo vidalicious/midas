@@ -89,12 +89,16 @@ def plot_candle_gather(data_frame, last_date):
         ts_code = data_frame.loc[i, 'ts_code']
         name = data_frame.loc[i, 'name']
         ax = fig.add_subplot(rows, columns, i + 1)
-        plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, holders_count=data_frame.loc[i, COL_HOLDERS_COUNT])
+        misc = {
+            COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT],
+            COL_UP_RANGE: data_frame.loc[i, COL_UP_RANGE]
+        }
+        plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
     plt.savefig('../../buffer/medical_aggressive/{date}_medical_aggressive.png'.format(date=last_date))
 
-def plot_candle(ax, ts_code, name, last_date, holders_count):
+def plot_candle(ax, ts_code, name, last_date, misc):
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
                                                        models.DailyPro.trade_date <= last_date).order_by(
         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
@@ -110,7 +114,8 @@ def plot_candle(ax, ts_code, name, last_date, holders_count):
     ax.set_xticks(range(0, len(df['date']), 20))
     ax.set_xticklabels(df['date'][::20])
 
-    plt.title('{ts_code} {name} holders: {holders_count}'.format(ts_code=ts_code, name=name, holders_count=int(holders_count)),
+    plt.title('{ts_code} {name} up_range:{up_range} holders:{holders_count}'.format(ts_code=ts_code, name=name,
+              up_range=misc[COL_UP_RANGE], holders_count=int(misc[COL_HOLDERS_COUNT])),
               fontproperties='Heiti TC')
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',
