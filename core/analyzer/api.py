@@ -243,3 +243,9 @@ def recent_aggressive(sequence=None):
         if chgs[i] > 5:
             return True
     return False
+
+
+def daily_local_min(sequence=None, local_scale=120):
+    sequence = sequence[:local_scale]
+    closes = [i.close for i in sequence]
+    return min(closes)

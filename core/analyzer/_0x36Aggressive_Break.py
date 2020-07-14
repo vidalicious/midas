@@ -22,6 +22,7 @@ import mpl_finance as mpf
 COL_DAILY_BREAK = 'COL_DAILY_BREAK'
 COL_RECENT_AGGRESSIVE = 'COL_RECENT_AGGRESSIVE'
 COL_LASTPRICE = 'COL_LASTPRICE'
+COL_UP_RANGE = 'COL_UP_RANGE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 
@@ -45,6 +46,9 @@ def main(offset=0):
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
             data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_limit(daily)
 
+            daily_local_min = api.daily_local_min(sequence=daily, local_scale=60)
+            data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
+
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
             h_set = set()
             for item in holders:
@@ -62,7 +66,7 @@ def main(offset=0):
                             & (data_frame[COL_RECENT_AGGRESSIVE] == True)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_HOLDERS_COUNT, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_UP_RANGE, ascending=True).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Aggressive_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
