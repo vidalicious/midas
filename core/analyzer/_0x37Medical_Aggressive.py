@@ -47,7 +47,7 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
-            data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_limit(daily)
+            data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_aggressive(daily)
 
             daily_local_min = api.daily_local_min(sequence=daily, local_scale=10)
             data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
@@ -66,7 +66,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_BREAK] == True)
-                            # & (data_frame[COL_RECENT_AGGRESSIVE] == True)
+                            & (data_frame[COL_RECENT_AGGRESSIVE] == True)
                             & (data_frame[COL_IS_MEDICAL] == True)
                            ]
 
