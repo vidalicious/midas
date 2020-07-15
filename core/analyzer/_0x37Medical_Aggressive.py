@@ -66,7 +66,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_BREAK] == True)
-                            & (data_frame[COL_RECENT_AGGRESSIVE] == True)
+                            # & (data_frame[COL_RECENT_AGGRESSIVE] == True)
                             & (data_frame[COL_IS_MEDICAL] == True)
                            ]
 
