@@ -46,7 +46,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
-            data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=60)
+            data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=30)
             data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_aggressive(daily)
 
             daily_local_min = api.daily_local_min(sequence=daily, local_scale=10)
