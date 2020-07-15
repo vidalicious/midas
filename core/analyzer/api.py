@@ -249,3 +249,10 @@ def daily_local_min(sequence=None, local_scale=120):
     sequence = sequence[:local_scale]
     closes = [i.close for i in sequence]
     return min(closes)
+
+
+def average_abs_chg(sequence=None, local_scale=120):
+    sequence = sequence[:local_scale]
+    chgs = [abs(i.pct_chg) for i in sequence]
+    mean = np.mean(chgs)
+    return mean
