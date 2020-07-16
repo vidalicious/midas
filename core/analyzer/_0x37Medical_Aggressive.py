@@ -24,7 +24,6 @@ COL_RECENT_AGGRESSIVE = 'COL_RECENT_AGGRESSIVE'
 COL_IS_MEDICAL = 'COL_IS_MEDICAL'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_UP_RANGE = 'COL_UP_RANGE'
-COL_AVERAGE_ABS_CHG = 'COL_AVERAGE_ABS_CHG'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 
@@ -48,12 +47,10 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_BREAK] = api.daily_break(daily, local_scale=30)
-            data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_aggressive(daily)
+            data_frame.loc[i, COL_RECENT_AGGRESSIVE] = api.recent_limit(daily)
 
-            daily_local_min = api.daily_local_min(sequence=daily, local_scale=10)
+            daily_local_min = api.daily_local_min(sequence=daily, local_scale=30)
             data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
-
-            data_frame.loc[i, COL_AVERAGE_ABS_CHG] = round(api.average_abs_chg(daily, local_scale=20), 2)
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
             h_set = set()
@@ -69,11 +66,11 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_BREAK] == True)
-                            & (data_frame[COL_RECENT_AGGRESSIVE] == True)
+                            # & (data_frame[COL_RECENT_AGGRESSIVE] == True)
                             & (data_frame[COL_IS_MEDICAL] == True)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_AVERAGE_ABS_CHG, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_UP_RANGE, ascending=True).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Medical_Aggressive.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
@@ -128,4 +125,5 @@ def plot_candle(ax, ts_code, name, last_date, misc):
 
 
 if __name__ == '__main__':
-    main(offset=0)
+    for i in [2, 4, 8, 13]:
+        main(offset=i)
