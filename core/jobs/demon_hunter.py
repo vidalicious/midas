@@ -18,9 +18,9 @@ import midas.core.analyzer._0x37Medical_Aggressive as medical_aggressive
 
 
 def working_day():
-    base.async_stock_basic()
-    base.async_daily()
-    medical_aggressive.main()
+    # base.async_stock_basic()
+    # base.async_daily()
+    # medical_aggressive.main()
     aggressive_break.main()
     wind_chime.main()
     demon_hunter.main()

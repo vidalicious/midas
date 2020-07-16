@@ -52,7 +52,7 @@ def main():
         print('sleep for 5 secs, {}'.format(time.strftime("%H:%M:%S", time.localtime())))
         time.sleep(5)
 
-    while int(time.strftime("%H%M%S", time.localtime())) < 93000:
+    while 1 or int(time.strftime("%H%M%S", time.localtime())) < 93000:
         for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
             try:
                 query_key = '{a}{b}'.format(a=stock_basic.ts_code.split('.')[1].lower(), b=stock_basic.symbol)

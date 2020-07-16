@@ -245,6 +245,12 @@ def recent_aggressive(sequence=None):
     return False
 
 
+def daily_local_max(sequence=None, local_scale=120):
+    sequence = sequence[:local_scale]
+    closes = [i.close for i in sequence]
+    return max(closes)
+
+
 def daily_local_min(sequence=None, local_scale=120):
     sequence = sequence[:local_scale]
     closes = [i.close for i in sequence]
@@ -256,3 +262,12 @@ def average_abs_chg(sequence=None, local_scale=120):
     chgs = [abs(i.pct_chg) for i in sequence]
     mean = np.mean(chgs)
     return mean
+
+
+def daily_silent(sequence=None, local_scale=5):
+    sequence = sequence[:local_scale]
+    chgs = [i.pct_chg for i in sequence]
+    for i in chgs:
+        if i > 9.8:
+            return False
+    return True
