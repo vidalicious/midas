@@ -37,8 +37,8 @@ def main(offset=0):
 
             data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=30)
 
-            # daily_local_min = api.daily_local_min(sequence=daily, local_scale=30)
-            # data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
+            daily_local_min = api.daily_local_min(sequence=daily, local_scale=10)
+            data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
 
 
         except Exception as e:
@@ -48,7 +48,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_SILENT] == True)
-                            # & (data_frame[COL_UP_RANGE] < 0.2)
+                            & (data_frame[COL_UP_RANGE] < 0.2)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_LOCAL_MAX, ascending=True).reset_index(drop=True)

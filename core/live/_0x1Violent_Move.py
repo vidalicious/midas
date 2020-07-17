@@ -37,7 +37,7 @@ def run():
                 res = response.text.strip().split(';\n')
                 for i in res:
                     j = i.split(',')
-                    name = j[0].split('"')[1]
+                    name = j[0].split('="')[1]
                     code = j[0].split('="')[0].split('_')[-1]
                     yesterday_closing_price = float(j[2])
                     current_price = float(j[3])
