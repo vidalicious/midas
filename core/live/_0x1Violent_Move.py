@@ -9,6 +9,8 @@ def run():
     stock_map = {}
     for i in open('{data_path}/silent_ones'.format(data_path=env.data_path)):
         infos = i.strip().split(',')
+        if infos[1].startswith('688'):
+            continue
         stocks.append({
             'name': infos[0],
             'symbol': infos[1],

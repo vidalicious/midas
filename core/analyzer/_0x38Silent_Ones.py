@@ -37,7 +37,7 @@ def main(offset=0):
 
             data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=30)
 
-            daily_local_min = api.daily_local_min(sequence=daily, local_scale=10)
+            daily_local_min = api.daily_local_min(sequence=daily, local_scale=30)
             data_frame.loc[i, COL_UP_RANGE] = round((daily[0].close / daily_local_min) - 1, 2)
 
 
