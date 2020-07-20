@@ -271,3 +271,13 @@ def daily_silent(sequence=None, local_scale=5):
         if i > 9.8:
             return False
     return True
+
+
+def local_limit_count(sequence=None, local_scale=5):
+    sequence = sequence[:local_scale]
+    chgs = [i.pct_chg for i in sequence]
+    limit_count = 0
+    for i in chgs:
+        if i > 9.8:
+            limit_count += 1
+    return limit_count

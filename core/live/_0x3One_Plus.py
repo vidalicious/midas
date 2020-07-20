@@ -53,11 +53,11 @@ def run():
                     current_price = float(j[3])
                     chg = (current_price / yesterday_closing_price - 1)
                     chg_display = '{}%'.format(round(chg*100, 2))
-                    local_max = stock_map[code]['local_max']
+                    # local_max = stock_map[code]['local_max']
                     # if 0.05 < chg < 0.098 and current_price > local_max:
                     if 0.05 < chg < 0.098:
                         local_breaks.append({
-                            'note': 'local break\t{code}\t{name}\tchg:{chg}\tprice:{price}'.format(code=code, name=name, chg=chg_display, price=round(current_price, 2)),
+                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}'.format(code=code, name=name, chg=chg_display, price=round(current_price, 2)),
                             'chg': chg
                         })
 

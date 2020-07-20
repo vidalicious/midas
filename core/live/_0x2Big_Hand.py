@@ -98,11 +98,11 @@ def run():
                         if delta_vols > big_hands[code]['max_delta_vols']:
                             big_hands[code]['max_delta_vols'] = delta_vols
 
-                        with open(pickle_file_name, 'wb') as file:
-                            pickle.dump(big_hands, file)
+                            with open(pickle_file_name, 'wb') as file:
+                                pickle.dump(big_hands, file)
 
 
-                    if current_price > local_max and chg < 0.098 and code in big_hands:
+                    if current_price > local_max and 0.05 < chg < 0.098 and code in big_hands:
                         local_breaks.append({
                             'note': 'local break\t{code}\t{name}\tchg:{chg}\tprice:{price}\tbig_hands:{big_hands}\t\taccumulation:{accumulation}'.format(
                                 code=code, name=name, chg=chg_display, price=round(current_price, 2), big_hands=int(big_hands[code]['max_delta_vols']),
