@@ -94,9 +94,30 @@ def async_daily_basic():
         time.sleep(0.2)
 
 
+@update_to_db(main_session)
+def async_daily_basic_origin():
+    try:
+        main_session.query(models.DailyBasic).delete()
+        main_session.commit()
+        res = ts.get_today_all()
+        for i in range(len(res)):
+            a_daily_basic = models.DailyBasic(
+                symbol=res.loc[i, 'code'],
+                name=res.loc[i, 'name'],
+                trade_date=LAST_MARKET_DATE,
+                total_mv=float(res.loc[i, 'mktcap']),
+                circ_mv=float(res.loc[i, 'nmc'])
+            )
+            main_session.add(a_daily_basic)
+        main_session.commit()
+        print('##### async_daily_basic_origin #####')
+    except Exception as e:
+        print(e)
+
+
 def main():
     # async_stock_basic()
-    async_daily()
+    async_daily_basic_origin()
     # async_daily_basic()
 
 

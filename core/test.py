@@ -25,6 +25,8 @@ import tushare as ts
 # print(a.json())
 
 
+a = ts.get_today_all()
+
 pro = ts.pro_api()
 df1 = pro.top_inst(trade_date='20200414', ts_code='000001.SZ')
 df2 = pro.top_list(trade_date='20200414')

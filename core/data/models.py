@@ -76,6 +76,17 @@ class DailyBasicPro(Base):
     circ_mv = Column(Float)  # 流通市值（万元）
 
 
+class DailyBasic(Base):
+    __tablename__ = "daily_basic"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    symbol = Column(String(100))
+    name = Column(String(100))
+    trade_date = Column(Integer)
+    total_mv = Column(Float)  # 总市值（万元）
+    circ_mv = Column(Float)  # 流通市值（万元）
+
+
 class StockCompanyPro(Base):
     __tablename__ = "stock_company_pro"
 
@@ -147,6 +158,8 @@ StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst
 DailyPro.metadata.tables["daily_pro"].create(bind=main_db, checkfirst=True)
 WeeklyPro.metadata.tables["weekly_pro"].create(bind=main_db, checkfirst=True)
 DailyBasicPro.metadata.tables["daily_basic_pro"].create(bind=main_db, checkfirst=True)
+DailyBasic.metadata.tables["daily_basic"].create(bind=main_db, checkfirst=True)
+
 StockCompanyPro.metadata.tables["stock_company_pro"].create(bind=main_db, checkfirst=True)
 ConceptPro.metadata.tables["concept_pro"].create(bind=main_db, checkfirst=True)
 ConceptDetailPro.metadata.tables["concept_detail_pro"].create(bind=main_db, checkfirst=True)

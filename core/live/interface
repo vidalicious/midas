@@ -1,0 +1,190 @@
+10分钟走势图 http://data.gtimg.cn/flashdata/hushen/minute/sz002022.js?maxage=10
+个股新闻 http://news.gtimg.cn/?name=finance_news&n=8&q=sz002022
+财务关注 http://news.gtimg.cn/notice.php?name=finance_notice&n=10&q=sz002022
+是否休市 http://qt.gtimg.cn/r=0.6618123560937246q=marketStat,stdunixtime
+http://qt.gtimg.cn/r=0.8108881061573958&q=ff_sz002022
+http://stock.gtimg.cn/data/view/ggdx.php?t=1&q=sz002022&r=0.8108881061573958
+http://news.gtimg.cn/bodynews.php?name=body_news&&n=8&q=sz002022
+http://stock.gtimg.cn/data/index.php?appn=detail&action=data&c=sz002022&p=14
+分价占比:http://stock.gtimg.cn/data/index.php?appn=price&c=sz002022
+http://stock.gtimg.cn/data/view/ggdx.php?t=2&q=sz002022&r=0.974757491958147
+http://stock.gtimg.cn/data/view/zldx.php?t=1
+http://news.gtimg.cn/more.php?q=sz002022&page=1
+http://news.gtimg.cn/notice_more.php?q=sz002022&page=1
+
+
+http://hq.sinajs.cn/?_=68427.57337974124&list=sz000002
+相关股票市场排行http://hq.sinajs.cn/?_=1296201571962&list=new_fdc_changepercent_up
+逐笔交易http://money.finance.sina.com.cn/quotes_service/view/CN_TransListV2.php?num=100&symbol=sz000002
+http://hq.sinajs.cn/random=12962028371109537144650746908&list=market_stock_sh
+http://hq.sinajs.cn/list=sz000002_i
+资金流入排行http://hq.sinajs.cn/_=1296202838714&format=text&func=;SINACALLBACKFLOW%28zjlx_paihang%29;&list=zjlx_paihang
+行业指数榜http://biz.finance.sina.com.cn/stock/industry_up_js.php?limit=12
+------------------------------------------------------------------------------
+以下页面采用xml数据输入，xml文件把后面的png换成.html就可以
+每股收益http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/alphabarex1_mgsy.png
+每股净资产http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/alphabarex1_mgjzc.png
+净资产收益率http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/alphabarex2_jzcsyl.png
+股东权益http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/alphabarex2_gdqy.png
+收入趋势http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/alphabarex2_srqs.png
+资产负债http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/alphabarex2_zcfz.png
+
+收入
+按行业分布http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/pie3d_csimex1_industry.png
+按地域分布http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/pie3d_csimex1_area.png
+按产品分布http://finance.sina.com.cn/realstock/company/sz000002/iframe/pie3d_csimex1_product.png
+
+流通股持股比例http://www.sinaimg.cn/cj/qimg/2011/2011012800/000002/bar_csimex2_0.png
+http://finance.sina.com.cn/realstock/company/sz000002/iframe/bar_csimex2.html
+------------------------------------------------------------------------------
+投资者观点http://mark.sina.com.cn/v2/GetAllResult.php?p_mark=gp&i_mark=sz000002
+公司公告http://vip.stock.finance.sina.com.cn/api/jsonp.php/CB_AllServicegetMemordlistbysymbol/CB_AllService.getMemordlistbysymbol?PaperCode=000002
+调查http://survey.news.sina.com.cn/survey_js.php?pid=20205
+期货列表http://hq.sinajs.cn/list=CFF_LIST
+上证指数http://image.sinajs.cn/newchart/small/nsh000001.gif?1296206244124
+http://hq.sinajs.cn/rn=1296206244122&list=s_sh000001,s_sz399001,s_sh000300,CFF_IF1102,hkHSI,hf_GC,hf_CL
+热门股票http://finance.sina.com.cn/realstock/company/hotstock_daily_a.js
+新闻http://top.finance.sina.com.cn/ws/GetTopDataList.php?top_not_url=/stock/|/money/&top_type=day&top_cat=all&top_time=20110128&top_show_num=10&top_order=ASC&js_var=all_1_data
+
+领涨板块和领跌板块http://money.finance.sina.com.cn/q/view/newSinaHy_gs.php
+
+http://top.finance.sina.com.cn/ws/GetTopDataList.php?top_type=day&top_cat=stock&top_time=today&top_show_num=24&top_order=ASC&js_var=stock_1_data
+
+换手率排行http://hq.sinajs.cn/?rn=1296207507720&format=text&list=new_sh_turnoverrate,new_sz_turnoverrate
+净流入个股http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296207507721694/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=netamount&asc=0&bankuai=&shichang=
+阶段涨跌统计http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296207507727302/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=2
+热点新闻http://comment4.news.sina.com.cn/comment/xml/cj/cj_stock_hotlist.js
+涨跌幅排行http://hq.sinajs.cn/_=1296207509875&list=new_all_changepercent_up,new_all_changepercent_down
+
+5分钟涨幅榜http://hq.sinajs.cn/?rn=1296370657262&format=text&list=stock_sh_up_5min_d,stock_sz_up_5min_d
+5分钟跌幅榜http://hq.sinajs.cn/?rn=1296370730233&format=text&list=stock_sh_down_5min_20,stock_sz_down_5min_20
+成交量http://hq.sinajs.cn/?rn=1296370784620&format=text&list=stock_sh_amount_d_10,stock_sz_amount_d_10
+振幅http://hq.sinajs.cn/?rn=1296370831125&format=text&list=stock_sh_range_d_10,stock_sz_range_d_10
+委比http://hq.sinajs.cn/?rn=1296370864743&format=text&list=weibi_sh,weibi_sz
+量比http://hq.sinajs.cn/?rn=1296370904678&format=text&list=liangbi_sh,liangbi_sz
+权证http://hq.sinajs.cn/?rn=1296370933994&format=text&list=warrant_up_d_10,warrant_down_d_10
+
+净流出个股 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296370969988329/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=netamount&asc=1&bankuai=&shichang=
+主力流入   http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371010198812/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=r0_net&asc=0&bankuai=&shichang=
+主力流出   http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371104346216/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=r0_net&asc=1&bankuai=&shichang=
+连续流入   http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371153932903/MoneyFlow.ssl_bkzj_lxjlr?page=1&num=20&sort=cnt_r0x_ratio&asc=0&bankuai=
+连续流出   http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371196814609/MoneyFlow.ssl_bkzj_lxjlr?page=1&num=20&sort=cnt_r0x_ratio&asc=1&bankuai=
+行业资金   http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371226864249/MoneyFlow.ssl_bkzj_bk?page=1&num=20&sort=netamount&asc=0&fenlei=0
+
+阶段涨跌幅2日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=2
+阶段涨跌幅3日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=3
+阶段涨跌幅4日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=4
+阶段涨跌幅5日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=5
+阶段涨跌幅10日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=10
+阶段涨跌幅20日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=20
+阶段涨跌幅30日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=30
+阶段涨跌幅60日 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371403121525/StatisticsService.getShortList?page=1&num=20&sort=_changes&asc=0&type=60
+
+盘中创新高  http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371664892892/StatisticsService.getNewHighList?page=1&sort=symbol&asc=1&node=adr_hk&num=20
+盘中创新低  http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371728191158/StatisticsService.getNewLowList?page=1&sort=symbol&asc=1&node=adr_hk&num=20
+成交量骤增  http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371761520946/StatisticsService.getVolumeRiseList?page=1&num=20&sort=changes_volume_per&asc=0&node=adr_hk
+成交量骤减  http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371817179588/StatisticsService.getVolumeReduceList?page=1&num=20&sort=changes_volume_per&asc=1&node=adr_hk
+连续放量    http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371865029218/StatisticsService.getVolumeRiseConList?page=1&num=20&sort=day_con&asc=0&node=adr_hk
+连续缩量    http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371892687449/StatisticsService.getVolumeReduceConList?page=1&num=20&sort=day_con&asc=0&node=adr_hk
+持续上涨    http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE129637193584167/StatisticsService.getStockRiseConList?page=1&num=20&sort=day_con&asc=0&node=adr_hk
+持续下跌    http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/SINAFINANCE1296371966779183/StatisticsService.getStockReduceConList?page=1&num=20&sort=day_con&asc=0&node=adr_hk
+
+获取节点    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodes
+沪A排行     http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=5&sort=changepercent&asc=0&node=sh_a
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=sh_a
+港股排行    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHKStockData?page=1&num=5&sort=changepercent&asc=0&node=qbgg_hk
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHKStockCount?node=qbgg_hk
+基金排行    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getFundNetData?page=1&num=5&sort=dwjz&asc=0&node=open_fund
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getFundNetCount?page=1&num=5&sort=dwjz&asc=0&node=open_fund
+
+沪B排行    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=5&sort=changepercent&asc=0&node=sh_b
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=sh_b
+深A排行    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=5&sort=changepercent&asc=0&node=sz_a
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=sz_a
+深B排行    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=5&sort=changepercent&asc=0&node=sz_b
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=sz_b
+权证       http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple?page=1&num=5&sort=changepercent&asc=0&node=hs_qz
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple?node=hs_qz
+沪A涨速    http://hq.sinajs.cn/rn=xoqez&format=text&list=stock_sh_up_5min_20
+沪B涨速    http://hq.sinajs.cn/rn=14xug&format=text&list=stock_sz_up_5min_20
+
+港股涡轮   http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/HK_DelayQuotes.getWarrant?stock_symbol=&value=&class=a&publisher=&page=1&num=5&sort=chgrate&asc=0&node=hk_warrant_rgz
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/HK_DelayQuotes.getWarrantCount?stock_symbol=&value=&class=a&publisher=&page=1&num=5&sort=chgrate&asc=0&node=hk_warrant_rgz
+
+港股ADR    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getADRData?page=1&num=5&sort=pchg&asc=0&node=adr_hk
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getADRCount?page=1&num=5&sort=pchg&asc=0&node=adr_hk
+
+封闭式基金 http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple?page=1&num=5&sort=changepercent&asc=0&node=close_fund
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple?node=close_fund
+
+金融行业   http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=40&sort=symbol&asc=1&node=new_jrhy&_s_r_a=init
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=new_jrhy
+
+["行情中心",[["沪深股市",[["新浪行业",[["其它行业","","new_qtxy"],["感光材料","","new_ggcl"],["房地产","","new_fdc"],["金融行业","","new_jrhy","cn"],["综合行业","","new_zhhy","cn"],["石油行业","","new_syhy","cn"],["自行车","","new_zxc","cn"],["有色金属","","new_ysjs","cn"],["造纸行业","","new_zzhy","cn"],["印刷包装","","new_ysbz","cn"],["仪器仪表","","new_yqyb","cn"],["医疗器械","","new_ylqx","cn"],["物资外贸","","new_wzwm","cn"],["陶瓷行业","","new_tchy","cn"],["塑料制品","","new_slzp","cn"],["水泥行业","","new_snhy","cn"],["食品行业","","new_sphy","cn"],["生物制药","","new_swzy","cn"],["商业百货","","new_sybh","cn"],["汽车制造","","new_qczz","cn"],["农药化肥","","new_nyhf","cn"],["农林牧渔","","new_nlmy","cn"],["酿酒行业","","new_ljhy","cn"],["摩托车","","new_mtc","cn"],["煤炭行业","","new_mthy","cn"],["开发区","","new_kfq","cn"],["酒店旅游","","new_jdly","cn"],["交通运输","","new_jtys","cn"],["建筑建材","","new_jzjc","cn"],["家具行业","","new_jjhy","cn"],["家电行业","","new_jdhy","cn"],["机械行业","","new_jxhy","cn"],["环保行业","","new_hbhy","cn"],["化纤行业","","new_hqhy","cn"],["化工行业","","new_hghy","cn"],["供水供气","","new_gsgq","cn"],["公路桥梁","","new_glql","cn"],["钢铁行业","","new_gthy","cn"],["服装鞋类","","new_fzxl","cn"],["飞机制造","","new_fjzz","cn"],["纺织行业","","new_fzhy","cn"],["纺织机械","","new_fzjx","cn"],["发电设备","","new_fdsb","cn"],["电子信息","","new_dzxx","cn"],["电子器件","","new_dzqj","cn"],["电器行业","","new_dqhy","cn"],["电力行业","","new_dlhy","cn"],["船舶制造","","new_cbzz","cn"],["传媒娱乐","","new_cmyl","cn"],["玻璃行业","","new_blhy","cn"]],"","sinahy","cn"],["概念板块",[["触摸屏","","gn_cmp"],["1月解禁","","gn_1yjj"],["金融参股","","gn_jrcg"],["社保重仓","","gn_sbzc"],["保险重仓","","gn_bxzc"],["信托重仓","","gn_xtzc"],["券商重仓","","gn_qszc"],["QFII重仓","","gn_QFIIzc"],["核电核能","","gn_hdhn"],["稀土永磁","","gn_xtyc"],["锂电池","","gn_ldc"],["多晶硅","","gn_djg"],["精选指数","","gn_jxzs"],["分拆上市","","gn_fcss"],["武汉规划","","gn_whgh"],["超级细菌","","gn_cjxj"],["三网融合","","gn_swrh"],["融资融券","","gn_rzrq"],["稀缺资源","","gn_xqzy"],["含可转债","","gn_hkzz"],["次新股","","gn_cxg"],["含B股","","gn_hBg"],["含H股","","gn_hHg"],["权证类","","gn_qzl"],["上海本地","","gn_shbd"],["深圳本地","","gn_szbd"],["振兴沈阳","","gn_zxsy"],["沿海发展","","gn_yhfz"],["央企50","","gn_yq50"],["超大盘","","gn_cdp"],["3G概念","","gn_3ggn"],["参股金融","","gn_cgjr"],["基金重仓","","gn_jjzc"],["低碳经济","","gn_dtjj"],["股期概念","","gn_gqgn"],["ST板块","","gn_stbk"],["创投概念","","gn_ctgn"],["股权激励","","gn_gqjl"],["甲型流感","","gn_jxlg"],["黄金概念","","gn_hjgn"],["军工航天","","gn_jght"],["物联网","","gn_wlw"],["迪士尼","","gn_dsn"],["出口退税","","gn_ckts"],["铁路基建","","gn_tljj"],["新能源","","gn_xny"],["成渝特区","","gn_cytq"],["海峡西岸","","gn_hxxa"],["黄河三角","","gn_hhsj"],["未股改","","gn_wgg"],["循环经济","","gn_xhjj"],["智能电网","","gn_zndw"],["资产注入","","gn_zczr"]],"","gainianbankuai"],["地域板块",[["北京","","diyu_1100"],["天津","","diyu_1200"],["河北","","diyu_1300"],["山西","","diyu_1400"],["内蒙古","","diyu_1500"],["辽宁","","diyu_2100"],["吉林","","diyu_2200"],["黑龙江","","diyu_2300"],["上海","","diyu_3100"],["江苏","","diyu_3200"],["浙江","","diyu_3300"],["安徽","","diyu_3400"],["福建","","diyu_3500"],["江西","","diyu_3600"],["山东","","diyu_3700"],["河南","","diyu_4100"],["湖北","","diyu_4200"],["湖南","","diyu_4300"],["广东","","diyu_4400"],["广州","","diyu_4401"],["深圳","","diyu_4410"],["广西","","diyu_4500"],["海南","","diyu_4600"],["四川","","diyu_5100"],["贵州","","diyu_5200"],["云南","","diyu_5300"],["西藏","","diyu_5400"],["重庆","","diyu_5500"],["陕西","","diyu_6100"],["甘肃","","diyu_6200"],["青海","","diyu_6300"],["宁夏","","diyu_6400"],["新疆","","diyu_6500"]],"","diyu","cn"],["证监会行业",[["农、林、牧、渔业",[["农业","","hangye_ZA01"],["林业","","hangye_ZA03"],["畜牧业","","hangye_ZA05"],["渔业","","hangye_ZA07"],["农、林、牧、渔业","","hangye_ZA09"]],"","hangye_ZA"],["采掘业",[["煤炭采选业","","hangye_ZB01"],["石油和天然气开采业","","hangye_ZB03"],["黑色金属矿采选业","","hangye_ZB05"],["有色金属矿采选业","","hangye_ZB07"],["其他矿采选业","","hangye_ZB49"],["采掘服务业","","hangye_ZB50"]],"","hangye_ZB"],["制造业",[["食品、饮料","","hangye_ZC0"],["纺织、服装、皮毛","","hangye_ZC1"],["木材、家具","","hangye_ZC2"],["造纸、印刷","","hangye_ZC3"],["石油化工、塑胶塑料","","hangye_ZC4"],["电子","","hangye_ZC5"],["金属、非金属","","hangye_ZC6"],["机械、设备、仪表","","hangye_ZC7"],["医药、生物制品","","hangye_ZC8"],["其他制造业","","hangye_ZC99"]],"","hangye_ZC"],["电力、供水供气业",[["电力、供水供气业","","hangye_ZD01"],["煤气生产和供应业","","hangye_ZD03"],["自来水生产供应业","","hangye_ZD05"]],"","hangye_ZD"],["建筑业",[["土木工程建筑业","","hangye_ZE01"],["装修装饰业","","hangye_ZE05"]],"","hangye_ZE"],["交通运输、仓储业",[["铁路运输业","","hangye_ZF01"],["公路运输业","","hangye_ZF03"],["管道运输业","","hangye_ZF05"],["水上运输业","","hangye_ZF07"],["航空运输业","","hangye_ZF09"],["交通运输辅助业","","hangye_ZF11"],["其他交通运输业","","hangye_ZF19"],["仓储业","","hangye_ZF21"]],"","hangye_ZF"],["信息技术业",[["通信及相关设备业","","hangye_ZG81"],["计算机及相关设备业","","hangye_ZG83"],["通信服务业","","hangye_ZG85"],["计算机应用服务业","","hangye_ZG87"]],"","hangye_ZG"],["批发和零售贸易",[["食品饮料、家用批发","","hangye_ZH01"],["能源、材料和机电业","","hangye_ZH03"],["零售业","","hangye_ZH11"],["商业经纪与代理业","","hangye_ZH21"]],"","hangye_ZH"],["金融、保险业",[["银行业","","hangye_ZI01"],["保险业","","hangye_ZI11"],["证券、期货业","","hangye_ZI21"],["金融信托业","","hangye_ZI31"],["基金业","","hangye_ZI41"],["其他金融业","","hangye_ZI99"]],"","hangye_ZI"],["房地产业",[["房地产中介服务业","","hangye_ZJ09"],["房地产开发与经营业","","hangye_ZJ01"],["房地产管理业","","hangye_ZJ05"]],"","hangye_ZJ"],["社会服务业",[["公共设施服务业","","hangye_ZK01"],["专业、科研服务业","","hangye_ZK20"],["餐饮业","","hangye_ZK30"],["旅馆业","","hangye_ZK32"],["旅游业","","hangye_ZK34"],["卫生、保健、护理业","","hangye_ZK37"],["租赁服务业","","hangye_ZK39"],["其他社会服务业","","hangye_ZK99"]],"","hangye_ZK"],["传播与文化产业",[["出版业","","hangye_ZL01"],["声像业","","hangye_ZL05"],["广播电影电视业","","hangye_ZL10"],["艺术业","","hangye_ZL15"],["信息传播服务业","","hangye_ZL20"],["其他传播、文化产业","","hangye_ZL99"]],"","hangye_ZL"],["综合类","","hangye_ZM"]],"","hangye","cn"],["分类",[["沪市A股","","sh_a"],["沪市B股","","sh_b","cn.cn_sh_b"],["深市A股","","sz_a"],["深市B股","","sz_b"],["沪市债券","","sh_z_fenlei","bond.bond","{node: \'sh_z\'}"],["深市债券","","sz_z_fenlei","bond.bond","{node: \'sz_z\'}"],["沪深A股","","hs_a"],["沪深B股","","hs_b"],["沪深债券","","hs_z_fenlei","bond.bond","{node: \'hs_z\'}"],["沪深基金","","close_fund_fenlei","bond.fundex","{node: \'close_fund\'}"],["所有指数","","hs_s","bond.cnindex"],["中小企业","","zxqy"],["沪深权证","","hs_qz_fenlei","bond.cnzxg","{node: \'hs_qz\'}"],["创业板","","cyb","cn"]],"","fenlei"],["指数成分",[["沪市",[["上证指数","","zhishu_000001"],["上证央企","","zhishu_000042"],["上证公用","","zhishu_000041"],["上证电信","","zhishu_000040"],["上证信息","","zhishu_000039"],["上证金融","","zhishu_000038"],["上证医药","","zhishu_000037"],["上证消费","","zhishu_000036"],["上证可选","","zhishu_000035"],["上证工业","","zhishu_000034"],["上证材料","","zhishu_000033"],["上证能源","","zhishu_000032"]],"","zhishu_sh","bond"],["深市",[["深证综指","","zhishu_399106"],["深证成指","","zhishu_399001"],["农林指数","","zhishu_399110"],["采掘指数","","zhishu_399120"],["制造指数","","zhishu_399130"],["食品指数","","zhishu_399131"],["纺织指数","","zhishu_399132"],["木材指数","","zhishu_399133"],["造纸指数","","zhishu_399134"],["石化指数","","zhishu_399135"],["电子指数","","zhishu_399136"],["金属指数","","zhishu_399137"],["机械指数","","zhishu_399138"],["医药指数","","zhishu_399139"],["水电指数","","zhishu_399140"],["建筑指数","","zhishu_399150"],["运输指数","","zhishu_399160"],["IT指数","","zhishu_399170"],["批零指数","","zhishu_399180"],["金融指数","","zhishu_399190"],["地产指数","","zhishu_399200"],["服务指数","","zhishu_399210"],["传播指数","","zhishu_399220"],["综企指数","","zhishu_399230"]],"","zhishu_sz","bond"]],"","zhishu","bond"],["沪深300","","hs300","cn"],["大盘指数","","dpzs","bond.cnindex"],["<font color=\"red\">上证重点指数<\/font>","http:\/\/vip.stock.finance.sina.com.cn\/q\/view\/mainIndex.php","hsgs_shzdzs","","{linktype:\"_blank\"}"],["排行",[["A股涨幅","","stock_hs_up","","{node:\'hs_a\',sort:\'changepercent\',asc:0}"],["A股跌幅","","stock_hs_down","","{node:\'hs_a\',sort:\'changepercent\',asc:1}"],["A股成交额","","stock_hs_amount","","{node:\'hs_a\',sort:\'amount\',asc:0}"],["A股涨速","","stock_hs_up_5min_20","cnmr"],["A股跌速","","stock_hs_down_5min_20","cnmr"],["A股换手率","","stock_hs_tor","cn.cnturnoverr","{node: \'hs_a\', sort: \'turnoverratio\', asc: 0}"],["沪A涨幅","","stock_sh_up","","{node:\'sh_a\',sort:\'changepercent\',asc:0}"],["沪A跌幅","","stock_sh_down","","{node:\'sh_a\',sort:\'changepercent\',asc:1}"],["沪A成交额","","stock_sh_amount","","{node:\'sh_a\',sort:\'amount\',asc:0}"],["沪A涨速","","stock_sh_up_5min_20","cnmr"],["沪A跌速","","stock_sh_down_5min_20","cnmr"],["沪A换手率","","stock_sh_tor","cn.cnturnoverr","{node: \'sh_a\', sort: \'turnoverratio\', asc: 0}"],["深A涨幅","","stock_sz_up","","{node:\'sz_a\',sort:\'changepercent\',asc:0}"],["深A跌幅","","stock_sz_down","","{node:\'sz_a\',sort:\'changepercent\',asc:1}"],["深A成交额","","stock_sz_amount","","{node:\'sz_a\',sort:\'amount\',asc:0}"],["深A涨速","","stock_sz_up_5min_20","cnmr"],["深A跌速","","stock_sz_down_5min_20","cnmr"],["深A换手率","","stock_sz_tor","cn.cnturnoverr","{node: \'sz_a\', sort: \'turnoverratio\', asc: 0}"],["沪B涨幅","","stock_shb_up","cn.cn_sh_b","{node:\'sh_b\',sort:\'changepercent\',asc:0}"],["沪B跌幅","","stock_shb_down","cn.cn_sh_b","{node:\'sh_b\',sort:\'changepercent\',asc:1}"],["沪B成交额","","stock_shb_amount","cn.cn_sh_b","{node:\'sh_b\',sort:\'amount\',asc:0}"],["深B涨幅","","stock_szb_up","","{node:\'sz_b\',sort:\'changepercent\',asc:0}"],["深B跌幅","","stock_szb_down","","{node:\'sz_b\',sort:\'changepercent\',asc:1}"],["深B成交额","","stock_szb_amount","","{node:\'sz_b\',sort:\'amount\',asc:0}"]],"","paihang"]],"","hsgs","cn"],["创业板","","cyb_root","cn","{node: \'cyb\'}"],["基金",[["封闭式基金","","close_fund","bond.fundex"],["开放式基金","","open_fund","fundnet"],["货币型基金","","money_fund","fundmoney"],["ETF基金净值","","etf_jz_fund","fundnet"],["ETF基金行情","","etf_hq_fund","bond.fundex"],["LOF基金行情","","lof_hq_fund","bond.fundex"],["创新型基金","","crefund","crefund"],["基金预测净值","","jjycjz","fund"]],"","jijin"],["权证",[["沪深权证","","hs_qz","bond.cnzxg"]],"","quanzheng","bond"],["香港股市",[["全部港股","","qbgg_hk","hk"],["蓝筹股","","lcg_hk","hk"],["红筹股","","hcg_hk","hk"],["国企股","","gqg_hk"],["创业板","","cyb_hk"],["指数","","zs_hk","hkindex"],["A+H","","aplush","anh"],["窝轮",[["认股证","","hk_warrant_rgz","war"],["牛熊证","","hk_warrant_nxz","war"],["认购","","hk_warrant_rengou","war.warsimple"],["认沽","","hk_warrant_rengu","war.warsimple"],["牛证","","hk_warrant_nz","war.warsimple"],["熊证","","hk_warrant_xz","war.warsimple"]],"","hk_warrant","war"],["ADR","","adr_hk","adr"]],"","hkstock","hk"],["债券",[["沪深债券","","hs_z","bond.bond"],["沪市债券","","sh_z","bond.bond"],["深市债券","","sz_z","bond.bond"]],"","bond","bond"],["美国股市",[["中国概念股","","china_us"],["科技类","","tect_us"],["金融类","","finance_us"],["制造零售类","","sales_us"],["汽车能源类","","auto_us"],["媒体类","","meida_us"],["医药食品类","","yysp_us"]],"","usstock","us"],["外汇",[["基本汇率","","jbhl_forex"],["交叉汇率","","jchl_forex"],["所有汇率","","all_forex"],["日元","","jyp_forex"],["瑞郎","","chf_forex"],["英磅","","gbp_forex"],["欧元","","eur_forex"],["澳元","","aud_forex"],["加元","","cad_forex"],["港币","","hkd_forex"]],"","forex","forex"],["期货",[["全球期货",[["全球股指期货","","globla_futures"],["外汇期货","","qqwhqh_qh"],["贵金属","","qqgjs_qh"],["工业品","","qqgyp_qh"],["农产品","","qqncp_qh"],["能源","","qqny_qh"]],"","global_qh","futuresglobal"],["中国金融期货交易所",[["股指期货","","qz_qh","futuresindex"]],"","cff","futuresindex"],["上海期货交易所",[["黄金","","hj_qh","futures.fu_dig2"],["沪锌","","xing_qh"],["燃油","","ry_qh"],["橡胶","","xj_qh"],["沪铝","","lv_qh"],["沪铜","","tong_qh"],["线材","","xc_qh"],["螺钢","","lwg_qh"]],"","sqs_qh"],["大连商品交易所",[["PVC","","pvc_qh"],["乙烯","","lldpe_qh"],["豆油","","dy_qh"],["豆一","","dd_qh"],["玉米","","hym_qh"],["豆二","","de_qh"],["豆粕","","dp_qh"],["棕油","","zly_qh"]],"","dsq_qh"],["郑州商品交易所",[["棉花","","mh_qh"],["菜油","","czy_qh"],["甲酸","","pta_qh"],["白糖","","bst_qh"],["强麦","","qm_qh"],["硬麦","","ym_qh"],["籼稻","","zxd_qh"]],"","zsq_qh"]],"","qihuo","futures"],["黄金",[["黄金现货",[["上海黄金交易所行情","","sge_gold"]],"","sge_gold"],["黄金期货",[["内盘","","np_gold","futures.fu_dig2","{node: \'hj_qh\'}"],["外盘","","wp_gold","futuresglobal"]],"","qihuo_gold"]],"","gold","gold"],["环球股指",[["美洲","","america_global"],["欧洲","","euro_global"],["亚洲","","asia_global"],["非洲","","africa_global"],["大洋洲","","oceania_global"]],"","hqgz","global"],["板块汇总行情","http:\/\/finance.sina.com.cn\/stock\/sl\/index.html","bkhq",null,"{linktype:\"iframe\"}"],["网上交易","http:\/\/biz.finance.sina.com.cn\/hq\/stock_trade.php","wsjy",null,"{linktype:\"iframe\"}"],["我的自选",[["沪深自选","http:\/\/vip.stock.finance.sina.com.cn\/portfolio\/main.php","portfolio_cn","","{linktype:\"_blank\"}"],["基金自选","http:\/\/vip.stock.finance.sina.com.cn\/myfund\/main.php","portfolio_fund","","{linktype:\"_blank\"}"],["港股自选","http:\/\/vip.stock.finance.sina.com.cn\/hkstock\/main.php","portfolio_hk","","{linktype:\"_blank\"}"],["美股自选","http:\/\/vip.stock.finance.sina.com.cn\/myusstock\/main.php","portfolio_us","","{linktype:\"_blank\"}"],["老版沪深自选","http:\/\/biz.finance.sina.com.cn\/hq\/stock_my.php","wdzx_lb_hszx","","{linktype:\"_blank\"}"],["老版港股自选","http:\/\/biz.finance.sina.com.cn\/hq\/hk_stock_my.php","wdzx_lb_gg","","{linktype:\"_blank\"}"],["老版期货自选","http:\/\/biz.finance.sina.com.cn\/hq\/futures_my.php","wdzx_lb_qh","","{linktype:\"_blank\"}"]],"","myportfolio"],["<font color=\"red\">老版行情中心<\/font>","http:\/\/biz.finance.sina.com.cn\/hq\/index.php?page=stock_my.php&ver=1","wdzx_old_hqzx","","{linktype:\"_blank\"}"]],"","hqzx"]
+
+数据节点 http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.getTreeNodes
+["资金流向",[["市场资金流向","","sczjlx"],["板块资金流向",[["新浪行业","","blocktol_sina"],["证监会行业","","blocktol_zjh"],["概念板块","","blocktol_conc"]],"","bkzjlx"],["个股资金流向",[["净流入额排名","","jlrepm"],["净流入率排名","","jlrlpm"],["主力净流入额排名","","zljlrepm"],["主力净流入率排名","","zljlrlpm"],["散户净流入额排名","","shjlrepm"],["散户净流入率排名","","shjlrlpm"]],"","ggzjlx"],["资金路线图",[["新浪行业资金路线图","","bksinahangye"],["证监会行业资金路线图","","bkzjhhangye"],["概念板块资金路线图","","bkgainian"],["个股阶段统计","","ggjdtj"],["主力连续净流入","","lxjlrg"],["主力连续净流出","","lxjlcg"]],"","zjlxt"]],"","moneyflow","mf_index"]
+
+证监会行业 http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_bk?page=1&num=20&sort=netamount&asc=0&fenlei=2
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssc_bkzj_bk?fenlei=2
+新浪行业  http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_bk?page=1&num=20&sort=netamount&asc=0&fenlei=0
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssc_bkzj_bk?fenlei=0
+概念 http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_bk?page=1&num=20&sort=netamount&asc=0&fenlei=1
+净流入http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=netamount&asc=0&bankuai=&shichang=
+主力净流入额http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=r0_net&asc=0&bankuai=&shichang=
+http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssc_bkzj_ssggzj?bankuai=
+主力净流入率http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=r0_ratio&asc=0&bankuai=&shichang=
+散户净流入额http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=r3_net&asc=0&bankuai=&shichang=
+散户净流入率http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_ssggzj?page=1&num=20&sort=r0_ratio&asc=0&bankuai=&shichang=
+新浪行业资金路线图http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzjlxt?page=1&num=20&sort=cate_id&asc=1&fenlei=0
+证监会行业资金路线图http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzjlxt?page=1&num=20&sort=cate_id&asc=1&fenlei=2
+概念板资金路线图http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzjlxt?page=1&num=20&sort=cate_id&asc=1&fenlei=1
+个股阶段统计    http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_jdtj_zl?page=1&num=20&sort=symbol&asc=1&bankuai=&shichang=
+主力连续净流入  http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_lxjlr?page=1&num=20&sort=cnt_r0x_ratio&asc=0&bankuai=
+主力连续净流出  http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssl_bkzj_lxjlr?page=1&num=20&sort=cnt_r0x_ratio&asc=1&bankuai=
+
+评级菜单 http://vip.stock.finance.sina.com.cn/q/view/js/sjzx_menu.js
+http://hq.sinajs.cn/rn=1296376268946262817017253123&list=CFF_RE_IF1102,CFF_RE_IF1103,CFF_RE_IF1106,CFF_RE_IF1109
+
+权重股排行榜 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/deal300/Market_Center.getHQNodeData?page=1&num=8&sort=changepercent&node=hs300&_s_r_a=sort&asc=0
+权重股跌幅榜 http://vip.stock.finance.sina.com.cn/quotes_service/api/jsonp.php/deal300/Market_Center.getHQNodeData?page=1&num=8&sort=changepercent&node=hs300&_s_r_a=sort&asc=1
+
+沪铜http://hq.sinajs.cn/rn=12963766312293227764939184946&list=CU1104
+http://image.sinajs.cn/newchart/v5/futures/mins/CU1104.gif?12963766312315412432163938792
+
+http://hq.sinajs.cn/rn=1296376631418&list=A1105,A1109,M1105,M1109,B1109,Y1109,C1105,C1109,L1105,P1109,V1105,ER1109,ER1105,CF1109,CF1105,WS1109,WT1109,SR1105,SR1109,RO1105,RO1109,TA1105,RB1110,WR1110,CU1103,CU1104,AL1104,ZN1104,AU1106,RU1103,RU1105,FU1105,FU1103
+var hq_str_A1105="豆一1105,145946,4300,4304,4290,4295,4288,4297,4291,4296,4301,1,2,15074,212,连,豆一,2011-01-28";
+var hq_str_A1109="豆一1109,145957,4400,4428,4400,4426,4410,4411,4410,4418,4432,3,3,110834,14502,连,豆一,2011-01-28";
+var hq_str_M1105="豆粕1105,145957,3424,3434,3416,3430,3416,3421,3416,3425,3426,8,3,46900,1836,连,豆粕,2011-01-28";
+var hq_str_M1109="豆粕1109,145958,3455,3475,3445,3455,3451,3452,3452,3459,3447,253,7,798042,244932,连,豆粕,2011-01-28";
+var hq_str_B1109="豆二1109,145649,4589,4589,4589,4566,4561,4590,4589,4589,4582,1,1,64,2,连,豆二,2011-01-28";
+var hq_str_Y1109="豆油1109,150000,10398,10436,10360,10400,10388,10390,10388,10404,10410,23,4,415588,305682,连,豆油,2011-01-28";
+var hq_str_C1105="玉米1105,151404,2196,2205,2196,2198,2198,2199,2198,2198,2197,2,67,70982,4070,连,玉米,2011-01-28";
+var hq_str_C1109="玉米1109,151404,2339,2352,2338,2342,2340,2341,2341,2344,2343,410,58,434194,145188,连,玉米,2011-01-28";
+var hq_str_L1105="乙烯1105,145959,11560,11820,11485,11670,11730,11735,11730,11700,11735,27,168,181216,517766,连,乙烯,2011-01-28";
+var hq_str_P1109="棕油1109,150000,9622,9724,9622,9674,9680,9684,9682,9688,9686,3,9,153958,128198,连,棕油,2011-01-28";
+var hq_str_V1105="PVC1105,150000,8110,8220,8100,8155,8210,8215,8215,8180,8160,74,28,52654,53470,连,PVC,2011-01-28";
+var hq_str_ER1109="籼稻1109,145957,2574,2587,2561,2577,2565,2566,2565,2574,2574,17,8,68116,48028,郑,籼稻,2011-01-28";
+var hq_str_ER1105="籼稻1105,145956,2346,2348,2335,2345,2335,2336,2336,2340,2348,105,5,47600,6134,郑,籼稻,2011-01-28";
+var hq_str_CF1109="棉花1109,145958,32280,32390,31960,32635,32225,32235,32230,32195,32330,398,13,253932,710290,郑,棉花,2011-01-28";
+var hq_str_CF1105="棉花1105,145958,31600,31745,31430,31975,31685,31690,31685,31610,31770,13,1,36100,12902,郑,棉花,2011-01-28";
+var hq_str_WS1109="强麦1109,145958,2819,2826,2803,2823,2813,2814,2813,2814,2831,139,13,103100,89522,郑,强麦,2011-01-28";
+var hq_str_WT1109="硬麦1109,145918,2338,2350,2330,2347,2337,2350,2343,2337,2338,5,2,1096,114,郑,硬麦,2011-01-28";
+var hq_str_SR1105="白糖1105,145957,7261,7269,7181,7227,7190,7194,7190,7229,7199,10,5,47198,6476,郑,白糖,2011-01-28";
+var hq_str_SR1109="白糖1109,145958,7361,7410,7310,7364,7322,7324,7322,7364,7332,199,13,405296,775060,郑,白糖,2011-01-28";
+var hq_str_RO1105="菜油1105,145957,10200,10232,10160,10214,10180,10188,10180,10200,10186,42,20,63302,2888,郑,菜油,2011-01-28";
+var hq_str_RO1109="菜油1109,145957,10628,10696,10616,10670,10626,10628,10626,10648,10648,176,20,83768,24022,郑,菜油,2011-01-28";
+var hq_str_TA1105="甲酸1105,145958,11504,11606,11438,11640,11552,11554,11552,11530,11632,555,9,225432,693004,郑,甲酸,2011-01-28";
+var hq_str_RB1110="螺钢1110,145959,5011,5050,5011,5033,5041,5042,5041,5036,5016,49,113,309476,145966,沪,螺钢,2011-01-28";
+var hq_str_WR1110="线材1110,145959,4891,4922,4868,4922,4808,4979,4868,4879,4922,1,1,4,4,沪,线材,2011-01-28";
+var hq_str_CU1103="沪铜1103,161154,71140,71610,70760,71300,71140,71400,71140,71270,70880,4,7,51630,8940,沪,沪铜,2011-01-28";
+var hq_str_CU1104="沪铜1104,151404,71470,72090,71060,71700,71720,71730,71730,71640,71280,5,9,139008,96144,沪,沪铜,2011-01-28";
+var hq_str_AL1104="沪铝1104,151404,16750,16855,16750,16785,16785,16790,16785,16805,16755,16,5,80670,15004,沪,沪铝,2011-01-28";
+var hq_str_ZN1104="沪锌1104,145959,18195,18510,18130,18255,18355,18370,18360,18350,18205,50,13,226098,296670,沪,沪锌,2011-01-28";
+var hq_str_AU1106="黄金1106,151404,283.5,284.73,283.28,290.41,284.73,284.74,284.73,283.95,290.46,17,1,54952,17086,沪,黄金,2011-01-28";
+var hq_str_RU1103="橡胶1103,145959,39605,40730,39605,40300,40085,40790,40725,40230,40270,1,1,8106,234,沪,橡胶,2011-01-28";
+var hq_str_RU1105="橡胶1105,145959,40000,40960,39820,40550,40940,40945,40940,40460,40250,14,7,200124,610376,沪,橡胶,2011-01-28";
+var hq_str_FU1105="燃油1105,145959,4650,4693,4641,4689,4687,4688,4688,4673,4694,26,15,79238,36386,沪,燃油,2011-01-28";
+var hq_str_FU1103="燃油1103,145959,4482,4512,4482,4520,4508,4510,4508,4499,4522,1,1,20188,1346,沪,燃油,2011-01-28";
+
+板块：http://hq2data.eastmoney.com/bk/BKQuery.aspx?type=0&size=10&orderType=0&0.2675685822632329

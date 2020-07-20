@@ -19,8 +19,9 @@ import midas.core.analyzer._0x39For_Lives as for_lives
 
 
 def working_day():
-    base.async_stock_basic()
-    base.async_daily()
+    # base.async_stock_basic()
+    # base.async_daily()
+    base.async_daily_basic_origin()
     # for_lives.main()
     # medical_aggressive.main()
     # aggressive_break.main()
@@ -32,6 +33,7 @@ def working_day():
 def total():
     base.async_stock_basic()
     base.async_daily()
+    base.async_daily_basic()
     weekly.async_weekly()
     holders.async_float_holders()
     for_lives.main()
