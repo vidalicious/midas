@@ -3,6 +3,7 @@ import json
 import time
 
 import tushare as ts
+import talib
 from pandas import DataFrame
 import numpy as np
 import math
@@ -111,8 +112,15 @@ def plot_candle(ax, ts_code, name, last_date, misc):
         df.loc[i, 'high'] = item.high
         df.loc[i, 'low'] = item.low
 
+    sma_5 = talib.SMA(np.array(df['close']), 5)
+    sma_10 = talib.SMA(np.array(df['close']), 10)
+    sma_20 = talib.SMA(np.array(df['close']), 20)
+
     ax.set_xticks(range(0, len(df['date']), 20))
     ax.set_xticklabels(df['date'][::20])
+    ax.plot(sma_5, linewidth=1, label='ma5')
+    ax.plot(sma_10, linewidth=1, label='ma10')
+    ax.plot(sma_20, linewidth=1, label='ma20')
 
     plt.title('{ts_code} {name} up_range:{up_range} holders:{holders_count}'.format(ts_code=ts_code, name=name,
               up_range=misc[COL_UP_RANGE], holders_count=int(misc[COL_HOLDERS_COUNT])),

@@ -3,6 +3,7 @@ import json
 import time
 import math
 import tushare as ts
+import talib
 from pandas import DataFrame
 import numpy as np
 import math
@@ -46,7 +47,7 @@ def main(offset=0):
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_5] = api.local_limit_count(daily, local_scale=5)
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_10] = api.local_limit_count(daily, local_scale=10)
 
-            daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.symbol == stock_basic.ts_code.split('.')[0]).one()
+            daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
 
             holders = main_session.query(models.FloatHolderPro).filter(models.FloatHolderPro.ts_code == stock_basic.ts_code).all()
@@ -62,8 +63,7 @@ def main(offset=0):
         print('##### ambush {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LOCAL_LIMIT_COUNT_5] == 1)
-                            & (data_frame[COL_LOCAL_LIMIT_COUNT_10] == 1)
+                            (data_frame[COL_LOCAL_LIMIT_COUNT_5] > 0)
                             & (data_frame[COL_DAILY_BREAK_INDEX] < 5)
                            ]
 
@@ -74,10 +74,15 @@ def main(offset=0):
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    plot_candle_gather(data_frame=data_frame, last_date=LAST_MARKET_DATE)
+    batch_size = 500
+    sub = 0
+    for i in range(0, len(data_frame), batch_size):
+        sub_df = data_frame.iloc[i:i+batch_size, :]
+        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub)
+        sub += 1
 
 
-def plot_candle_gather(data_frame, last_date):
+def plot_candle_gather(data_frame, last_date, sub):
     columns = 3
     rows = math.ceil(len(data_frame) / columns)
 
@@ -93,7 +98,7 @@ def plot_candle_gather(data_frame, last_date):
         plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/ambush/{date}_ambush.png'.format(date=last_date))
+    plt.savefig('../../buffer/ambush/{date}_ambush_{sub}.png'.format(date=last_date, sub=sub))
 
 def plot_candle(ax, ts_code, name, last_date, misc):
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
@@ -108,11 +113,18 @@ def plot_candle(ax, ts_code, name, last_date, misc):
         df.loc[i, 'high'] = item.high
         df.loc[i, 'low'] = item.low
 
+    sma_5 = talib.SMA(np.array(df['close']), 5)
+    sma_10 = talib.SMA(np.array(df['close']), 10)
+    sma_20 = talib.SMA(np.array(df['close']), 20)
+
     ax.set_xticks(range(0, len(df['date']), 20))
     ax.set_xticklabels(df['date'][::20])
+    ax.plot(sma_5, linewidth=1, label='ma5')
+    ax.plot(sma_10, linewidth=1, label='ma10')
+    ax.plot(sma_20, linewidth=1, label='ma20')
 
     plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count}'.format(ts_code=ts_code, name=name,
-              circ_mv=int(misc[COL_CIRC_MV] / 10000), holders_count=int(misc[COL_HOLDERS_COUNT])),
+              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT])),
               fontproperties='Heiti TC')
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',

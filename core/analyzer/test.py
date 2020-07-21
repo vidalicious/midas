@@ -28,6 +28,10 @@
 a = [1, 2, 3, 4, 5, 6, 7]
 b = a[:50]
 
+import requests
+a = requests.get('http://sqt.gtimg.cn/q=sh605168')
+b = a.text.split('~')
+
 
 import tushare as ts
 pro = ts.pro_api()

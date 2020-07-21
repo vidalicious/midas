@@ -80,11 +80,11 @@ class DailyBasic(Base):
     __tablename__ = "daily_basic"
 
     id = Column(BIGINT, primary_key=True, autoincrement=True)
-    symbol = Column(String(100))
+    ts_code = Column(String(100))
     name = Column(String(100))
     trade_date = Column(Integer)
-    total_mv = Column(Float)  # 总市值（万元）
-    circ_mv = Column(Float)  # 流通市值（万元）
+    total_mv = Column(Float)  # 总市值（亿元）
+    circ_mv = Column(Float)  # 流通市值（亿元）
 
 
 class StockCompanyPro(Base):

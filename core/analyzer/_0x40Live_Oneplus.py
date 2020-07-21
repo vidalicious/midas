@@ -37,7 +37,7 @@ def main(offset=0):
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_2] = api.local_limit_count(daily, local_scale=2)
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_10] = api.local_limit_count(daily, local_scale=10)
 
-            daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.symbol == stock_basic.ts_code.split('.')[0]).one()
+            daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
 
         except Exception as e:

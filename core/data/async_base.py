@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-
+import requests
 import tushare as ts
 
 import midas.core.data.models as models
@@ -93,26 +93,96 @@ def async_daily_basic():
         print('##### async_daily_basic {i} #####'.format(i=count))
         time.sleep(0.2)
 
+# /**
+#  * 股票接口
+#  *
+#  *  http://sqt.gtimg.cn/utf8/q=股票代码01,股票代码02&offset=1,2,3,4,31,32,33,38
+#  *                                                offset返回结果字段的索引号
+#  *   返回结果样例：v_sh600887="1
+#  *            2            ~伊利股份                     股票名称
+#  *            3            ~600887                      股票代码
+#  *            4            ~16.32                       最新报价
+#  *            5            ~16.31                       昨收
+#  *            6            ~16.31                       今开
+#  *            7            ~180204                      成交量(手)。除以100后单位为：万股
+#  *            8            ~94954                       外盘
+#  *            9            ~85250                       内盘
+#  *           10            ~16.31                       五档盘口:买01:元
+#  *           11            ~33                          五档盘口:买01:手
+#  *           12            ~16.30                       五档盘口:买02:元
+#  *           13            ~912                         五档盘口:买02:手
+#  *           14            ~16.29                       五档盘口:买03:元
+#  *           15            ~264                         五档盘口:买03:手
+#  *           16            ~16.28                       五档盘口:买04:元
+#  *           17            ~591                         五档盘口:买04:手
+#  *           18            ~16.27                       五档盘口:买05:元
+#  *           19            ~194                         五档盘口:买05:手
+#  *           20            ~16.32                       五档盘口:卖01:元
+#  *           21            ~793                         五档盘口:卖01:手
+#  *           22            ~16.33                       五档盘口:卖02:元
+#  *           23            ~1976                        五档盘口:卖02:手
+#  *           24            ~16.34                       五档盘口:卖03:元
+#  *           25            ~662                         五档盘口:卖03:手
+#  *           26            ~16.35                       五档盘口:卖04:元
+#  *           27            ~1217                        五档盘口:卖04:手
+#  *           28            ~16.36                       五档盘口:卖05:元
+#  *           29            ~461                         五档盘口:卖05:手
+#  *           30            ~15:00:02/16.32/63/B/102774/13108|14:59:56/16.32/60/B/97890/13103|14:59:47/16.32/98/B/159893/13095|14:59:47/16.32/148/B/241481/13092|14:59:41/16.32/162/B/264330/13087|14:59:37/16.32/139/B/226781/13084
+#  *           31            ~20160622150541              时间
+#  *           32            ~0.01                        涨跌额（单位：元）
+#  *           33            ~0.06                        涨跌幅 %
+#  *           34            ~16.42                       今日最高
+#  *           35            ~16.16                       今日最低
+#  *           36            ~16.32/180141/293078740
+#  *           37            ~180204                      成交量(手)。除以100后单位为：万股
+#  *           38            ~29318                       成交额（单位：万元）
+#  *           39            ~0.30                        换手率 %
+#  *           40            ~20.27                       市盈率
+#  *           41            ~
+#  *           42            ~16.42
+#  *           43            ~16.16
+#  *           44            ~1.59                        振幅 %
+#  *           45            ~984.65                      流通市值（单位：亿元）
+#  *           46            ~989.78                      总市值（单位：亿元）
+#  *           47            ~4.59                        市净率
+#  *           48            ~17.94
+#  *           49            ~14.68
+#  *           50            ~";
+
 
 @update_to_db(main_session)
 def async_daily_basic_origin():
-    try:
-        main_session.query(models.DailyBasic).delete()
-        main_session.commit()
-        res = ts.get_today_all()
-        for i in range(len(res)):
+    main_session.query(models.DailyBasic).delete()
+    main_session.commit()
+    for count, sbp in enumerate(main_session.query(models.StockBasicPro).all()):
+        market = sbp.ts_code.split('.')[1].lower()
+        symbol = sbp.symbol
+        code = market + symbol
+
+        if_pass = False
+        while not if_pass:
+            try:
+                res = requests.get('http://sqt.gtimg.cn/q={}'.format(code))
+                if_pass = True
+            except Exception as e:
+                print('exception in {}'.format(count))
+                continue
+
+        try:
+            res = res.text.split('~')
             a_daily_basic = models.DailyBasic(
-                symbol=res.loc[i, 'code'],
-                name=res.loc[i, 'name'],
+                ts_code=sbp.ts_code,
+                name=sbp.name,
                 trade_date=LAST_MARKET_DATE,
-                total_mv=float(res.loc[i, 'mktcap']),
-                circ_mv=float(res.loc[i, 'nmc'])
+                total_mv=float(res[45]) if res[45] else 0,
+                circ_mv=float(res[44]) if res[44] else 0
             )
-            main_session.add(a_daily_basic)
+        except Exception as e:
+            continue
+
+        main_session.add(a_daily_basic)
         main_session.commit()
-        print('##### async_daily_basic_origin #####')
-    except Exception as e:
-        print(e)
+        print('##### async_daily_basic_origin {i} #####'.format(i=count))
 
 
 def main():
