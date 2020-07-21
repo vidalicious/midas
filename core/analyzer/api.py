@@ -195,6 +195,13 @@ def daily_break(sequence=None, local_scale=120):
     return index < 3
 
 
+def daily_break_index(sequence=None, local_scale=120):
+    sequence = sequence[:local_scale]
+    daily_closes = [i.close for i in sequence]
+    index = daily_closes.index(max(daily_closes))
+    return index
+
+
 def daily_pit(sequence=None, local_scale=20):
     sequence = sequence[:local_scale]
     daily_closes = [i.close for i in sequence]

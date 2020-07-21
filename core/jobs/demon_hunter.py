@@ -16,12 +16,14 @@ import midas.core.analyzer._0x35Limit_Break as limit_break
 import midas.core.analyzer._0x36Aggressive_Break as aggressive_break
 import midas.core.analyzer._0x37Medical_Aggressive as medical_aggressive
 import midas.core.analyzer._0x40Live_Oneplus as one_plus
+import midas.core.analyzer._0x41Ambush as ambush
 
 
 def working_day():
     base.async_stock_basic()
     base.async_daily()
     base.async_daily_basic_origin()
+    ambush.main()
     one_plus.main()
     medical_aggressive.main()
     aggressive_break.main()
@@ -36,6 +38,7 @@ def total():
     base.async_daily_basic()
     weekly.async_weekly()
     holders.async_float_holders()
+    ambush.main()
     one_plus.main()
     medical_aggressive.main()
     aggressive_break.main()

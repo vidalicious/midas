@@ -23,7 +23,8 @@ def run():
             'market': market
         })
         stock_map['{market}{symbol}'.format(market=market, symbol=symbol)] = {
-            'local_max': float(df.loc[i, 'COL_DAILY_LOCAL_MAX'])
+            'local_max': float(df.loc[i, 'COL_DAILY_LOCAL_MAX']),
+            'circ_mv': float(df.loc[i, 'COL_CIRC_MV'])
         }
 
 
@@ -53,11 +54,12 @@ def run():
                     current_price = float(j[3])
                     chg = (current_price / yesterday_closing_price - 1)
                     chg_display = '{}%'.format(round(chg*100, 2))
-                    # local_max = stock_map[code]['local_max']
+                    circ_mv = stock_map[code]['circ_mv']
                     # if 0.05 < chg < 0.098 and current_price > local_max:
-                    if 0.05 < chg < 0.098:
+                    if 0.05 < chg:
                         local_breaks.append({
-                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}'.format(code=code, name=name, chg=chg_display, price=round(current_price, 2)),
+                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
+                                price=round(current_price, 2), circ_mv=int(circ_mv / 10000)),
                             'chg': chg
                         })
 

@@ -14,6 +14,7 @@ COL_LASTPRICE = 'COL_LASTPRICE'
 COL_DAILY_LOCAL_MAX = 'COL_DAILY_LOCAL_MAX'
 COL_LOCAL_LIMIT_COUNT_2 = 'COL_LOCAL_LIMIT_COUNT_2'
 COL_LOCAL_LIMIT_COUNT_10 = 'COL_LOCAL_LIMIT_COUNT_10'
+COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 200
 
@@ -35,6 +36,9 @@ def main(offset=0):
             data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=30)
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_2] = api.local_limit_count(daily, local_scale=2)
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_10] = api.local_limit_count(daily, local_scale=10)
+
+            daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.symbol == stock_basic.ts_code.split('.')[0]).one()
+            data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
 
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
