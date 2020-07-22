@@ -59,7 +59,7 @@ def run():
                     if 0.05 < chg:
                         local_breaks.append({
                             'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
-                                price=round(current_price, 2), circ_mv=int(circ_mv / 10000)),
+                                price=round(current_price, 2), circ_mv=int(circ_mv)),
                             'chg': chg
                         })
 

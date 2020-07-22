@@ -63,8 +63,8 @@ def main(offset=0):
         print('##### ambush {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LOCAL_LIMIT_COUNT_5] > 0)
-                            & (data_frame[COL_DAILY_BREAK_INDEX] < 5)
+                            (data_frame[COL_LOCAL_LIMIT_COUNT_10] > 0)
+                            & (data_frame[COL_DAILY_BREAK_INDEX] < 10)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
