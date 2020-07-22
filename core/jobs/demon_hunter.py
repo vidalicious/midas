@@ -17,6 +17,7 @@ import midas.core.analyzer._0x36Aggressive_Break as aggressive_break
 import midas.core.analyzer._0x37Medical_Aggressive as medical_aggressive
 import midas.core.analyzer._0x40Live_Oneplus as one_plus
 import midas.core.analyzer._0x41Ambush as ambush
+import midas.core.analyzer._0x42Medical_Ambush as medical_ambush
 
 
 def working_day():
@@ -24,9 +25,8 @@ def working_day():
     base.async_daily()
     base.async_daily_basic_origin()
     ambush.main()
+    medical_ambush.main()
     one_plus.main()
-    medical_aggressive.main()
-    aggressive_break.main()
     wind_chime.main()
     demon_hunter.main()
     # drager.main()
@@ -39,9 +39,8 @@ def total():
     weekly.async_weekly()
     holders.async_float_holders()
     ambush.main()
+    medical_ambush.main()
     one_plus.main()
-    medical_aggressive.main()
-    aggressive_break.main()
     wind_chime.main()
     demon_hunter.main()
     # drager.main()

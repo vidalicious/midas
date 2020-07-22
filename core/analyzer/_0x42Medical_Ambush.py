@@ -21,6 +21,7 @@ COL_DAILY_BREAK_INDEX = 'COL_DAILY_BREAK_INDEX'
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_LOCAL_LIMIT_COUNT_5 = 'COL_LOCAL_LIMIT_COUNT_5'
 COL_LOCAL_LIMIT_COUNT_10 = 'COL_LOCAL_LIMIT_COUNT_10'
+COL_IS_MEDICAL = 'COL_IS_MEDICAL'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -37,6 +38,8 @@ def main(offset=0):
         try:
             for key in models.StockBasicPro.keys:
                 data_frame.loc[i, key] = getattr(stock_basic, key)
+
+            data_frame.loc[i, COL_IS_MEDICAL] = api.is_medical(stock_basic.industry)
 
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
@@ -60,17 +63,18 @@ def main(offset=0):
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### ambush {i} #####'.format(i=i))
+        print('##### medical_ambush {i} #####'.format(i=i))
 
     data_frame = data_frame[
                             (data_frame[COL_LOCAL_LIMIT_COUNT_10] > 0)
                             & (data_frame[COL_DAILY_BREAK_INDEX] < 10)
+                            & (data_frame[COL_IS_MEDICAL] == True)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
-    file_name = '{logs_path}/{date}@Ambush.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Medical_Ambush.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -99,7 +103,7 @@ def plot_candle_gather(data_frame, last_date, sub):
         plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/ambush/{date}_ambush_{sub}.png'.format(date=last_date, sub=sub))
+    plt.savefig('../../buffer/medical_ambush/{date}_medical_ambush_{sub}.png'.format(date=last_date, sub=sub))
 
 def plot_candle(ax, ts_code, name, last_date, misc):
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
