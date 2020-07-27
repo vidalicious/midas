@@ -66,8 +66,8 @@ def main(offset=0):
         print('##### medical_ambush {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LOCAL_LIMIT_COUNT_10] > 0)
-                            & (data_frame[COL_DAILY_BREAK_INDEX] < 10)
+                            # (data_frame[COL_LOCAL_LIMIT_COUNT_10] > 0)
+                            (data_frame[COL_DAILY_BREAK_INDEX] < 10)
                             & (data_frame[COL_IS_MEDICAL] == True)
                            ]
 
