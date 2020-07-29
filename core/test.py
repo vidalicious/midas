@@ -25,9 +25,13 @@ import tushare as ts
 # print(a.json())
 
 
-a = ts.get_today_all()
+# a = ts.get_today_all()
 
 pro = ts.pro_api()
+
+a = pro.moneyflow_hsgt(start_date='20200629', end_date='20200729')
+
+
 df1 = pro.top_inst(trade_date='20200414', ts_code='000001.SZ')
 df2 = pro.top_list(trade_date='20200414')
 a = df1.to_dict()
