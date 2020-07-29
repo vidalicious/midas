@@ -36,8 +36,8 @@ def main(offset=0):
     fig = plt.figure(figsize=(17, 10))
     ax = fig.add_subplot(1, 1, 1)
 
-    ax.set_xticks(range(0, len(df['trade_date']), 20))
-    ax.set_xticklabels(df['trade_date'][::20])
+    ax.set_xticks(range(0, len(df['trade_date']), 10))
+    ax.set_xticklabels(df['trade_date'][::10])
     plt.title('north_money')
     mpf.volume_overlay(ax, df['open'], df['close'], df['north_money'], colorup='r', colordown='g', width=0.5, alpha=0.8)
 
