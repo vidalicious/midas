@@ -21,7 +21,7 @@ import mpl_finance as mpf
 def main(offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
-    FIRST_MARKET_DATE = daily001[offset + 60].trade_date
+    FIRST_MARKET_DATE = daily001[offset + 140].trade_date
 
     pro = ts.pro_api()
     res = pro.moneyflow_hsgt(start_date=FIRST_MARKET_DATE, end_date=LAST_MARKET_DATE)
