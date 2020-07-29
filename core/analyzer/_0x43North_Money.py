@@ -18,10 +18,10 @@ import mpl_finance as mpf
 
 
 
-def main(offset=0):
+def main(offset=0, gap_size=140):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
-    FIRST_MARKET_DATE = daily001[offset + 140].trade_date
+    FIRST_MARKET_DATE = daily001[offset + gap_size].trade_date
 
     pro = ts.pro_api()
     res = pro.moneyflow_hsgt(start_date=FIRST_MARKET_DATE, end_date=LAST_MARKET_DATE)
@@ -36,8 +36,9 @@ def main(offset=0):
     fig = plt.figure(figsize=(17, 10))
     ax = fig.add_subplot(1, 1, 1)
 
-    ax.set_xticks(range(0, len(df['trade_date']), 10))
-    ax.set_xticklabels(df['trade_date'][::10])
+    step = int(gap_size / 15)
+    ax.set_xticks(range(0, len(df['trade_date']), step))
+    ax.set_xticklabels(df['trade_date'][::step])
     plt.title('north_money')
     mpf.volume_overlay(ax, df['open'], df['close'], df['north_money'], colorup='r', colordown='g', width=0.5, alpha=0.8)
 
