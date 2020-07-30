@@ -37,7 +37,7 @@ def working_day():
 def total():
     base.async_stock_basic()
     base.async_daily()
-    base.async_daily_basic()
+    base.async_daily_basic_origin()
     weekly.async_weekly()
     holders.async_float_holders()
     north_money.main()
