@@ -46,7 +46,7 @@ def main(offset=0):
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_BREAK_INDEX] = api.daily_break_index(daily, local_scale=60)
 
-            data_frame.loc[i, COL_LOCAL_LIMIT_COUNT] = api.local_limit_count(daily, local_scale=5)
+            data_frame.loc[i, COL_LOCAL_LIMIT_COUNT] = api.local_limit_count(daily, local_scale=3)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
