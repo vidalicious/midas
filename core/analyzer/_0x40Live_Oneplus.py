@@ -12,7 +12,7 @@ import midas.bin.env as env
 
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_DAILY_LOCAL_MAX = 'COL_DAILY_LOCAL_MAX'
-COL_LOCAL_LIMIT_COUNT_5 = 'COL_LOCAL_LIMIT_COUNT_5'
+COL_LOCAL_LIMIT_COUNT_10 = 'COL_LOCAL_LIMIT_COUNT_10'
 COL_LOCAL_LIMIT_COUNT_1 = 'COL_LOCAL_LIMIT_COUNT_1'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
@@ -33,9 +33,9 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
-            data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=30)
+            data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=60)
             data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_1] = api.local_limit_count(daily, local_scale=1)
-            data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_5] = api.local_limit_count(daily, local_scale=5)
+            data_frame.loc[i, COL_LOCAL_LIMIT_COUNT_10] = api.local_limit_count(daily, local_scale=10)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -46,8 +46,7 @@ def main(offset=0):
         print('##### live oneplus {i} #####'.format(i=i))
 
     data_frame = data_frame[
-        (data_frame[COL_LOCAL_LIMIT_COUNT_1] == 1)
-        & (data_frame[COL_LOCAL_LIMIT_COUNT_5] == 1)
+        (data_frame[COL_LOCAL_LIMIT_COUNT_1] == data_frame[COL_LOCAL_LIMIT_COUNT_10])
         ]
 
     data_frame = data_frame.sort_values(by=COL_DAILY_LOCAL_MAX, ascending=True).reset_index(drop=True)

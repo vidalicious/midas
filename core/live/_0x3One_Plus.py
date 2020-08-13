@@ -14,6 +14,9 @@ def run():
         if ts_code.startswith('688'):
             continue
 
+        if df.loc[i, 'COL_LOCAL_LIMIT_COUNT_1'] == 0:
+            continue
+
         market = ts_code.split('.')[1].lower()
         symbol = ts_code.split('.')[0]
         name = df.loc[i, 'name']
