@@ -49,7 +49,14 @@ def total():
     # drager.main()
 
 
+def gathering():
+    base.async_stock_basic()
+    base.async_daily()
+    base.async_daily_basic_origin()
+
+
 if __name__ == '__main__':
+    # gathering()
     working_day()
     # weekend()
     # total()
