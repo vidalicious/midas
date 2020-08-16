@@ -1,0 +1,5 @@
+,ts_code,symbol,name,industry,COL_IS_MEDICAL,COL_LASTPRICE,COL_DAILY_BREAK_INDEX,COL_LOCAL_LIMIT_COUNT,COL_CIRC_MV,COL_FLOAT_HOLDERS,COL_HOLDERS_COUNT
+0,000597.SZ,000597,东北制药,化学制药,True,5.98,1.0,1.0,74.73,"中国华融资产管理股份有限公司
+香港中央结算有限公司(陆股通)",2.0
+1,002166.SZ,002166,莱茵生物,中成药,True,10.82,1.0,1.0,48.0,中央汇金资产管理有限责任公司,1.0
+2,688185.SH,688185,康希诺-U,生物制药,True,349.6,1.0,1.0,79.18,,0.0
