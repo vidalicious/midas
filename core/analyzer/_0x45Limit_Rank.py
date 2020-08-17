@@ -92,7 +92,7 @@ def plot_candle_gather(data_frame, last_date, sub):
         misc = {
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_RECENT_LIMIT_COUNT: data_frame.loc[i, COL_RECENT_LIMIT_COUNT]
+            COL_RECENT_LIMIT_COUNT_15: data_frame.loc[i, COL_RECENT_LIMIT_COUNT_15]
         }
         plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
@@ -123,7 +123,7 @@ def plot_candle(ax, ts_code, name, last_date, misc):
     ax.plot(sma_20, linewidth=1, label='ma20')
 
     plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} limits:{limits_count}'.format(ts_code=ts_code, name=name,
-              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), limits_count=int(misc[COL_RECENT_LIMIT_COUNT])),
+              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), limits_count=int(misc[COL_RECENT_LIMIT_COUNT_15])),
               fontproperties='Heiti TC')
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',
