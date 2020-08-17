@@ -19,6 +19,7 @@ import midas.core.analyzer._0x40Live_Oneplus as one_plus
 import midas.core.analyzer._0x41Ambush as ambush
 import midas.core.analyzer._0x42Medical_Ambush as medical_ambush
 import midas.core.analyzer._0x43North_Money as north_money
+import midas.core.analyzer._0x45Limit_Rank as limit_rank
 
 
 def working_day():
@@ -26,6 +27,7 @@ def working_day():
     base.async_daily()
     base.async_daily_basic_origin()
     north_money.main()
+    limit_rank.main()
     ambush.main()
     medical_ambush.main()
     one_plus.main()
@@ -41,6 +43,7 @@ def total():
     weekly.async_weekly()
     holders.async_float_holders()
     north_money.main()
+    limit_rank.main()
     ambush.main()
     medical_ambush.main()
     one_plus.main()
