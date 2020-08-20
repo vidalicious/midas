@@ -19,6 +19,7 @@ import mpl_finance as mpf
 
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_PCT_CHG = 'COL_PCT_CHG'
+COL_RECENT_LIMIT_COUNT = 'COL_RECENT_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -41,6 +42,7 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_PCT_CHG] = daily[0].pct_chg
+            data_frame.loc[i, COL_RECENT_LIMIT_COUNT] = api.local_limit_count(daily, local_scale=15)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -61,7 +63,7 @@ def main(offset=0):
                             (data_frame[COL_PCT_CHG] > 9.8)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_LASTPRICE, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_RECENT_LIMIT_COUNT, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Today_Limit.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
