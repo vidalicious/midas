@@ -5,20 +5,11 @@ import midas.core.data.async_weekly as weekly
 import midas.core.data.async_float_holders as holders
 import midas.core.analyzer._0x22DemonHunter as demon_hunter
 import midas.core.analyzer._0x26WindChime as wind_chime
-import midas.core.analyzer._0x25TwoPlus as two_plus
-import midas.core.analyzer._0x24Drager_List as drager
-import midas.core.analyzer._0x27Tidal as tidal
-import midas.core.analyzer._0x28Local_Break as local_break
-import midas.core.analyzer._0x29Medical_Break as medical_break
-import midas.core.analyzer._0x34Drink_Break as drink_break
-# import midas.core.analyzer._0x32Medical_Ergodic as medical_ergodic
-import midas.core.analyzer._0x35Limit_Break as limit_break
-import midas.core.analyzer._0x36Aggressive_Break as aggressive_break
-import midas.core.analyzer._0x37Medical_Aggressive as medical_aggressive
 import midas.core.analyzer._0x40Live_Oneplus as one_plus
 import midas.core.analyzer._0x41Ambush as ambush
 import midas.core.analyzer._0x42Medical_Ambush as medical_ambush
 import midas.core.analyzer._0x43North_Money as north_money
+import midas.core.analyzer._0x44Today_Limit as today_limit
 import midas.core.analyzer._0x45Limit_Rank as limit_rank
 
 
@@ -28,7 +19,7 @@ def working_day():
     base.async_daily_basic_origin()
     north_money.main()
     limit_rank.main()
-    ambush.main()
+    today_limit.main()
     medical_ambush.main()
     one_plus.main()
     wind_chime.main()
@@ -44,7 +35,7 @@ def total():
     holders.async_float_holders()
     north_money.main()
     limit_rank.main()
-    ambush.main()
+    today_limit.main()
     medical_ambush.main()
     one_plus.main()
     wind_chime.main()
