@@ -142,16 +142,16 @@ class Analyst(Base):
     down_count = Column(Integer)
     up_limit_count = Column(Integer)
     down_limit_count = Column(Integer)
+    blast_board_count = Column(Integer)
     limit_count_1 = Column(Integer)
     limit_count_2 = Column(Integer)
     limit_count_3 = Column(Integer)
-    limit_count_4 = Column(Integer)
-    limit_count_over5 = Column(Integer)
+    limit_count_over3 = Column(Integer)
     max_limit_count = Column(Integer)
     max_limit_stock = Column(String(100))
 
-    keys = ['trade_date', 'up_count', 'down_count', 'up_limit_count', 'down_limit_count', 'limit_count_1',
-            'limit_count_2', 'limit_count_3', 'limit_count_4', 'limit_count_over5', 'max_limit_count', 'max_limit_stock']
+    keys = ['trade_date', 'up_count', 'down_count', 'up_limit_count', 'down_limit_count', 'blast_board_count', 'limit_count_1',
+            'limit_count_2', 'limit_count_3', 'limit_count_over3', 'max_limit_count', 'max_limit_stock']
 
 
 StockBasicPro.metadata.tables["stock_basic_pro"].create(bind=main_db, checkfirst=True)

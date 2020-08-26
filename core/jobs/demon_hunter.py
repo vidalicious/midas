@@ -4,13 +4,13 @@ import midas.core.data.async_base as base
 import midas.core.data.async_weekly as weekly
 import midas.core.data.async_float_holders as holders
 import midas.core.analyzer._0x22DemonHunter as demon_hunter
-import midas.core.analyzer._0x26WindChime as wind_chime
 import midas.core.analyzer._0x40Live_Oneplus as one_plus
 import midas.core.analyzer._0x41Ambush as ambush
 import midas.core.analyzer._0x42Medical_Ambush as medical_ambush
 import midas.core.analyzer._0x43North_Money as north_money
 import midas.core.analyzer._0x44Today_Limit as today_limit
 import midas.core.analyzer._0x45Limit_Rank as limit_rank
+import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
 
 
 def working_day():
@@ -51,6 +51,6 @@ def gathering():
 
 if __name__ == '__main__':
     # gathering()
-    working_day()
+    # working_day()
     # weekend()
-    # total()
+    total()

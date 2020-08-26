@@ -56,10 +56,20 @@ def daily_weight_rise_efficiency(daily=None, begin=0, end=1):
 
 
 def daily_continuous_limit_count(daily=None):
+    count = 0
+    break_change = 1
     for i, item in enumerate(daily):
-        if item.pct_chg < 9.9:
+        boards = int(item.pct_chg / 9.8)
+        if boards > 0:
+            count += boards
+            break_change = 1
+        else:
+            break_change -= 1
+
+        if break_change < 0:
             break
-    return i
+
+    return count
 
 
 def daily_weight_exponential_fitness(daily=None, begin=0, end=1, exp=2):
