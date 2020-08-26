@@ -118,3 +118,7 @@ def main(offset=0):
     file_name = '{logs_path}/{date}@WindChime.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         analyst_df.to_csv(file)
+
+        
+if __name__ == '__main__':
+    main(offset=0)
