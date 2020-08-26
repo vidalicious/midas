@@ -20,6 +20,7 @@ import mpl_finance as mpf
 COL_LASTPRICE = 'COL_LASTPRICE'
 COL_RECENT_LIMIT_COUNT_15 = 'COL_RECENT_LIMIT_COUNT_15'
 COL_RECENT_LIMIT_COUNT_3 = 'COL_RECENT_LIMIT_COUNT_3'
+COL_CONTINUOUS_LIMIT_COUNT = 'COL_CONTINUOUS_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -43,6 +44,7 @@ def main(offset=0):
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_RECENT_LIMIT_COUNT_15] = api.local_limit_count(daily, local_scale=15)
             data_frame.loc[i, COL_RECENT_LIMIT_COUNT_3] = api.local_limit_count(daily, local_scale=3)
+            data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] = api.daily_continuous_limit_count(daily)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -64,7 +66,7 @@ def main(offset=0):
                             | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_RECENT_LIMIT_COUNT_15, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_CONTINUOUS_LIMIT_COUNT, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Limit_Rank.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
@@ -92,7 +94,7 @@ def plot_candle_gather(data_frame, last_date, sub):
         misc = {
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_RECENT_LIMIT_COUNT_15: data_frame.loc[i, COL_RECENT_LIMIT_COUNT_15]
+            COL_CONTINUOUS_LIMIT_COUNT: data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT]
         }
         plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
@@ -123,7 +125,7 @@ def plot_candle(ax, ts_code, name, last_date, misc):
     ax.plot(sma_20, linewidth=1, label='ma20')
 
     plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} limits:{limits_count}'.format(ts_code=ts_code, name=name,
-              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), limits_count=int(misc[COL_RECENT_LIMIT_COUNT_15])),
+              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), limits_count=int(misc[COL_CONTINUOUS_LIMIT_COUNT])),
               fontproperties='Heiti TC')
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',
