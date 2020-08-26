@@ -82,7 +82,7 @@ def main(offset=0):
                 limit_count_1 += 1
 
             if data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] > max_limit_count:
-                max_limit_count = data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT]
+                max_limit_count = int(data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT])
                 max_limit_stock = '{ts_code} {name}'.format(ts_code=data_frame.loc[i, 'ts_code'], name=data_frame.loc[i, 'name'])
 
         if data_frame.loc[i, COL_PCT_CHG] < -9.8:

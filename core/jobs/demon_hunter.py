@@ -51,6 +51,6 @@ def gathering():
 
 if __name__ == '__main__':
     # gathering()
-    # working_day()
+    working_day()
     # weekend()
-    total()
+    # total()
