@@ -23,6 +23,7 @@ COL_RECENT_LIMIT_COUNT_3 = 'COL_RECENT_LIMIT_COUNT_3'
 COL_CONTINUOUS_LIMIT_COUNT = 'COL_CONTINUOUS_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
+COL_HAS_MINGHONG = 'COL_HAS_MINGHONG'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 200
@@ -56,13 +57,15 @@ def main(offset=0):
             data_frame.loc[i, COL_FLOAT_HOLDERS] = '\n'.join(h_set)
             data_frame.loc[i, COL_HOLDERS_COUNT] = len(h_set)
 
+            data_frame.loc[i, COL_HAS_MINGHONG] = '明汯' in data_frame.loc[i, COL_FLOAT_HOLDERS]
+
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
         print('##### minghong_filter {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            ('明汯' in data_frame[COL_FLOAT_HOLDERS])
+                            (data_frame[COL_HAS_MINGHONG] == True)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_CONTINUOUS_LIMIT_COUNT, ascending=False).reset_index(drop=True)
