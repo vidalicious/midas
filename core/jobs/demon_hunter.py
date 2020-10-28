@@ -11,7 +11,7 @@ import midas.core.analyzer._0x43North_Money as north_money
 import midas.core.analyzer._0x44Today_Limit as today_limit
 import midas.core.analyzer._0x45Limit_Rank as limit_rank
 import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
-import midas.core.analyzer._0x47Minghong_Filter as minghong
+# import midas.core.analyzer._0x47Minghong_Filter as minghong
 
 
 def working_day():
@@ -20,7 +20,6 @@ def working_day():
     base.async_daily_basic_origin()
     north_money.main()
     limit_rank.main()
-    minghong.main()
     # today_limit.main()
     # medical_ambush.main()
     # one_plus.main()
@@ -37,7 +36,6 @@ def total():
     holders.async_float_holders()
     north_money.main()
     limit_rank.main()
-    minghong.main()
     # today_limit.main()
     # medical_ambush.main()
     # one_plus.main()
