@@ -18,7 +18,7 @@ import mpl_finance as mpf
 
 
 COL_LASTPRICE = 'COL_LASTPRICE'
-COL_RECENT_LIMIT_COUNT_15 = 'COL_RECENT_LIMIT_COUNT_15'
+# COL_RECENT_LIMIT_COUNT_15 = 'COL_RECENT_LIMIT_COUNT_15'
 COL_RECENT_LIMIT_COUNT_3 = 'COL_RECENT_LIMIT_COUNT_3'
 COL_CONTINUOUS_LIMIT_COUNT = 'COL_CONTINUOUS_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -42,7 +42,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
-            data_frame.loc[i, COL_RECENT_LIMIT_COUNT_15] = api.local_limit_count(daily, local_scale=15)
+            # data_frame.loc[i, COL_RECENT_LIMIT_COUNT_15] = api.local_limit_count(daily, local_scale=15)
             data_frame.loc[i, COL_RECENT_LIMIT_COUNT_3] = api.local_limit_count(daily, local_scale=3)
             data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] = api.daily_continuous_limit_count(daily)
 
@@ -62,8 +62,9 @@ def main(offset=0):
         print('##### limit_rank {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
-                            | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
+                            # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
+                            # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
+                            (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_CONTINUOUS_LIMIT_COUNT, ascending=False).reset_index(drop=True)
