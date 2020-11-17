@@ -42,11 +42,11 @@ def main(offset=0):
             continue
         print('##### ergodic_graph {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
-    #                         # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
-    #                         (data_frame[COL_RECENT_LIMIT_COUNT_300] > 5)
-    #                        ]
+    data_frame = data_frame[
+                            # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
+                            # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
+                            (data_frame[COL_RECENT_LIMIT_COUNT_20] > 0)
+                           ]
 
     data_frame = data_frame.sort_values(by=COL_RECENT_LIMIT_COUNT_20, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
