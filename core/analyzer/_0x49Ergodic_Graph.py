@@ -17,7 +17,7 @@ import midas.bin.env as env
 import mpl_finance as mpf
 
 
-COL_RECENT_LIMIT_COUNT_20 = 'COL_RECENT_LIMIT_COUNT_20'
+COL_RECENT_LIMIT_COUNT = 'COL_RECENT_LIMIT_COUNT'
 COL_CONTINUOUS_LIMIT_COUNT = 'COL_CONTINUOUS_LIMIT_COUNT'
 
 sampling_count = 301
@@ -35,7 +35,7 @@ def main(offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
-            data_frame.loc[i, COL_RECENT_LIMIT_COUNT_20] = api.local_limit_count(daily, local_scale=20)
+            data_frame.loc[i, COL_RECENT_LIMIT_COUNT] = api.local_limit_count(daily, local_scale=10)
 
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
@@ -45,10 +45,10 @@ def main(offset=0):
     data_frame = data_frame[
                             # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
                             # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
-                            (data_frame[COL_RECENT_LIMIT_COUNT_20] > 0)
+                            (data_frame[COL_RECENT_LIMIT_COUNT] > 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_RECENT_LIMIT_COUNT_20, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_RECENT_LIMIT_COUNT, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.loc[:, ['ts_code', 'name', 'industry', COL_LASTPRICE, COL_FLOAT_HOLDERS]]
 
     file_name = '{logs_path}/{date}@Ergodic_Graph.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
