@@ -35,7 +35,7 @@ def main(offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
-            data_frame.loc[i, COL_RECENT_LIMIT_COUNT] = api.local_limit_count(daily, local_scale=10)
+            data_frame.loc[i, COL_RECENT_LIMIT_COUNT] = api.local_limit_count(daily, local_scale=20)
 
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
