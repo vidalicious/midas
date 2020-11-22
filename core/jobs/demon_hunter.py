@@ -32,6 +32,7 @@ def total():
     holders.async_float_holders()
     north_money.main()
     limit_rank.main()
+    ergodic_graph.main()
     wind_chime.main()
 
 
