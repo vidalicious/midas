@@ -35,6 +35,9 @@ def main(offset=0):
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
         try:
+            if 'ST' in stock_basic.name or stock_basic.symbol.startswith('300'):
+                continue
+
             for key in models.StockBasicPro.keys:
                 data_frame.loc[i, key] = getattr(stock_basic, key)
 
