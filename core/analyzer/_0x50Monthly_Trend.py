@@ -61,7 +61,7 @@ def main(offset=0):
     data_frame = data_frame[
                             # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
                             # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
-                            (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 2)
+                            (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 4)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_CONTINUOUS_POSITIVE_COUNT, ascending=False).reset_index(drop=True)
