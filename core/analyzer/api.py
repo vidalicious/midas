@@ -131,9 +131,9 @@ def differ(sequence=None):
     return res
 
 
-def continuous_positive_count(sequence=None):
+def continuous_positive_chg_count(sequence=None):
     for i, item in enumerate(sequence):
-        if item < 0:
+        if item.pct_chg < 0:
             return i
     return i
 
