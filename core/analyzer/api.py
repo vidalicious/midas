@@ -138,6 +138,18 @@ def continuous_positive_chg_count(sequence=None):
     return i
 
 
+def continuous_positive_average_chg(sequence=None):
+    chg = 0
+    for i, item in enumerate(sequence):
+        if item.pct_chg < 0:
+            if i == 0:
+                return 0
+            else:
+                return chg / i
+        chg += item.pct_chg
+    return chg / i
+
+
 def avg_vibration_chg(sequence=None):
     total_vibration = 0
     for i, item in enumerate(sequence):
@@ -298,3 +310,22 @@ def local_limit_count(sequence=None, local_scale=5):
         if i > 9.8:
             limit_count += 1
     return limit_count
+
+
+def klines_max_retracement(sequence=None):
+    if not sequence:
+        return 0
+
+    max_retracement = 0
+    for item in sequence:
+        entity_max = max(item.open, item.close)
+        entity_min = min(item.open, item.close)
+        total_max = max(item.high, item.low)
+        total_min = min(item.high, item.low)
+
+        retracement_up = abs(entity_max / total_max  - 1)
+        retracement_bottom = abs(total_min / entity_min - 1)
+
+        max_retracement = max(max_retracement, retracement_up, retracement_bottom)
+
+    return max_retracement

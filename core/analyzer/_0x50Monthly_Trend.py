@@ -18,6 +18,8 @@ import mpl_finance as mpf
 
 
 COL_CONTINUOUS_POSITIVE_COUNT = 'COL_CONTINUOUS_POSITIVE_COUNT'
+COL_CONTINUOUS_POSITIVE_AVERAGE_CHG = 'COL_CONTINUOUS_POSITIVE_AVERAGE_CHG'
+COL_MAX_RETRACEMENT = 'COL_MAX_RETRACEMENT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -41,7 +43,10 @@ def main(offset=0):
             monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == stock_basic.ts_code,
                                                                models.MonthlyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.MonthlyPro.trade_date.desc()).limit(sampling_count).all()
+
             data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT] = api.continuous_positive_chg_count(monthly)
+            data_frame.loc[i, COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] = round(api.continuous_positive_average_chg(monthly) * 100, 2)
+            data_frame.loc[i, COL_MAX_RETRACEMENT] = round(api.klines_max_retracement(monthly[:int(data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT])]) * 100, 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -61,10 +66,11 @@ def main(offset=0):
     data_frame = data_frame[
                             # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
                             # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
-                            (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 4)
+                            (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 6)
+                            | ((data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 3) & (data_frame[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] > 20))
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_CONTINUOUS_POSITIVE_COUNT, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_MAX_RETRACEMENT, ascending=True).reset_index(drop=True)
 
     file_name = '{logs_path}/{date}@Monthly_Trend.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
@@ -91,7 +97,9 @@ def plot_candle_gather(data_frame, last_date, sub):
         misc = {
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_CONTINUOUS_POSITIVE_COUNT: data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT]
+            COL_CONTINUOUS_POSITIVE_COUNT: data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT],
+            COL_CONTINUOUS_POSITIVE_AVERAGE_CHG: data_frame.loc[i, COL_CONTINUOUS_POSITIVE_AVERAGE_CHG],
+            COL_MAX_RETRACEMENT: data_frame.loc[i, COL_MAX_RETRACEMENT]
         }
         plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
@@ -121,8 +129,9 @@ def plot_candle(ax, ts_code, name, last_date, misc):
     ax.plot(sma_10, linewidth=1, label='ma10')
     ax.plot(sma_20, linewidth=1, label='ma20')
 
-    plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} continuous:{continuous}'.format(ts_code=ts_code, name=name,
-              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), continuous=int(misc[COL_CONTINUOUS_POSITIVE_COUNT])),
+    plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} continuous:{continuous} average_chg:{average_chg} retracement:{retracement}'.format(ts_code=ts_code, name=name,
+              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), continuous=int(misc[COL_CONTINUOUS_POSITIVE_COUNT]),
+              average_chg=misc[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG], retracement=misc[COL_MAX_RETRACEMENT]),
               fontproperties='Heiti TC')
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',
