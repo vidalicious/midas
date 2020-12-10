@@ -67,7 +67,7 @@ def main(offset=0):
                             # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
                             # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
                             (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 6)
-                            | ((data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 3) & (data_frame[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] > 20))
+                            | ((data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 2) & (data_frame[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] > 20))
                            ]
 
     data_frame = data_frame.sort_values(by=COL_MAX_RETRACEMENT, ascending=True).reset_index(drop=True)

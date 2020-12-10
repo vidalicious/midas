@@ -132,13 +132,19 @@ def differ(sequence=None):
 
 
 def continuous_positive_chg_count(sequence=None):
+    if not sequence:
+        return 0
+
     for i, item in enumerate(sequence):
         if item.pct_chg < 0:
             return i
-    return i
+    return len(sequence)
 
 
 def continuous_positive_average_chg(sequence=None):
+    if not sequence:
+        return 0
+
     chg = 0
     for i, item in enumerate(sequence):
         if item.pct_chg < 0:
@@ -147,7 +153,7 @@ def continuous_positive_average_chg(sequence=None):
             else:
                 return chg / i
         chg += item.pct_chg
-    return chg / i
+    return chg / len(sequence)
 
 
 def avg_vibration_chg(sequence=None):
