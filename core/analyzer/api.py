@@ -335,3 +335,28 @@ def klines_max_retracement(sequence=None):
         max_retracement = max(max_retracement, retracement_up, retracement_bottom)
 
     return max_retracement
+
+
+def klines_comfort_score(sequence=None):
+    if not sequence:
+        return 0
+
+    comfort_score = 0
+    for item in sequence:
+        entity_max = max(item.open, item.close)
+        entity_min = min(item.open, item.close)
+        total_max = max(item.high, item.low)
+        total_min = min(item.high, item.low)
+
+        retracement_up = abs(entity_max / total_max  - 1)
+        retracement_bottom = abs(total_min / entity_min - 1)
+
+        pct_chg = item.close / item.pre_close - 1
+
+        score = (pct_chg - retracement_up - retracement_bottom) * 100
+        if score < 0:
+            break
+
+        comfort_score += score
+
+    return comfort_score
