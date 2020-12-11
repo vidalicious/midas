@@ -88,14 +88,14 @@ def main(offset=0):
 
 
 def plot_candle_gather(data_frame, last_date, sub):
-    columns = 1
-    rows = math.ceil(len(data_frame) / columns)
+    columns = 2
+    rows = len(data_frame)
 
-    fig = plt.figure(figsize=(columns * 15, rows * 5 / 2))
+    fig = plt.figure(figsize=(columns * 15, rows * 5))
     for i in range(len(data_frame)):
         ts_code = data_frame.loc[i, 'ts_code']
         name = data_frame.loc[i, 'name']
-        ax = fig.add_subplot(rows, columns, i + 1)
+        ax = fig.add_subplot(rows, columns, 2 * i + 1)
         misc = {
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
@@ -104,12 +104,15 @@ def plot_candle_gather(data_frame, last_date, sub):
             COL_MAX_RETRACEMENT: data_frame.loc[i, COL_MAX_RETRACEMENT],
             COL_SCORE: data_frame.loc[i, COL_SCORE]
         }
-        plot_candle(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
+        plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
+
+        ax = fig.add_subplot(rows, columns, 2 * i + 2)
+        plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
     plt.savefig('../../buffer/monthly_trend/{date}_monthly_trend_{sub}.png'.format(date=last_date, sub=sub))
 
-def plot_candle(ax, ts_code, name, last_date, misc):
+def plot_candle_month(ax, ts_code, name, last_date, misc):
     monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == ts_code,
                                                        models.MonthlyPro.trade_date <= last_date).order_by(
         models.MonthlyPro.trade_date.desc()).limit(sampling_count).all()
@@ -136,6 +139,40 @@ def plot_candle(ax, ts_code, name, last_date, misc):
               circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), continuous=int(misc[COL_CONTINUOUS_POSITIVE_COUNT]),
               average_chg=misc[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG], retracement=misc[COL_MAX_RETRACEMENT], score=misc[COL_SCORE]),
               fontproperties='Heiti TC')
+    mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
+                          width=0.5, colorup='red', colordown='green',
+                          alpha=0.5)
+    # plt.grid()
+    print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
+
+
+def plot_candle_daily(ax, ts_code, name, last_date, misc):
+    daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
+                                                       models.DailyPro.trade_date <= last_date).order_by(
+        models.DailyPro.trade_date.desc()).limit(sampling_count).all()
+
+    df = DataFrame()
+    for i, item in enumerate(daily[300::-1]):
+        df.loc[i, 'date'] = str(item.trade_date)
+        df.loc[i, 'open'] = item.open
+        df.loc[i, 'close'] = item.close
+        df.loc[i, 'high'] = item.high
+        df.loc[i, 'low'] = item.low
+
+    sma_5 = talib.SMA(np.array(df['close']), 5)
+    sma_10 = talib.SMA(np.array(df['close']), 10)
+    sma_20 = talib.SMA(np.array(df['close']), 20)
+
+    ax.set_xticks(range(0, len(df['date']), 20))
+    ax.set_xticklabels(df['date'][::20])
+    ax.plot(sma_5, linewidth=1, label='ma5')
+    ax.plot(sma_10, linewidth=1, label='ma10')
+    ax.plot(sma_20, linewidth=1, label='ma20')
+
+    # plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} continuous:{continuous} average_chg:{average_chg} retracement:{retracement} score:{score}'.format(ts_code=ts_code, name=name,
+    #           circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), continuous=int(misc[COL_CONTINUOUS_POSITIVE_COUNT]),
+    #           average_chg=misc[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG], retracement=misc[COL_MAX_RETRACEMENT], score=misc[COL_SCORE]),
+    #           fontproperties='Heiti TC')
     mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)

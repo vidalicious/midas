@@ -21,6 +21,7 @@ def working_day():
     base.async_daily_basic_origin()
     north_money.main()
     limit_rank.main()
+    monthly_trend.main()
     # ergodic_graph.main()
     wind_chime.main()
 
