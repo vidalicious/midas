@@ -18,6 +18,7 @@ import mpl_finance as mpf
 
 
 COL_CONTINUOUS_POSITIVE_COUNT = 'COL_CONTINUOUS_POSITIVE_COUNT'
+COL_ALL_POSITIVE = 'COL_ALL_POSITIVE'
 COL_CONTINUOUS_POSITIVE_AVERAGE_CHG = 'COL_CONTINUOUS_POSITIVE_AVERAGE_CHG'
 COL_MAX_RETRACEMENT = 'COL_MAX_RETRACEMENT'
 COL_SCORE = 'COL_SCORE'
@@ -46,9 +47,18 @@ def main(offset=0):
                 models.MonthlyPro.trade_date.desc()).limit(sampling_count).all()
 
             data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT] = api.continuous_positive_chg_count(monthly)
+
+            if len(monthly) == 0:
+                all_positive = False
+            elif len(monthly) == 1:
+                all_positive = monthly[0].close > monthly[0].open
+            else:
+                all_positive = data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT] == len(monthly)
+
+            data_frame.loc[i, COL_ALL_POSITIVE] = all_positive
             data_frame.loc[i, COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] = round(api.continuous_positive_average_chg(monthly) * 100, 2)
             data_frame.loc[i, COL_MAX_RETRACEMENT] = round(api.klines_max_retracement(monthly[:int(data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT])]) * 100, 2)
-            data_frame.loc[i, COL_SCORE] = api.klines_comfort_score(monthly[:int(data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT])]) + 20 * data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT]
+            data_frame.loc[i, COL_SCORE] = api.klines_comfort_score(monthly[:int(data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT])]) # + 20 * data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT]
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -70,6 +80,7 @@ def main(offset=0):
                             # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
                             (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 6)
                             | ((data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 2) & (data_frame[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] > 20))
+                            | (data_frame[COL_ALL_POSITIVE] == True)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_SCORE, ascending=False).reset_index(drop=True)

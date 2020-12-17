@@ -342,6 +342,7 @@ def klines_comfort_score(sequence=None):
         return 0
 
     comfort_score = 0
+    count = 0
     for item in sequence:
         entity_max = max(item.open, item.close)
         entity_min = min(item.open, item.close)
@@ -358,5 +359,9 @@ def klines_comfort_score(sequence=None):
             break
 
         comfort_score += score
+        count += 1
 
-    return comfort_score
+    if count == 0:
+        return 0
+    else:
+        return comfort_score / count
