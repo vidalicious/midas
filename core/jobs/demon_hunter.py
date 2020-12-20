@@ -30,7 +30,7 @@ def total():
     base.async_stock_basic()
     base.async_daily()
     base.async_daily_basic_origin()
-    monthly.async_weekly()
+    monthly.async_monthly()
     holders.async_float_holders()
     north_money.main()
     limit_rank.main()
