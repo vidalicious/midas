@@ -75,10 +75,12 @@ def main(offset=0):
             continue
         print('##### monthly_trend {i} #####'.format(i=i))
 
+    # plot_distribution(data_frame)
+
     data_frame = data_frame[
                             # (data_frame[COL_RECENT_LIMIT_COUNT_15] > 1)
                             # | ((data_frame[COL_RECENT_LIMIT_COUNT_15] == 1) & (data_frame[COL_RECENT_LIMIT_COUNT_3] > 0))
-                            (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 6)
+                            (data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 3)
                             | ((data_frame[COL_CONTINUOUS_POSITIVE_COUNT] > 2) & (data_frame[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG] > 20))
                             | (data_frame[COL_ALL_POSITIVE] == True)
                            ]
@@ -94,11 +96,20 @@ def main(offset=0):
     for i in range(0, len(data_frame), batch_size):
         sub_df = data_frame.iloc[i:i+batch_size, :]
         sub_df = sub_df.reset_index(drop=True)
-        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub)
+        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
         sub += 1
 
 
-def plot_candle_gather(data_frame, last_date, sub):
+def plot_distribution(data_frame):
+    data = data_frame[[COL_CONTINUOUS_POSITIVE_COUNT]].values[:,0]
+
+    sections = [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]
+    group_names = ['0~1', '1~2', '2~3', '3~4', '4~5', '5~6', '6~7', '7~8', '8~9', '9~10', '10~100']
+    cuts = pd.cut(data, sections, labels=group_names)
+    cuts.value_counts().plot(kind='bar')
+
+
+def plot_candle_gather(data_frame, last_date, sub, offset):
     columns = 2
     rows = len(data_frame)
 
@@ -108,6 +119,7 @@ def plot_candle_gather(data_frame, last_date, sub):
         name = data_frame.loc[i, 'name']
         ax = fig.add_subplot(rows, columns, 2 * i + 1)
         misc = {
+            'index': i + offset,
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
             COL_CONTINUOUS_POSITIVE_COUNT: data_frame.loc[i, COL_CONTINUOUS_POSITIVE_COUNT],
@@ -146,7 +158,7 @@ def plot_candle_month(ax, ts_code, name, last_date, misc):
     ax.plot(sma_10, linewidth=1, label='ma10')
     ax.plot(sma_20, linewidth=1, label='ma20')
 
-    plt.title('{ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} continuous:{continuous} average_chg:{average_chg} retracement:{retracement} score:{score}'.format(ts_code=ts_code, name=name,
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} continuous:{continuous} average_chg:{average_chg} retracement:{retracement} score:{score}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
               circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), continuous=int(misc[COL_CONTINUOUS_POSITIVE_COUNT]),
               average_chg=misc[COL_CONTINUOUS_POSITIVE_AVERAGE_CHG], retracement=misc[COL_MAX_RETRACEMENT], score=misc[COL_SCORE]),
               fontproperties='Heiti TC')

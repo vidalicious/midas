@@ -355,8 +355,8 @@ def klines_comfort_score(sequence=None):
         pct_chg = item.close / item.pre_close - 1
 
         score = (pct_chg - retracement_up - retracement_bottom) * 100
-        if score < 0:
-            break
+        # if score < 0:
+        #     break
 
         comfort_score += score
         count += 1
