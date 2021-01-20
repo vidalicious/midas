@@ -50,7 +50,7 @@ def main(offset=0):
             data_frame.loc[i, COL_RECENT_LIMIT_COUNT_3] = api.local_limit_count(daily, local_scale=3)
             data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] = api.daily_continuous_limit_count(daily)
 
-            limit_score = 100 if daily[0].pct_chg > 9.8 else 0
+            limit_score = 100 if (daily[0].pct_chg > 9.8 and data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] > 1) else 0
             data_frame.loc[i, COL_RANK_SCORE] = limit_score + data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT]
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
