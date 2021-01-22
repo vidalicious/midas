@@ -13,6 +13,7 @@ import midas.core.analyzer._0x45Limit_Rank as limit_rank
 import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
 import midas.core.analyzer._0x49Ergodic_Graph as ergodic_graph
 import midas.core.analyzer._0x50Monthly_Trend as monthly_trend
+import midas.core.analyzer._0x51History_Break as history_break
 
 
 def working_day():
@@ -22,7 +23,7 @@ def working_day():
     north_money.main()
     limit_rank.main()
     monthly_trend.main()
-    # ergodic_graph.main()
+    history_break.main()
     wind_chime.main()
 
 
@@ -35,7 +36,7 @@ def total():
     north_money.main()
     limit_rank.main()
     monthly_trend.main()
-    # ergodic_graph.main()
+    history_break.main()
     wind_chime.main()
 
 
