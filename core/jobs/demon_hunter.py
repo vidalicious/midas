@@ -21,9 +21,9 @@ def working_day():
     base.async_daily()
     base.async_daily_basic_origin()
     north_money.main()
+    history_break.main()
     limit_rank.main()
     monthly_trend.main()
-    history_break.main()
     wind_chime.main()
 
 
@@ -34,9 +34,9 @@ def total():
     monthly.async_monthly()
     holders.async_float_holders()
     north_money.main()
+    history_break.main()
     limit_rank.main()
     monthly_trend.main()
-    history_break.main()
     wind_chime.main()
 
 
