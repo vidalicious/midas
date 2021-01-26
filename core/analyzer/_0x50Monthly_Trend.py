@@ -110,10 +110,10 @@ def plot_distribution(data_frame):
 
 
 def plot_candle_gather(data_frame, last_date, sub, offset):
-    columns = 2
-    rows = len(data_frame)
+    columns = 1
+    rows = len(data_frame) * 2
 
-    fig = plt.figure(figsize=(columns * 15, rows * 5))
+    fig = plt.figure(figsize=(columns * 15, rows * 5 / 2))
     for i in range(len(data_frame)):
         ts_code = data_frame.loc[i, 'ts_code']
         name = data_frame.loc[i, 'name']

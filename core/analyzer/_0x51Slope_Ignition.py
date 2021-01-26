@@ -66,7 +66,7 @@ def main(offset=0):
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### history_break {i} #####'.format(i=i))
+        print('##### slope_ignition {i} #####'.format(i=i))
 
     data_frame = data_frame[
                             (data_frame[COL_HISTORY_BREAK] == True)
@@ -74,7 +74,7 @@ def main(offset=0):
 
     data_frame = data_frame.sort_values(by=COL_MONTHLY_CHG, ascending=True).reset_index(drop=True)
 
-    file_name = '{logs_path}/{date}@History_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Slope_Ignition.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -88,10 +88,10 @@ def main(offset=0):
 
 
 def plot_candle_gather(data_frame, last_date, sub, offset):
-    columns = 2
-    rows = len(data_frame)
+    columns = 1
+    rows = len(data_frame) * 2
 
-    fig = plt.figure(figsize=(columns * 15, rows * 5))
+    fig = plt.figure(figsize=(columns * 15, rows * 5 / 2))
     for i in range(len(data_frame)):
         ts_code = data_frame.loc[i, 'ts_code']
         name = data_frame.loc[i, 'name']
@@ -108,40 +108,40 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/history_break/{date}_history_break_{sub}.png'.format(date=last_date, sub=sub))
+    plt.savefig('../../buffer/slope_ignition/{date}_slope_ignition_{sub}.png'.format(date=last_date, sub=sub))
 
 def plot_candle_month(ax, ts_code, name, last_date, misc):
     monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == ts_code,
                                                        models.MonthlyPro.trade_date <= last_date).order_by(
         models.MonthlyPro.trade_date.desc()).limit(sampling_count).all()
 
-    if not monthly:
-        return
+    if monthly:
+        df = DataFrame()
+        for i, item in enumerate(monthly[300::-1]):
+            df.loc[i, 'date'] = str(item.trade_date)
+            df.loc[i, 'open'] = item.open
+            df.loc[i, 'close'] = item.close
+            df.loc[i, 'high'] = item.high
+            df.loc[i, 'low'] = item.low
 
-    df = DataFrame()
-    for i, item in enumerate(monthly[300::-1]):
-        df.loc[i, 'date'] = str(item.trade_date)
-        df.loc[i, 'open'] = item.open
-        df.loc[i, 'close'] = item.close
-        df.loc[i, 'high'] = item.high
-        df.loc[i, 'low'] = item.low
+        sma_5 = talib.SMA(np.array(df['close']), 5)
+        sma_10 = talib.SMA(np.array(df['close']), 10)
+        sma_20 = talib.SMA(np.array(df['close']), 20)
 
-    sma_5 = talib.SMA(np.array(df['close']), 5)
-    sma_10 = talib.SMA(np.array(df['close']), 10)
-    sma_20 = talib.SMA(np.array(df['close']), 20)
+        ax.set_xticks(range(0, len(df['date']), 20))
+        ax.set_xticklabels(df['date'][::20])
+        ax.plot(sma_5, linewidth=1, label='ma5')
+        ax.plot(sma_10, linewidth=1, label='ma10')
+        ax.plot(sma_20, linewidth=1, label='ma20')
 
-    ax.set_xticks(range(0, len(df['date']), 20))
-    ax.set_xticklabels(df['date'][::20])
-    ax.plot(sma_5, linewidth=1, label='ma5')
-    ax.plot(sma_10, linewidth=1, label='ma10')
-    ax.plot(sma_20, linewidth=1, label='ma20')
+        mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
+                              width=0.5, colorup='red', colordown='green',
+                              alpha=0.5)
 
     plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} monthly_chg:{monthly_chg}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-              circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), monthly_chg=round(misc[COL_MONTHLY_CHG], 2)),
+                                                                                                                     circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), monthly_chg=round(misc[COL_MONTHLY_CHG], 2)),
               fontproperties='Heiti TC')
-    mpf.candlestick2_ochl(ax, df['open'], df['close'], df['high'], df['low'],
-                          width=0.5, colorup='red', colordown='green',
-                          alpha=0.5)
+
     # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
