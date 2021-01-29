@@ -17,7 +17,7 @@ import midas.bin.env as env
 import mpl_finance as mpf
 
 COL_HISTORY_BREAK = 'COL_HISTORY_BREAK'
-COL_MONTHLY_CHG = 'COL_MONTHLY_CHG'
+COL_LAST_CHG = 'COL_LAST_CHG'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -42,16 +42,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=120) < 2
-
-            monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == stock_basic.ts_code,
-                                                               models.MonthlyPro.trade_date <= LAST_MARKET_DATE).order_by(
-                models.MonthlyPro.trade_date.desc()).limit(sampling_count).all()
-
-            monthly_chgs = 0
-            for a_month in monthly[:6]:
-                monthly_chgs += a_month.pct_chg
-
-            data_frame.loc[i, COL_MONTHLY_CHG] = monthly_chgs
+            data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -72,7 +63,7 @@ def main(offset=0):
                             (data_frame[COL_HISTORY_BREAK] == True)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_MONTHLY_CHG, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_LAST_CHG, ascending=False).reset_index(drop=True)
 
     file_name = '{logs_path}/{date}@Slope_Ignition.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
@@ -100,7 +91,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             'index': i + offset,
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_MONTHLY_CHG: data_frame.loc[i, COL_MONTHLY_CHG]
+            COL_LAST_CHG: round(data_frame.loc[i, COL_LAST_CHG], 2)
         }
         plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
@@ -138,8 +129,8 @@ def plot_candle_month(ax, ts_code, name, last_date, misc):
                               width=0.5, colorup='red', colordown='green',
                               alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} monthly_chg:{monthly_chg}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-                                                                                                                     circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), monthly_chg=round(misc[COL_MONTHLY_CHG], 2)),
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} last_chg:{last_chg}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+                                                                                                                     circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]), last_chg=misc[COL_LAST_CHG]),
               fontproperties='Heiti TC')
 
     # plt.grid()
