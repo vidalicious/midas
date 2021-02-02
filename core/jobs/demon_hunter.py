@@ -23,7 +23,7 @@ def working_day():
     north_money.main()
     slope_ignition.main()
     limit_rank.main()
-    monthly_trend.main()
+    # monthly_trend.main()
     wind_chime.main()
 
 
@@ -36,7 +36,7 @@ def total():
     north_money.main()
     slope_ignition.main()
     limit_rank.main()
-    monthly_trend.main()
+    # monthly_trend.main()
     wind_chime.main()
 
 
