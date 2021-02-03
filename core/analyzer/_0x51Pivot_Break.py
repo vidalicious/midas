@@ -57,7 +57,7 @@ def main(offset=0):
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### slope_ignition {i} #####'.format(i=i))
+        print('##### pivot_break {i} #####'.format(i=i))
 
     data_frame = data_frame[
                             (data_frame[COL_HISTORY_BREAK] == True)
@@ -65,7 +65,7 @@ def main(offset=0):
 
     data_frame = data_frame.sort_values(by=COL_LAST_CHG, ascending=False).reset_index(drop=True)
 
-    file_name = '{logs_path}/{date}@Slope_Ignition.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Pivot_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -99,7 +99,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/slope_ignition/{date}_slope_ignition_{sub}.png'.format(date=last_date, sub=sub))
+    plt.savefig('../../buffer/pivot_break/{date}_pivot_break_{sub}.png'.format(date=last_date, sub=sub))
 
 def plot_candle_month(ax, ts_code, name, last_date, misc):
     monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == ts_code,
