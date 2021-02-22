@@ -230,6 +230,15 @@ def daily_break_index(sequence=None, local_scale=120):
     return index
 
 
+def min_max_gap(sequence=None, local_scale=120):
+    sequence = sequence[:local_scale]
+    daily_closes = [i.close for i in sequence]
+    max_close = max(daily_closes)
+    min_close = min(daily_closes)
+    gap = max_close / min_close - 1
+    return gap * 100
+
+
 def daily_pit(sequence=None, local_scale=20):
     sequence = sequence[:local_scale]
     daily_closes = [i.close for i in sequence]
