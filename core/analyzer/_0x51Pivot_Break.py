@@ -19,6 +19,7 @@ import mpl_finance as mpf
 COL_HISTORY_BREAK = 'COL_HISTORY_BREAK'
 COL_LAST_CHG = 'COL_LAST_CHG'
 COL_MIN_MAX_GAP = 'COL_MIN_MAX_GAP'
+COL_RANK_SCORE = 'COL_RANK_SCORE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -45,6 +46,7 @@ def main(offset=0):
             data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=120) < 2
             data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_MIN_MAX_GAP] = api.min_max_gap(daily, local_scale=60)
+            data_frame.loc[i, COL_RANK_SCORE] = data_frame.loc[i, COL_LAST_CHG] - data_frame.loc[i, COL_MIN_MAX_GAP]
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -65,7 +67,7 @@ def main(offset=0):
                             (data_frame[COL_HISTORY_BREAK] == True)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_MIN_MAX_GAP, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_RANK_SCORE, ascending=False).reset_index(drop=True)
 
     file_name = '{logs_path}/{date}@Pivot_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
