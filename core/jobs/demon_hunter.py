@@ -14,6 +14,7 @@ import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
 import midas.core.analyzer._0x49Ergodic_Graph as ergodic_graph
 import midas.core.analyzer._0x50Monthly_Trend as monthly_trend
 import midas.core.analyzer._0x51Pivot_Break as pivot_break
+import midas.core.analyzer._0x52Foam_Outpost as foam_outpost
 
 
 def working_day():
@@ -21,9 +22,9 @@ def working_day():
     base.async_daily()
     base.async_daily_basic_origin()
     north_money.main()
+    foam_outpost.main()
     pivot_break.main()
     limit_rank.main()
-    # monthly_trend.main()
     wind_chime.main()
 
 
@@ -34,9 +35,9 @@ def total():
     monthly.async_monthly()
     holders.async_float_holders()
     north_money.main()
+    foam_outpost.main()
     pivot_break.main()
     limit_rank.main()
-    # monthly_trend.main()
     wind_chime.main()
 
 
