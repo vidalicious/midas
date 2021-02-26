@@ -15,6 +15,7 @@ import midas.core.analyzer._0x49Ergodic_Graph as ergodic_graph
 import midas.core.analyzer._0x50Monthly_Trend as monthly_trend
 import midas.core.analyzer._0x51Pivot_Break as pivot_break
 import midas.core.analyzer._0x52Foam_Outpost as foam_outpost
+import midas.core.analyzer._0x53Super_Jumper as super_jumper
 
 
 def working_day():
@@ -25,6 +26,7 @@ def working_day():
     foam_outpost.main()
     pivot_break.main()
     limit_rank.main()
+    super_jumper.main()
     wind_chime.main()
 
 
@@ -38,6 +40,7 @@ def total():
     foam_outpost.main()
     pivot_break.main()
     limit_rank.main()
+    super_jumper.main()
     wind_chime.main()
 
 
