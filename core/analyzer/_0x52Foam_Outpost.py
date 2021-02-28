@@ -63,9 +63,9 @@ def main(offset=0):
             continue
         print('##### foam_outpost {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_HISTORY_BREAK] == True)
-    #                        ]
+    data_frame = data_frame[
+                            (data_frame[COL_CHG] > 0)
+                           ]
 
     data_frame = data_frame.sort_values(by=COL_CHG, ascending=False).reset_index(drop=True)
     data_frame = data_frame.head(50)
