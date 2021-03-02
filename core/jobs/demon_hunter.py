@@ -26,7 +26,7 @@ def working_day():
     foam_outpost.main()
     pivot_break.main()
     limit_rank.main()
-    super_jumper.main()
+    # super_jumper.main()
     wind_chime.main()
 
 
@@ -40,7 +40,7 @@ def total():
     foam_outpost.main()
     pivot_break.main()
     limit_rank.main()
-    super_jumper.main()
+    # super_jumper.main()
     wind_chime.main()
 
 
