@@ -41,8 +41,8 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
-            daily_10 = daily[1:11]
-            daily_closes = [i.close for i in daily_10]
+            sub_daily = daily[1:6]
+            daily_closes = [i.close for i in sub_daily]
             min_close = min(daily_closes)
 
 
