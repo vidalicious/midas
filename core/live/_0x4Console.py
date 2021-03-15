@@ -87,11 +87,12 @@ def run():
                     code = j[0].split('="')[0].split('_')[-1]
                     yesterday_closing_price = float(j[2])
                     current_price = float(j[3])
+                    today_max_price = float(j[4])
+                    buy_one = float(j[6])
                     chg = (current_price / yesterday_closing_price - 1)
                     chg_display = '{}%'.format(round(chg*100, 2))
                     circ_mv = stock_map[code]['circ_mv']
-                    # if 0.05 < chg < 0.098 and current_price > local_max:
-                    if 0 < chg < 0.098:
+                    if buy_one < today_max_price:
                         displays.append({
                             'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
                                 price=round(current_price, 2), circ_mv=int(circ_mv)),
