@@ -34,35 +34,6 @@ def run():
             'circ_mv': float(stock.circ_mv)
         }
 
-        print()
-
-
-
-    # stocks = []
-    # stock_map = {}
-    # df = pd.read_csv('{data_path}/live_oneplus.csv'.format(data_path=env.data_path))
-    # for i in range(len(df)):
-    #     ts_code = df.loc[i, 'ts_code']
-    #     if ts_code.startswith('688'):
-    #         continue
-    #
-    #     if df.loc[i, 'COL_LOCAL_LIMIT_COUNT_1'] == 0:
-    #         continue
-    #
-    #     market = ts_code.split('.')[1].lower()
-    #     symbol = ts_code.split('.')[0]
-    #     name = df.loc[i, 'name']
-    #     stocks.append({
-    #         'name': name,
-    #         'symbol': symbol,
-    #         'market': market
-    #     })
-    #     stock_map['{market}{symbol}'.format(market=market, symbol=symbol)] = {
-    #         'local_max': float(df.loc[i, 'COL_DAILY_LOCAL_MAX']),
-    #         'circ_mv': float(df.loc[i, 'COL_CIRC_MV'])
-    #     }
-
-
     batch_size = 500
     req_list = []
     for i in range(0, len(target_symbols), batch_size):
