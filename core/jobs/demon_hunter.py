@@ -38,8 +38,8 @@ def total():
     holders.async_float_holders()
     north_money.main()
     foam_outpost.main()
-    pivot_break.main()
-    limit_rank.main()
+    # pivot_break.main()
+    # limit_rank.main()
     # super_jumper.main()
     wind_chime.main()
 
