@@ -8,6 +8,11 @@ import midas.core.data.models as models
 
 # target_symbols = list(set(target_symbols))
 
+symbol_black_list = [
+    '002141',
+    '603818'
+]
+
 def run():
     target_symbols = []
 
@@ -15,7 +20,9 @@ def run():
     for i in range(len(df)):
         ts_code = df.loc[i, 'ts_code']
         symbol = ts_code.split('.')[0]
-        target_symbols.append(symbol)
+
+        if symbol not in symbol_black_list:
+            target_symbols.append(symbol)
 
 
     symbol2code = {}
@@ -57,38 +64,38 @@ def run():
                     today_max_price = float(j[4])
                     buy_one_price = float(j[6])
                     buy_one_vol = float(j[10])
+                    today_limit_price = round(yesterday_closing_price * 1.1, 2)
                     chg = (current_price / yesterday_closing_price - 1)
                     chg_display = '{}%'.format(round(chg*100, 2))
                     circ_mv = stock_map[code]['circ_mv']
 
-                    if chg > 0.08:
-                        displays.append({
-                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
-                                                                                                          price=round(current_price, 2), circ_mv=int(circ_mv)),
-                            'chg': chg
-                        })
+                    if_display = False
+                    type = 1
+                    desc = ''
+                    if today_max_price == today_limit_price: #摸过板的
+                        if buy_one_price < today_limit_price: #开板
+                            if_display = True
+                        elif buy_one_price * buy_one_vol < 10000000: #封单小于1kw
+                            if_display = True
+                            type = 2
 
-                    # if_display = False
-                    # if buy_one_price < today_max_price: #开板
-                    #     if_display = True
-                    #     type = 1
-                    # elif buy_one_price * buy_one_vol < 10000000: #封单小于1kw
-                    #     if_display = True
-                    #     type = 2
-                    #
-                    # if if_display:
-                    #     if type == 2:
-                    #         displays.append({
-                    #             'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿\t封单:{vol}手'.format(code=code, name=name, chg=chg_display,
-                    #                 price=round(current_price, 2), circ_mv=int(circ_mv), vol=int(buy_one_vol / 100)),
-                    #             'chg': chg
-                    #         })
-                    #     else:
-                    #         displays.append({
-                    #             'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
-                    #                 price=round(current_price, 2), circ_mv=int(circ_mv)),
-                    #             'chg': chg
-                    #         })
+                    elif chg > 0.08:
+                        if_display = True
+                        desc += '未上板'
+
+                    if if_display:
+                        if type == 2:
+                            displays.append({
+                                'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿\t封单:{vol}手'.format(code=code, name=name, chg=chg_display,
+                                    price=round(current_price, 2), circ_mv=int(circ_mv), vol=int(buy_one_vol / 100)),
+                                'chg': chg
+                            })
+                        else:
+                            displays.append({
+                                'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tcirc_mv:{circ_mv}亿\t{desc}'.format(code=code, name=name, chg=chg_display,
+                                    price=round(current_price, 2), circ_mv=int(circ_mv), desc=desc),
+                                'chg': chg
+                            })
 
             displays.sort(key=lambda x: x['chg'], reverse=True)
             notes = [i['note'] for i in displays]
