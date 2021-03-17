@@ -38,7 +38,7 @@ def main(offset=0):
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_LASTPRICE] = daily[0].close
             data_frame.loc[i, COL_DAILY_SILENT] = api.daily_silent(daily, local_scale=5)
-            data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=10)
+            # data_frame.loc[i, COL_DAILY_LOCAL_MAX] = api.daily_local_max(daily, local_scale=10)
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
@@ -46,7 +46,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_DAILY_SILENT] == True)
-                            & (data_frame[COL_DAILY_LOCAL_MAX] < data_frame[COL_LASTPRICE] * 1.1)
+                            # & (data_frame[COL_DAILY_LOCAL_MAX] < data_frame[COL_LASTPRICE] * 1.1)
                            ]
 
     data_frame = data_frame.reset_index(drop=True)
