@@ -14,7 +14,7 @@ symbol_black_list = [
 ]
 
 def get_kaipanla_symbols():
-    with open('{data_path}/kaipanla_stuff'.format(data_path=env.data_path), "r") as f:  # 打开文件
+    with open('{data_path}/kaipanla_stuffs.html'.format(data_path=env.data_path), "r") as f:  # 打开文件
         text = f.read()  # 读取文
     soup = BeautifulSoup(markup=text, features='lxml')
     symbol_tags = soup.find_all(class_='c gray')
@@ -95,7 +95,7 @@ def run():
                             if_display = True
                             type = 2
 
-                    elif chg > 0.05:
+                    elif chg > 0:
                         if_display = True
                         desc += '未上板'
 
@@ -114,6 +114,7 @@ def run():
                             })
 
             displays.sort(key=lambda x: x['chg'], reverse=True)
+            displays = displays[:5]
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))
         except Exception as e:
