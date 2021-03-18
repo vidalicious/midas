@@ -7,8 +7,9 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
-    '002211',
-    '000007',
+    '002486',
+    '000762',
+    '002640'
 ]
 
 target_symbols = list(set(target_symbols))
