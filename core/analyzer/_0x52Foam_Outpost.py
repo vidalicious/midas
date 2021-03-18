@@ -71,7 +71,7 @@ def main(offset=0):
                            ]
 
     data_frame = data_frame.sort_values(by=COL_CHG, ascending=False).reset_index(drop=True)
-    # data_frame = data_frame.head(100)
+    data_frame = data_frame.head(100)
 
 
     file_name = '{logs_path}/{date}@Foam_Outpost.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
