@@ -7,9 +7,44 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
-    '002486',
-    '000762',
-    '002640'
+    '000662',
+    '600715',
+    '000620',
+    '600052',
+    '000797',
+    '002776',
+    '002103',
+    '002618',
+    '600766',
+    '000613',
+    '000559',
+    '002400',
+    '002580',
+    '600360',
+    '600983',
+    '000993',
+    '600379',
+    '000948',
+    '603890',
+    '003015',
+    '003000',
+    '605268',
+    '603706',
+    '605368',
+    '600916',
+    '600416',
+    '605151',
+    '600859',
+    '603533',
+    '002995',
+    '600872',
+    '002993',
+    '600298',
+    '603893',
+    '605358',
+    '000799',
+    '605111',
+    '603290',
 ]
 
 target_symbols = list(set(target_symbols))
@@ -55,17 +90,23 @@ def run():
                     today_max_price = float(j[4])
                     buy_one_price = float(j[6])
                     buy_one_vol = float(j[10])
+                    today_limit_price = round(yesterday_closing_price * 1.1, 2)
                     chg = (current_price / yesterday_closing_price - 1)
                     chg_display = '{}%'.format(round(chg*100, 2))
                     circ_mv = stock_map[code]['circ_mv']
 
                     if_display = False
-                    if buy_one_price < today_max_price: #开板
+                    type = 1
+                    if today_max_price == today_limit_price: #摸过板的
                         if_display = True
-                        type = 1
-                    elif buy_one_price * buy_one_vol < 10000000: #封单小于1kw
+                        if buy_one_price < today_limit_price: #开板
+                            if_display = True
+                        elif buy_one_price * buy_one_vol < 10000000: #封单小于1kw
+                            if_display = True
+                            type = 2
+
+                    elif chg > 0.05:
                         if_display = True
-                        type = 2
 
                     if if_display:
                         if type == 2:
