@@ -126,7 +126,7 @@ def run():
                                 'chg': chg
                             })
 
-            displays.sort(key=lambda x: x['chg'], reverse=True)
+            displays.sort(key=lambda x: x['chg'], reverse=False)
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))
         except Exception as e:
