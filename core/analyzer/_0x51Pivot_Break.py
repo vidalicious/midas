@@ -68,6 +68,7 @@ def main(offset=0):
                            ]
 
     data_frame = data_frame.sort_values(by=COL_RANK_SCORE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.head(200)
 
     file_name = '{logs_path}/{date}@Pivot_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
