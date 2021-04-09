@@ -43,7 +43,7 @@ def main(offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
-            data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=120) < 2
+            data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=60) < 2
             data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_MIN_MAX_GAP] = api.min_max_gap(daily, local_scale=60)
             data_frame.loc[i, COL_RANK_SCORE] = data_frame.loc[i, COL_LAST_CHG] / data_frame.loc[i, COL_MIN_MAX_GAP]
