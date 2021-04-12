@@ -46,7 +46,7 @@ def main(offset=0):
             data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=60) < 2
             data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_MIN_MAX_GAP] = api.min_max_gap(daily, local_scale=60)
-            data_frame.loc[i, COL_RANK_SCORE] = data_frame.loc[i, COL_LAST_CHG] / data_frame.loc[i, COL_MIN_MAX_GAP]
+            data_frame.loc[i, COL_RANK_SCORE] = max(daily[0].pct_chg, daily[1].pct_chg) / data_frame.loc[i, COL_MIN_MAX_GAP]
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
