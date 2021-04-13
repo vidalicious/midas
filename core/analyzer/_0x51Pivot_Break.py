@@ -17,6 +17,7 @@ import midas.bin.env as env
 import mpl_finance as mpf
 
 COL_HISTORY_BREAK = 'COL_HISTORY_BREAK'
+COL_LIMIT_COUNT = 'COL_LIMIT_COUNT'
 COL_LAST_CHG = 'COL_LAST_CHG'
 COL_MIN_MAX_GAP = 'COL_MIN_MAX_GAP'
 COL_RANK_SCORE = 'COL_RANK_SCORE'
@@ -44,6 +45,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
             data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=60) < 2
+            data_frame.loc[i, COL_LIMIT_COUNT] = local_limit_count(daily, local_scale=5)
             data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
             data_frame.loc[i, COL_MIN_MAX_GAP] = api.min_max_gap(daily, local_scale=60)
             data_frame.loc[i, COL_RANK_SCORE] = max(daily[0].pct_chg, daily[1].pct_chg) / data_frame.loc[i, COL_MIN_MAX_GAP]
@@ -65,6 +67,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_HISTORY_BREAK] == True)
+                            & (data_frame[COL_LIMIT_COUNT] == 0)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_RANK_SCORE, ascending=False).reset_index(drop=True)
@@ -81,6 +84,17 @@ def main(offset=0):
         sub_df = sub_df.reset_index(drop=True)
         plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
         sub += 1
+
+
+def local_limit_count(sequence=None, local_scale=5):
+    sequence = sequence[:local_scale]
+    limit_count = 0
+    for item in sequence:
+        pre_close = item.pre_close
+        close = item.close
+        if close >= round(pre_close * 1.1, 2):
+            limit_count += 1
+    return limit_count
 
 
 def plot_candle_gather(data_frame, last_date, sub, offset):
