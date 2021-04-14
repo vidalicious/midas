@@ -67,7 +67,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_HISTORY_BREAK] == True)
-                            & (data_frame[COL_LIMIT_COUNT] == 0)
+                            # & (data_frame[COL_LIMIT_COUNT] == 0)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_RANK_SCORE, ascending=False).reset_index(drop=True)

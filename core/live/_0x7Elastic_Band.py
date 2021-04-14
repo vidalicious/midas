@@ -97,9 +97,9 @@ def run():
                     local_high = float(stock_map[code]['local_high'])
                     fall_chg = (current_price / local_high - 1) * 100
 
-                    if_display = False
-                    if chg > 0 and fall_chg < 0:
-                        if_display = True
+                    if_display = True
+                    # if chg > 0 and fall_chg < 0:
+                    #     if_display = True
 
                     if if_display:
                         displays.append({
@@ -109,6 +109,7 @@ def run():
                         })
 
             displays.sort(key=lambda x: x['fall_chg'], reverse=True)
+            displays = displays[-10:]
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))
         except Exception as e:
