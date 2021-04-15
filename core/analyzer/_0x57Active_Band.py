@@ -70,7 +70,7 @@ def main(offset=0):
 
     data_frame = data_frame[
                             (data_frame[COL_LIMIT_COUNT] > 1)
-                            & (data_frame[COL_CONTINUOUS_LIMIT_COUNT] <= 1)
+                            & (data_frame[COL_CONTINUOUS_LIMIT_COUNT] <= 2)
                             & (data_frame[COL_MA_20_SLOPE] > 0)
                            ]
 
