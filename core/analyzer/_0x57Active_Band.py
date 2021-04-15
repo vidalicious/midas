@@ -100,7 +100,7 @@ def local_limit_count(sequence=None, local_scale=5):
     for item in sequence:
         pre_close = item.pre_close
         close = item.close
-        if close >= round(pre_close * 1.1, 2):
+        if close >= round(pre_close * 1.08, 2):
             limit_count += 1
     return limit_count
 
