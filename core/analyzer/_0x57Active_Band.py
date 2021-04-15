@@ -74,7 +74,7 @@ def main(offset=0):
                             & (data_frame[COL_MA_20_SLOPE] > 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_LIMIT_COUNT, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_LIMIT_COUNT, ascending=True).reset_index(drop=True)
     data_frame = data_frame.head(100)
 
 
