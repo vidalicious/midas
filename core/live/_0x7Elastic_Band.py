@@ -7,32 +7,45 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
-    '605337',
-    '600808',
-    '002203',
-    '000153',
-    '002393',
-    '603685',
-    '603585',
-    '603991',
-    '605369',
-    '000906',
-    '603683',
-    '600025',
-    '605116',
-    '605198',
-    '003004',
-    '003025',
-    '605377',
-    '603617',
-    '605100',
-    '603667',
-    '603365',
-    '300146',
-    '603002',
-    '603989',
-    '002138',
-    '600809'
+    '605268',
+    '603169',
+    '000928',
+    '000503',
+    '600640',
+    '600052',
+    '600117',
+    '600228',
+    '600297',
+    '600405',
+    '600576',
+    '600735',
+    '600710',
+    '003038',
+    '600744',
+    '600798',
+    '601919',
+    '603080',
+    '603439',
+    '300694',
+    '003037',
+    '000567',
+    '003016',
+    '000613',
+    '000692',
+    '000723',
+    '000883',
+    '000908',
+    '002172',
+    '002174',
+    '002316',
+    '002369',
+    '002400',
+    '002512',
+    '002885',
+    '002993',
+    '003010',
+    '003015',
+    '605368',
 ]
 
 target_symbols = list(set(target_symbols))
@@ -89,6 +102,7 @@ def run():
                     j = i.split(',')
                     name = j[0].split('="')[1]
                     code = j[0].split('="')[0].split('_')[-1]
+                    today_open = float(j[1])
                     yesterday_closing_price = float(j[2])
                     current_price = float(j[3])
                     chg = (current_price / yesterday_closing_price - 1)
@@ -97,9 +111,9 @@ def run():
                     local_high = float(stock_map[code]['local_high'])
                     fall_chg = (current_price / local_high - 1) * 100
 
-                    if_display = True
-                    # if chg > 0 and fall_chg < 0:
-                    #     if_display = True
+                    if_display = False
+                    if (chg > 0) and (current_price > today_open) and (fall_chg < 0):
+                        if_display = True
 
                     if if_display:
                         displays.append({
