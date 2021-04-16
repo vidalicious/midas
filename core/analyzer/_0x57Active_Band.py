@@ -17,7 +17,8 @@ import midas.bin.env as env
 import mpl_finance as mpf
 
 COL_PRICE = 'COL_PRICE'
-COL_LIMIT_COUNT = 'COL_LIMIT_COUNT'
+COL_LIMIT_COUNT_A = 'COL_LIMIT_COUNT_A'
+COL_LIMIT_COUNT_B = 'COL_LIMIT_COUNT_B'
 COL_CONTINUOUS_LIMIT_COUNT = 'COL_CONTINUOUS_LIMIT_COUNT'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -47,8 +48,9 @@ def main(offset=0):
 
             data_frame.loc[i, COL_PRICE] = daily[0].close
 
-            data_frame.loc[i, COL_LIMIT_COUNT] = local_limit_count(daily, local_scale=10)
-            data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] = continuous_limit(daily, local_scale=10)
+            data_frame.loc[i, COL_LIMIT_COUNT_A] = local_limit_count(daily, local_scale=30)
+            data_frame.loc[i, COL_LIMIT_COUNT_B] = local_limit_count(daily, local_scale=3)
+            # data_frame.loc[i, COL_CONTINUOUS_LIMIT_COUNT] = continuous_limit(daily, local_scale=10)
 
             ma_20 = api.daily_close_ma(daily=daily, step=20)
             data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
@@ -69,13 +71,14 @@ def main(offset=0):
         print('##### active_band {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LIMIT_COUNT] > 1)
-                            & (data_frame[COL_CONTINUOUS_LIMIT_COUNT] <= 1)
+                            (data_frame[COL_LIMIT_COUNT_A] == 1)
+                            & (data_frame[COL_LIMIT_COUNT_B] == 1)
+                            # & (data_frame[COL_CONTINUOUS_LIMIT_COUNT] <= 1)
                             & (data_frame[COL_MA_20_SLOPE] > 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_LIMIT_COUNT, ascending=True).reset_index(drop=True)
-    data_frame = data_frame.head(100)
+    data_frame = data_frame.sort_values(by=COL_MA_20_SLOPE, ascending=False).reset_index(drop=True)
+    # data_frame = data_frame.head(100)
 
 
     file_name = '{logs_path}/{date}@Active_Band.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
@@ -100,7 +103,7 @@ def local_limit_count(sequence=None, local_scale=5):
     for item in sequence:
         pre_close = item.pre_close
         close = item.close
-        if close >= round(pre_close * 1.08, 2):
+        if close >= round(pre_close * 1.1, 2):
             limit_count += 1
     return limit_count
 
