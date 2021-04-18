@@ -147,18 +147,22 @@ def run():
                         print()
 
                     if_display = False
-                    if (chg > 0) and (current_price > today_open) and (-10 < fall_chg < 0):
+                    # if (chg > 0) and (current_price > today_open) and (-10 < fall_chg < 0):
+                    #     if_display = True
+
+                    if (chg > 0) and (current_price > today_open):
                         if_display = True
 
                     if if_display:
                         displays.append({
                             'note': '{code}\t{name}\tchg:{chg}\tfall_chg:{fall_chg}%\tprice:{price}\tcirc_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
                                 fall_chg=round(fall_chg, 2), price=round(current_price, 2), circ_mv=int(circ_mv)),
+                            'chg': chg,
                             'fall_chg': fall_chg
                         })
 
-            displays.sort(key=lambda x: x['fall_chg'], reverse=True)
-            displays = displays[-10:]
+            displays.sort(key=lambda x: x['chg'], reverse=True)
+            # displays = displays[-10:]
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))
         except Exception as e:
