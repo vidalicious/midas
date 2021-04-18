@@ -19,6 +19,7 @@ import mpl_finance as mpf
 COL_PRICE = 'COL_PRICE'
 COL_LIMIT_COUNT_A = 'COL_LIMIT_COUNT_A'
 COL_LIMIT_COUNT_B = 'COL_LIMIT_COUNT_B'
+COL_PASS = 'COL_PASS'
 COL_CONTINUOUS_LIMIT_COUNT = 'COL_CONTINUOUS_LIMIT_COUNT'
 COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -55,6 +56,12 @@ def main(offset=0):
             ma_20 = api.daily_close_ma(daily=daily, step=20)
             data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
 
+            if (data_frame.loc[i, COL_LIMIT_COUNT_A] == 1 and data_frame.loc[i, COL_LIMIT_COUNT_B] == 1) \
+                or (data_frame.loc[i, COL_LIMIT_COUNT_A] == 2 and data_frame.loc[i, COL_LIMIT_COUNT_B] == 2):
+                data_frame.loc[i, COL_PASS] = True
+            else:
+                data_frame.loc[i, COL_PASS] = False
+
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
 
@@ -71,9 +78,7 @@ def main(offset=0):
         print('##### active_band {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_LIMIT_COUNT_A] == 1)
-                            & (data_frame[COL_LIMIT_COUNT_B] == 1)
-                            # & (data_frame[COL_CONTINUOUS_LIMIT_COUNT] <= 1)
+                            (data_frame[COL_PASS] == True)
                             & (data_frame[COL_MA_20_SLOPE] > 0)
                            ]
 
