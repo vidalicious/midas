@@ -15,8 +15,7 @@ import midas.core.analyzer._0x49Ergodic_Graph as ergodic_graph
 import midas.core.analyzer._0x50Monthly_Trend as monthly_trend
 import midas.core.analyzer._0x51Pivot_Break as pivot_break
 import midas.core.analyzer._0x52Foam_Outpost as foam_outpost
-import midas.core.analyzer._0x56First_Limit as first_limit
-import midas.core.analyzer._0x57Active_Band as active_band
+import midas.core.analyzer._0x59Concept_Pivot_Break as concept_pivot_break
 
 
 def working_day():
@@ -24,9 +23,10 @@ def working_day():
     base.async_daily()
     base.async_daily_basic_origin()
     north_money.main()
-    # foam_outpost.main()
+    foam_outpost.main()
     pivot_break.main()
-    active_band.main()
+    concept_pivot_break.main()
+    # active_band.main()
     # first_limit.main()
     limit_rank.main()
     # super_jumper.main()
@@ -40,9 +40,10 @@ def total():
     monthly.async_monthly()
     holders.async_float_holders()
     north_money.main()
-    # foam_outpost.main()
+    foam_outpost.main()
     pivot_break.main()
-    active_band.main()
+    concept_pivot_break.main()
+    # active_band.main()
     # first_limit.main()
     limit_rank.main()
     # super_jumper.main()
