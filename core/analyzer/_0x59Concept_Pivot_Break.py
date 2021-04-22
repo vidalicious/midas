@@ -208,5 +208,5 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
 
 
 if __name__ == '__main__':
-    for concept in ['医疗', '酒', '食品']:
+    for concept in ['医疗', '食品']:
         main(concept, offset=0)
