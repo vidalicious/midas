@@ -29,8 +29,8 @@ COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
 
-def get_kaipanla_symbols():
-    with open('{data_path}/kaipanla_stuffs.html'.format(data_path=env.data_path), "r") as f:  # 打开文件
+def get_kaipanla_symbols(concept):
+    with open('{data_path}/{concept}.html'.format(data_path=env.data_path, concept=concept), "r") as f:  # 打开文件
         text = f.read()  # 读取文
     soup = BeautifulSoup(markup=text, features='lxml')
     symbol_tags = soup.find_all(class_='c gray')
@@ -42,11 +42,11 @@ def get_kaipanla_symbols():
 
     return symbols
 
-def main(offset=0):
+def main(concept, offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
 
-    kaipanla_symbols = get_kaipanla_symbols()
+    kaipanla_symbols = get_kaipanla_symbols(concept)
     kaipanla_symbols = list(set(kaipanla_symbols))
 
     data_frame = DataFrame()
@@ -64,10 +64,10 @@ def main(offset=0):
             daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == stock_basic.ts_code,
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
-            data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=60) < 2
+            # data_frame.loc[i, COL_HISTORY_BREAK] = api.daily_break_index(daily, local_scale=60) < 2
             data_frame.loc[i, COL_LIMIT_COUNT] = local_limit_count(daily, local_scale=5)
             data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
-            data_frame.loc[i, COL_MIN_MAX_GAP] = api.min_max_gap(daily, local_scale=60)
+            data_frame.loc[i, COL_MIN_MAX_GAP] = api.min_max_gap(daily, local_scale=20)
             data_frame.loc[i, COL_RANK_SCORE] = max(daily[0].pct_chg, daily[1].pct_chg) / data_frame.loc[i, COL_MIN_MAX_GAP]
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
@@ -92,7 +92,7 @@ def main(offset=0):
 
     data_frame = data_frame.sort_values(by=COL_RANK_SCORE, ascending=False).reset_index(drop=True)
 
-    file_name = '{logs_path}/{date}@Concept_Pivot_Break.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Concept_Pivot_Break_{concept}.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path, concept=concept)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -101,7 +101,7 @@ def main(offset=0):
     for i in range(0, len(data_frame), batch_size):
         sub_df = data_frame.iloc[i:i+batch_size, :]
         sub_df = sub_df.reset_index(drop=True)
-        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
+        plot_candle_gather(concept=concept, data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
         sub += 1
 
 
@@ -116,7 +116,7 @@ def local_limit_count(sequence=None, local_scale=5):
     return limit_count
 
 
-def plot_candle_gather(data_frame, last_date, sub, offset):
+def plot_candle_gather(concept, data_frame, last_date, sub, offset):
     columns = 1
     rows = len(data_frame) * 2
 
@@ -138,7 +138,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/concept_pivot_break/{date}_concept_pivot_break_{sub}.png'.format(date=last_date, sub=sub))
+    plt.savefig('../../buffer/concept_pivot_break/{date}_concept_pivot_break_{concept}_{sub}.png'.format(date=last_date, concept=concept, sub=sub))
 
 def plot_candle_month(ax, ts_code, name, last_date, misc):
     monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == ts_code,
@@ -208,4 +208,5 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
 
 
 if __name__ == '__main__':
-    main(offset=0)
+    for concept in ['医疗', '酒', '食品']:
+        main(concept, offset=0)
