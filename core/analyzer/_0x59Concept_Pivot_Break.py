@@ -42,7 +42,7 @@ def get_kaipanla_symbols(concept):
 
     return symbols
 
-def main(concept, offset=0):
+def _main(concept, offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
 
@@ -207,6 +207,10 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
 
-if __name__ == '__main__':
+def main():
     for concept in ['医疗', '食品']:
-        main(concept, offset=0)
+        _main(concept, offset=0)
+
+
+if __name__ == '__main__':
+    main()
