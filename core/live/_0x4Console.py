@@ -7,7 +7,7 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
-    '603630',
+    '002426',
 ]
 
 target_symbols = list(set(target_symbols))
@@ -58,18 +58,20 @@ def run():
                     chg_display = '{}%'.format(round(chg*100, 2))
                     circ_mv = stock_map[code]['circ_mv']
 
-                    if_display = False
-                    type = 1
-                    if today_max_price == today_limit_price: #摸过板的
-                        if_display = True
-                        if buy_one_price < today_limit_price: #开板
-                            if_display = True
-                        elif buy_one_price * buy_one_vol < 10000000: #封单小于1kw
-                            if_display = True
-                            type = 2
+                    # if_display = False
+                    # type = 1
+                    # if today_max_price == today_limit_price: #摸过板的
+                    #     if_display = True
+                    #     if buy_one_price < today_limit_price: #开板
+                    #         if_display = True
+                    #     elif buy_one_price * buy_one_vol < 10000000: #封单小于1kw
+                    #         if_display = True
+                    #         type = 2
+                    #
+                    # elif chg > 0.05:
+                    #     if_display = True
 
-                    elif chg > 0.05:
-                        if_display = True
+                    if_display = True
 
                     if if_display:
                         if type == 2:
