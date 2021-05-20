@@ -16,8 +16,8 @@ from midas.core.data.engine import main_session
 import midas.bin.env as env
 import mpl_finance as mpf
 
-COL_CHG = 'COL_CHG'
-COL_LAST_CHG = 'COL_LAST_CHG'
+COL_LAST_IF_LIMIT = 'COL_LAST_IF_LIMIT'
+COL_MAX_CONTINUOUS_LIMIT_COUNT = 'COL_MAX_CONTINUOUS_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -42,14 +42,9 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
-            sub_daily = daily[1:11]
-            daily_closes = [i.close for i in sub_daily]
-            min_close = min(daily_closes)
+            data_frame.loc[i, COL_MAX_CONTINUOUS_LIMIT_COUNT] = max_continuous_limit_count(sequence=daily, local_scale=10)
 
-
-            data_frame.loc[i, COL_CHG] = (daily[0].close / min_close - 1) * 100
-
-            data_frame.loc[i, COL_LAST_CHG] = daily[0].pct_chg
+            data_frame.loc[i, COL_LAST_IF_LIMIT] = daily[0].close >= round(daily[0].pre_close * 1.05, 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -66,11 +61,12 @@ def main(offset=0):
             continue
         print('##### st_rank {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_CHG] > 0)
-    #                        ]
+    data_frame = data_frame[
+                            (data_frame[COL_MAX_CONTINUOUS_LIMIT_COUNT] >= 3)
+                            & (data_frame[COL_LAST_IF_LIMIT] == False)
+                           ]
 
-    data_frame = data_frame.sort_values(by=COL_CHG, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_MAX_CONTINUOUS_LIMIT_COUNT, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.head(100)
 
 
@@ -86,6 +82,24 @@ def main(offset=0):
         plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
         sub += 1
 
+    for i in range(0, len(data_frame)):
+        print('\'{}\','.format(data_frame.loc[i, 'symbol']))
+
+
+def max_continuous_limit_count(sequence=None, local_scale=5):
+    sequence = sequence[:local_scale]
+    continuous_count = 0
+    max_continuous_count = 0
+    for item in sequence:
+        pre_close = item.pre_close
+        close = item.close
+        if close >= round(pre_close * 1.05, 2):
+            continuous_count += 1
+            max_continuous_count = max(continuous_count, max_continuous_count)
+        else:
+            continuous_count = 0
+    return max_continuous_count
+
 
 def plot_candle_gather(data_frame, last_date, sub, offset):
     columns = 1
@@ -100,8 +114,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             'index': i + offset,
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_LAST_CHG: round(data_frame.loc[i, COL_LAST_CHG], 2),
-            COL_CHG: round(data_frame.loc[i, COL_CHG], 2)
+            COL_MAX_CONTINUOUS_LIMIT_COUNT: int(data_frame.loc[i, COL_MAX_CONTINUOUS_LIMIT_COUNT])
         }
         plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
@@ -139,10 +152,9 @@ def plot_candle_month(ax, ts_code, name, last_date, misc):
                               width=0.5, colorup='red', colordown='green',
                               alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} last_chg:{last_chg} chg:{chg}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} max_continuous_limit_count:{max_continuous_limit_count}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
                                                                                                                      circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]),
-                                                                                                                     last_chg=misc[COL_LAST_CHG],
-                                                                                                                     chg=misc[COL_CHG]),
+                                                                                                                     max_continuous_limit_count=misc[COL_MAX_CONTINUOUS_LIMIT_COUNT]),
               fontproperties='Heiti TC')
 
     # plt.grid()
