@@ -93,7 +93,7 @@ def run():
                             if_display = True
                             type = 2
 
-                    elif chg > 0.03:
+                    elif chg > 0.025:
                         if_display = True
 
                     # if_display = True
