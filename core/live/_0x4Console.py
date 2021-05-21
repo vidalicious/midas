@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+import sys
+import os
+
+live_path = os.path.dirname(os.path.realpath(__file__))
+core_path = os.path.split(live_path)[0]
+root_path = os.path.split(core_path)[0]
+parent_path = os.path.split(root_path)[0]
+sys.path.append(parent_path)
+
 import time
 import grequests
 import pandas as pd
