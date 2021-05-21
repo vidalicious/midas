@@ -7,7 +7,7 @@ import midas.core.analyzer._0x43North_Money as north_money
 import midas.core.analyzer._0x45Limit_Rank as limit_rank
 import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
 import midas.core.analyzer._0x52Foam_Outpost as foam_outpost
-import midas.core.analyzer._0x54ST_Rank as st_rank
+import midas.core.analyzer._0x60ST_Rank as st_rank
 
 
 def working_day():
