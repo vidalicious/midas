@@ -913,7 +913,7 @@ target_symbols = [
     '300760',
     '300059',
     '300015',
-    '300750',
+    '300750'
 ]
 
 target_symbols = list(set(target_symbols))
