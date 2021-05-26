@@ -16,8 +16,7 @@ from midas.core.data.engine import main_session
 import midas.bin.env as env
 import mpl_finance as mpf
 
-COL_LAST_IF_LIMIT = 'COL_LAST_IF_LIMIT'
-COL_MAX_CONTINUOUS_LIMIT_COUNT = 'COL_MAX_CONTINUOUS_LIMIT_COUNT'
+COL_LOCAL_LIMIT_COUNT = 'COL_LOCAL_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -32,8 +31,8 @@ def main(offset=0):
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
         try:
-            if (not 'ST' in stock_basic.name) or \
-                    (stock_basic.symbol.startswith('300')):
+            if (not stock_basic.symbol.startswith('300')) or \
+                    ('ST' in stock_basic.name):
                 continue
 
             for key in models.StockBasicPro.keys:
@@ -43,9 +42,7 @@ def main(offset=0):
                                                                models.DailyPro.trade_date <= LAST_MARKET_DATE).order_by(
                 models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
-            data_frame.loc[i, COL_MAX_CONTINUOUS_LIMIT_COUNT] = max_continuous_limit_count(sequence=daily, local_scale=10)
-
-            data_frame.loc[i, COL_LAST_IF_LIMIT] = daily[0].close >= round(daily[0].pre_close * 1.05, 2)
+            data_frame.loc[i, COL_LOCAL_LIMIT_COUNT] = local_limit_count(sequence=daily, local_scale=10)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -60,30 +57,29 @@ def main(offset=0):
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### st_rank {i} #####'.format(i=i))
+        print('##### silent_20cm {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_MAX_CONTINUOUS_LIMIT_COUNT] >= 3)
-                            & (data_frame[COL_LAST_IF_LIMIT] == False)
+                            (data_frame[COL_LOCAL_LIMIT_COUNT] == 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_MAX_CONTINUOUS_LIMIT_COUNT, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_CIRC_MV, ascending=True).reset_index(drop=True)
     # data_frame = data_frame.head(100)
 
 
-    file_name = '{logs_path}/{date}@ST_Rank.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Silent_20cm.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    batch_size = 100
-    sub = 0
-    for i in range(0, len(data_frame), batch_size):
-        sub_df = data_frame.iloc[i:i+batch_size, :]
-        sub_df = sub_df.reset_index(drop=True)
-        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
-        sub += 1
+    # batch_size = 100
+    # sub = 0
+    # for i in range(0, len(data_frame), batch_size):
+    #     sub_df = data_frame.iloc[i:i+batch_size, :]
+    #     sub_df = sub_df.reset_index(drop=True)
+    #     plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
+    #     sub += 1
 
-    file_name = '{logs_path}/{date}@ST_Rank_Targets'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
+    file_name = '{logs_path}/{date}@Silent_20cm_Targets'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     targets = []
     for i in range(0, len(data_frame)):
         targets.append('\'{}\''.format(data_frame.loc[i, 'symbol']))
@@ -91,19 +87,15 @@ def main(offset=0):
         file.write(',\n'.join(targets))
 
 
-def max_continuous_limit_count(sequence=None, local_scale=5):
+def local_limit_count(sequence=None, local_scale=5):
     sequence = sequence[:local_scale]
-    continuous_count = 0
-    max_continuous_count = 0
+    limit_count = 0
     for item in sequence:
         pre_close = item.pre_close
         close = item.close
-        if close >= round(pre_close * 1.05, 2):
-            continuous_count += 1
-            max_continuous_count = max(continuous_count, max_continuous_count)
-        else:
-            continuous_count = 0
-    return max_continuous_count
+        if close >= round(pre_close * 1.2, 2):
+            limit_count += 1
+    return limit_count
 
 
 def plot_candle_gather(data_frame, last_date, sub, offset):
@@ -118,8 +110,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
         misc = {
             'index': i + offset,
             COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
-            COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_MAX_CONTINUOUS_LIMIT_COUNT: int(data_frame.loc[i, COL_MAX_CONTINUOUS_LIMIT_COUNT])
+            COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0
         }
         plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
@@ -127,7 +118,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/st_rank/{date}_st_rank_{sub}.png'.format(date=last_date, sub=sub))
+    plt.savefig('../../buffer/silent_20cm/{date}_silent_20cm_{sub}.png'.format(date=last_date, sub=sub))
 
 def plot_candle_month(ax, ts_code, name, last_date, misc):
     monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == ts_code,
@@ -157,9 +148,8 @@ def plot_candle_month(ax, ts_code, name, last_date, misc):
                               width=0.5, colorup='red', colordown='green',
                               alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count} max_continuous_limit_count:{max_continuous_limit_count}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-                                                                                                                     circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT]),
-                                                                                                                     max_continuous_limit_count=misc[COL_MAX_CONTINUOUS_LIMIT_COUNT]),
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 holders:{holders_count}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+                                                                                                                     circ_mv=int(misc[COL_CIRC_MV]), holders_count=int(misc[COL_HOLDERS_COUNT])),
               fontproperties='Heiti TC')
 
     # plt.grid()

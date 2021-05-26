@@ -16,16 +16,17 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
+    '000820',
+    '603157',
+    '000980',
     '002356',
-    '000410',
-    '002089',
-    '002175',
-    '002256',
-    '002321',
+    '600816',
+    '002684',
     '600091',
+    '600518',
     '600615',
     '600725',
-    '601020',
+    '601020'
 ]
 
 target_symbols = list(set(target_symbols))

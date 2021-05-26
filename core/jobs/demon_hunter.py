@@ -8,6 +8,7 @@ import midas.core.analyzer._0x45Limit_Rank as limit_rank
 import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
 import midas.core.analyzer._0x52Foam_Outpost as foam_outpost
 import midas.core.analyzer._0x60ST_Rank as st_rank
+import midas.core.analyzer._0x61Silent_20cm as silent_20cm
 
 
 def working_day():
@@ -17,6 +18,7 @@ def working_day():
     north_money.main()
     # foam_outpost.main()
     st_rank.main()
+    silent_20cm.main()
     limit_rank.main()
     wind_chime.main()
 
@@ -30,6 +32,7 @@ def total():
     north_money.main()
     # foam_outpost.main()
     st_rank.main()
+    silent_20cm.main()
     limit_rank.main()
     wind_chime.main()
 
