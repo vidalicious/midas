@@ -75,13 +75,13 @@ def main(offset=0):
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    batch_size = 100
-    sub = 0
-    for i in range(0, len(data_frame), batch_size):
-        sub_df = data_frame.iloc[i:i+batch_size, :]
-        sub_df = sub_df.reset_index(drop=True)
-        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
-        sub += 1
+    # batch_size = 100
+    # sub = 0
+    # for i in range(0, len(data_frame), batch_size):
+    #     sub_df = data_frame.iloc[i:i+batch_size, :]
+    #     sub_df = sub_df.reset_index(drop=True)
+    #     plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
+    #     sub += 1
 
     file_name = '{logs_path}/{date}@ST_Rank_Targets'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     targets = []
