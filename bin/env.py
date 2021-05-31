@@ -10,6 +10,7 @@ logs_path = os.path.join(root_path, 'logs')
 live_logs_path = os.path.join(root_path, 'live_logs')
 data_path = os.path.join(root_path, 'data')
 buffer_path = os.path.join(root_path, 'buffer')
+fupan_path = os.path.join(root_path, 'fupan')
 
 sys.path.append(root_path)
 sys.path.append(bin_path)
