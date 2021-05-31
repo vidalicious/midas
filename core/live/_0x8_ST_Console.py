@@ -28,7 +28,19 @@ target_symbols = [
     '603157'
 ]
 
-target_symbols = list(set(target_symbols))
+blacklist_symbols = [
+    '000820',
+    '000980'
+]
+
+t_set = set()
+for symbol in target_symbols:
+    if symbol not in blacklist_symbols:
+        t_set.add(symbol)
+
+target_symbols = list(t_set)
+
+pass
 
 def run():
 
