@@ -88,6 +88,7 @@ def _main(concept, offset=0):
     #                        ]
 
     data_frame = data_frame.sort_values(by=COL_CHG, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.head(100)
 
     file_name = '{logs_path}/{date}@Concept_Rank_{concept}.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path, concept=concept)
     with open(file_name, 'w', encoding='utf8') as file:
@@ -204,7 +205,7 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
 
 
 def main():
-    for concept in ['碳中和', '医美']:
+    for concept in ['碳中和', '医美', '锂电池']:
         _main(concept, offset=0)
 
 
