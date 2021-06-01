@@ -11,6 +11,18 @@ sns.set(font='Heiti TC')
 def main():
     raw_data = [
         {
+            'date': 20210427,
+            'concepts': ['二胎', '服装家纺', '医美', '医药', '食品饮料', '区块链']
+        }, {
+            'date': 20210428,
+            'concepts': ['医美', '医药', '二胎', '酿酒', '煤炭', '服装家纺', '旅游']
+        }, {
+            'date': 20210429,
+            'concepts': ['医美', '服装家纺', '芯片', '酿酒', '二胎', '化工']
+        }, {
+            'date': 20210430,
+            'concepts': ['医美', '医药', '锂电池', '疫苗', '文化传媒']
+        }, {
             'date': 20210506,
             'concepts': ['钢铁', '锂电池', '医美', '化工', '区块链', '网红', '军工', '碳中和', '新能源汽车', '煤炭', '有色', '二胎', '百年庆典', '新能源汽车']
         }, {
@@ -83,7 +95,7 @@ def main():
         for concept in concepts:
             if concept in raw_data[i]['concepts']:
                 count = 0
-                for j in range(max(0, i - 4), i + 1):
+                for j in range(max(0, i - 9), i + 1):
                     if concept in raw_data[j]['concepts']:
                         count += 1
                 data[date][concept] = count
@@ -100,7 +112,9 @@ def main():
 
     fig = plt.figure(figsize=(len(dates) * 0.8, len(concepts) * 0.35))
     plt.subplots_adjust(left=5/(5 + len(dates)), right=1, top=1, bottom=5/(5 + len(concepts)))
-    sns.heatmap(data_frame.T, cmap="Blues", linewidths=.5)
+    data_frame = data_frame.T
+    data_frame = data_frame.sort_index()
+    sns.heatmap(data_frame, cmap="Blues", linewidths=.5)
     fig.tight_layout()
     plt.savefig('{fupan_path}/{date}_calendar.png'.format(fupan_path=env.fupan_path, date=LAST_MARKET_DATE))
 

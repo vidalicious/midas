@@ -205,7 +205,8 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
 
 
 def main():
-    for concept in ['碳中和', '医美', '锂电池']:
+    for concept in ['碳中和', '医美', '锂电池', '酿酒', '医药', '食品饮料', '区块链']:
+    # for concept in ['区块链']:
         _main(concept, offset=0)
 
 
