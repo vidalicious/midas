@@ -15,8 +15,6 @@ import midas.core.data.models as models
 from midas.core.data.engine import main_session
 import midas.bin.env as env
 import mpl_finance as mpf
-from bs4 import BeautifulSoup
-
 
 COL_CHG = 'COL_CHG'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
@@ -25,34 +23,16 @@ COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
 
-def get_kaipanla_symbols(concept):
-    with open('{data_path}/{concept}.html'.format(data_path=env.data_path, concept=concept), "r") as f:  # 打开文件
-        text = f.read()  # 读取文
-    soup = BeautifulSoup(markup=text, features='lxml')
-    symbol_tags = soup.find_all(class_='c gray')
 
-    symbols = []
-    for tag in symbol_tags:
-        symbol = tag.get_text()
-        symbols.append(symbol)
-
-    return symbols
-
-def _main(concept, offset=0):
+def main(offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
 
-    kaipanla_symbols = get_kaipanla_symbols(concept)
-    kaipanla_symbols = list(set(kaipanla_symbols))
-
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
-        if stock_basic.symbol not in kaipanla_symbols:
-            continue
-
         try:
-            if 'ST' in stock_basic.name or stock_basic.symbol.startswith('688'):
-                continue
+            # if 'ST' in stock_basic.name or stock_basic.symbol.startswith('688'):
+            #     continue
 
             for key in models.StockBasicPro.keys:
                 data_frame.loc[i, key] = getattr(stock_basic, key)
@@ -80,17 +60,17 @@ def _main(concept, offset=0):
         except Exception as e:
             print('exception in index:{index} {code} {name}'.format(index=i, code=stock_basic.ts_code, name=stock_basic.name))
             continue
-        print('##### concept_rank {i} #####'.format(i=i))
+        print('##### whole_rank {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_HISTORY_BREAK] == True)
-    #                         # & (data_frame[COL_LIMIT_COUNT] == 0)
-    #                        ]
+    data_frame = data_frame[
+                            (data_frame[COL_CHG] > 10)
+                           ]
 
     data_frame = data_frame.sort_values(by=COL_CHG, ascending=False).reset_index(drop=True)
     data_frame = data_frame.head(100)
 
-    file_name = '{logs_path}/{date}@Concept_Rank_{concept}.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path, concept=concept)
+
+    file_name = '{logs_path}/{date}@Whole_Rank.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
@@ -99,22 +79,11 @@ def _main(concept, offset=0):
     for i in range(0, len(data_frame), batch_size):
         sub_df = data_frame.iloc[i:i+batch_size, :]
         sub_df = sub_df.reset_index(drop=True)
-        plot_candle_gather(concept=concept, data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
+        plot_candle_gather(data_frame=sub_df, last_date=LAST_MARKET_DATE, sub=sub, offset=i)
         sub += 1
 
 
-def local_limit_count(sequence=None, local_scale=5):
-    sequence = sequence[:local_scale]
-    limit_count = 0
-    for item in sequence:
-        pre_close = item.pre_close
-        close = item.close
-        if close >= round(pre_close * 1.1, 2):
-            limit_count += 1
-    return limit_count
-
-
-def plot_candle_gather(concept, data_frame, last_date, sub, offset):
+def plot_candle_gather(data_frame, last_date, sub, offset):
     columns = 1
     rows = len(data_frame) * 2
 
@@ -135,7 +104,7 @@ def plot_candle_gather(concept, data_frame, last_date, sub, offset):
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
 
     plt.tight_layout()
-    plt.savefig('../../buffer/concept_rank/{date}_concept_rank_{concept}_{sub}.png'.format(date=last_date, concept=concept, sub=sub))
+    plt.savefig('../../buffer/whole_rank/{date}_whole_rank_{sub}.png'.format(date=last_date, sub=sub))
 
 def plot_candle_month(ax, ts_code, name, last_date, misc):
     monthly = main_session.query(models.MonthlyPro).filter(models.MonthlyPro.ts_code == ts_code,
@@ -204,11 +173,5 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
 
-def main():
-    for concept in ['碳中和', '医美', '锂电池', '酿酒', '医药', '食品饮料']:
-    # for concept in ['区块链']:
-        _main(concept, offset=0)
-
-
 if __name__ == '__main__':
-    main()
+    main(offset=0)

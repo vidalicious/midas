@@ -7,6 +7,7 @@ import midas.core.analyzer._0x43North_Money as north_money
 import midas.core.analyzer._0x45Limit_Rank as limit_rank
 import midas.core.analyzer._0x46Wind_Chime_V2 as wind_chime
 import midas.core.analyzer._0x62Concept_Rank as concept_rank
+import midas.core.analyzer._0x64Whole_Rank as whole_rank
 
 
 def working_day():
@@ -15,6 +16,7 @@ def working_day():
     base.async_daily_basic_origin()
     north_money.main()
     concept_rank.main()
+    whole_rank.main()
     limit_rank.main()
     wind_chime.main()
 
@@ -27,6 +29,7 @@ def total():
     holders.async_float_holders()
     north_money.main()
     concept_rank.main()
+    whole_rank.main()
     limit_rank.main()
     wind_chime.main()
 
