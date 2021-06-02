@@ -25,6 +25,7 @@ target_symbols = [
     '002386',
     '603025',
     '002280',
+    '603059'
 ]
 
 target_symbols = list(set(target_symbols))
