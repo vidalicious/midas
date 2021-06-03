@@ -16,6 +16,88 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 from bs4 import BeautifulSoup
 
+target_symbols = [
+    # stars
+    '300268',
+    '600238',
+    '002667',
+    '002536',
+    '605186',
+    '002679',
+    '002386',
+    '603025',
+    '002280',
+    '603059',
+    '300079',
+    '600704',
+    '002269',
+    '300077',
+    '600751',
+    '603650',
+    '600173',
+    '600753',
+    # 医美
+    '002386',
+    '002762',
+    '002900',
+    '000718',
+    '601567',
+    '002802',
+    '003020',
+    '603987',
+    '600738',
+    # 医药
+    '605186',
+    '002940',
+    '605369',
+    '603722',
+    '603168',
+    '002581',
+    '300158',
+    '002957',
+    '600222',
+    '600771',
+    '000668',
+    # 碳中和
+    '600963',
+    '002341',
+    '600076',
+    '000993',
+    '601996',
+    '002591',
+    '600579',
+    '003039',
+    '002015',
+    '600744',
+    '300887',
+    # 酿酒
+    '000995',
+    '600238',
+    '603025',
+    '600616',
+    '002646',
+    '600559',
+    '600702',
+    '600059',
+    # 锂电池
+    '300340',
+    '300537',
+    '000993',
+    '300035',
+    '002824',
+    '300390',
+    '300655',
+    '300438',
+    '600096',
+    # 食品饮料
+    '300268',
+    '605337',
+    '000848',
+    '605179'
+]
+
+target_symbols = list(set(target_symbols))
+
 def get_kaipanla_symbols(concept):
     with open('{data_path}/{concept}.html'.format(data_path=env.data_path, concept=concept), "r") as f:  # 打开文件
         text = f.read()  # 读取文
@@ -39,7 +121,14 @@ def get_symbols():
 
     return list(symbol_set)
 
-def get_intensity(chg):
+
+
+def get_intensity(close, today_open, pre_close):
+    if abs(today_open - close) > abs(pre_close - close):
+        chg = (close / today_open - 1) * 100
+    else:
+        chg = (close / pre_close - 1) * 100
+
     if chg > 9:
         intensity = 4
     elif chg > 6:
@@ -60,7 +149,7 @@ def get_intensity(chg):
     return intensity
 
 def run():
-    target_symbols = get_symbols()
+    # target_symbols = get_symbols()
 
     symbol2code = {}
     stock_map = {}
@@ -121,6 +210,7 @@ def run():
                     j = i.split(',')
                     name = j[0].split('="')[1]
                     code = j[0].split('="')[0].split('_')[-1]
+                    today_open_price = float(j[1])
                     yesterday_closing_price = float(j[2])
                     current_price = float(j[3])
                     today_max_price = float(j[4])
@@ -132,11 +222,11 @@ def run():
                     chg_display = '{}%'.format(round(chg*100, 2))
                     # circ_mv = stock_map[code]['circ_mv']
                     past_intensity = stock_map[code]['past_intensity']
-                    today_intensity = get_intensity(chg*100)
+                    today_intensity = get_intensity(close=current_price, today_open=today_open_price, pre_close=yesterday_closing_price)
                     # intensity_variety = today_intensity - past_intensity
 
                     if_display = False
-                    if today_limit_price > buy_one_price and today_intensity > 0 and past_intensity < -1:
+                    if today_limit_price > buy_one_price and today_intensity > 0 and past_intensity < 0:
                     # if today_limit_price > buy_one_price and past_intensity < -1:
                         if_display = True
 
@@ -144,10 +234,11 @@ def run():
                         displays.append({
                             'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\ti:{intensity}\tp_i:{past_intensity}'.format(code=code, name=name, chg=chg_display,
                                 price=round(current_price, 2), intensity=today_intensity, past_intensity=past_intensity),
-                            'past_intensity': past_intensity
+                            'past_intensity': past_intensity,
+                            'relative_intensity': max(abs(today_intensity), abs(past_intensity))
                         })
 
-            displays.sort(key=lambda x: x['past_intensity'], reverse=True)
+            displays.sort(key=lambda x: x['relative_intensity'], reverse=False)
             displays = displays[-20:]
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))

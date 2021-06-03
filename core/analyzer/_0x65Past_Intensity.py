@@ -14,7 +14,12 @@ COL_PAST_INTENSITY = 'COL_PAST_INTENSITY'
 
 sampling_count = 200
 
-def get_intensity(chg):
+def get_intensity(close, today_open, pre_close):
+    if abs(today_open - close) > abs(pre_close - close):
+        chg = (close / today_open - 1) * 100
+    else:
+        chg = (close / pre_close - 1) * 100
+
     if chg > 9:
         intensity = 4
     elif chg > 6:
@@ -41,8 +46,7 @@ def get_past_intensity(daily):
     past_intensity = 0
     is_positive = daily[0].pct_chg > 0
     for item in daily:
-        chg = item.pct_chg
-        intensity = get_intensity(chg)
+        intensity = get_intensity(close=item.close, today_open=item.open, pre_close=item.pre_close)
         if is_positive and intensity < 0:
             break
         if (not is_positive) and intensity > 0:
