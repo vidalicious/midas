@@ -121,30 +121,28 @@ target_symbols = [
 
 target_symbols = list(set(target_symbols))
 
-def get_kaipanla_symbols(concept):
-    with open('{data_path}/{concept}.html'.format(data_path=env.data_path, concept=concept), "r") as f:  # 打开文件
-        text = f.read()  # 读取文
-    soup = BeautifulSoup(markup=text, features='lxml')
-    symbol_tags = soup.find_all(class_='c gray')
-
-    symbols = []
-    for tag in symbol_tags:
-        symbol = tag.get_text()
-        symbols.append(symbol)
-
-    return symbols
-
-
-def get_symbols():
-    symbol_set = set()
-    for concept in ['碳中和', '医美', '锂电池', '酿酒', '医药', '食品饮料']:
-        symbols = get_kaipanla_symbols(concept=concept)
-        for symbol in symbols:
-            symbol_set.add(symbol)
-
-    return list(symbol_set)
-
-
+# def get_kaipanla_symbols(concept):
+#     with open('{data_path}/{concept}.html'.format(data_path=env.data_path, concept=concept), "r") as f:  # 打开文件
+#         text = f.read()  # 读取文
+#     soup = BeautifulSoup(markup=text, features='lxml')
+#     symbol_tags = soup.find_all(class_='c gray')
+#
+#     symbols = []
+#     for tag in symbol_tags:
+#         symbol = tag.get_text()
+#         symbols.append(symbol)
+#
+#     return symbols
+#
+#
+# def get_symbols():
+#     symbol_set = set()
+#     for concept in ['碳中和', '医美', '锂电池', '酿酒', '医药', '食品饮料']:
+#         symbols = get_kaipanla_symbols(concept=concept)
+#         for symbol in symbols:
+#             symbol_set.add(symbol)
+#
+#     return list(symbol_set)
 
 def get_intensity(close, today_open, pre_close):
     if abs(today_open - close) > abs(pre_close - close):
