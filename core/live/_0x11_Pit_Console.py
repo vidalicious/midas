@@ -174,10 +174,11 @@ def run():
         stock_map[code] = {
             'circ_mv': float(stock.circ_mv),
             'limit_rate': limit_rate,
-            'past_intensity': 9999
+            'odds': -9999,
+            'delta_odds': 9999
         }
 
-    df = pd.read_csv('{data_path}/past_intensity.csv'.format(data_path=env.data_path))
+    df = pd.read_csv('{data_path}/window_odds.csv'.format(data_path=env.data_path))
     for i in range(len(df)):
         ts_code = df.loc[i, 'ts_code']
 
@@ -185,8 +186,10 @@ def run():
         symbol = ts_code.split('.')[0]
         code = '{market}{symbol}'.format(market=market, symbol=symbol)
 
-        past_intensity = df.loc[i, 'COL_PAST_INTENSITY']
-        stock_map[code]['past_intensity'] = past_intensity
+        odds = df.loc[i, 'COL_ODDS']
+        delta_odds = df.loc[i, 'COL_DELTA_ODDS']
+        stock_map[code]['odds'] = odds
+        stock_map[code]['delta_odds'] = delta_odds
 
     batch_size = 500
     req_list = []
@@ -221,24 +224,24 @@ def run():
                     chg = (current_price / yesterday_closing_price - 1)
                     chg_display = '{}%'.format(round(chg*100, 2))
                     # circ_mv = stock_map[code]['circ_mv']
-                    past_intensity = stock_map[code]['past_intensity']
+                    odds = stock_map[code]['odds']
+                    delta_odds = stock_map[code]['delta_odds']
                     today_intensity = get_intensity(close=current_price, today_open=today_open_price, pre_close=yesterday_closing_price)
                     # intensity_variety = today_intensity - past_intensity
 
                     if_display = False
-                    if today_limit_price > buy_one_price and today_intensity > 0 and past_intensity < 0:
+                    if (today_limit_price > buy_one_price) and (today_intensity > 0) and (delta_odds < 0):
                     # if today_limit_price > buy_one_price and past_intensity < -1:
                         if_display = True
 
                     if if_display:
                         displays.append({
-                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\ti:{intensity}\tp_i:{past_intensity}'.format(code=code, name=name, chg=chg_display,
-                                price=round(current_price, 2), intensity=today_intensity, past_intensity=past_intensity),
-                            'past_intensity': past_intensity,
-                            'relative_intensity': max(abs(today_intensity), abs(past_intensity))
+                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tintensity:{intensity}\todds:{odds}'.format(code=code, name=name, chg=chg_display,
+                                price=round(current_price, 2), intensity=today_intensity, odds=odds),
+                            'odds': odds
                         })
 
-            displays.sort(key=lambda x: x['relative_intensity'], reverse=False)
+            displays.sort(key=lambda x: x['odds'], reverse=False)
             displays = displays[-20:]
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))

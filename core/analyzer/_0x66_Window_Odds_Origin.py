@@ -19,15 +19,41 @@ import mpl_finance as mpf
 
 COL_CHG = 'COL_CHG'
 COL_ODDS = 'COL_ODDS'
+COL_PAST_INTENSITY = 'COL_PAST_INTENSITY'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
-
+WINDOW_WIDTH = 10
 window_odds_map = dict()
 
+tmp_weights = [(WINDOW_WIDTH - i) ** 2 for i in range(WINDOW_WIDTH)]
+tmp_weights_sum = sum(tmp_weights)
+weights = [i / tmp_weights_sum for i in tmp_weights]
+
 def get_window_odds(sequence, window_width, local_scale):
+    if len(sequence) < window_width:
+        return []
+
+    sequence = sequence[:window_width + local_scale]
+    chgs = [i.pct_chg for i in sequence]
+
+    odds = []
+    for i in range(local_scale):
+        try:
+            weighted_chgs = 0
+            for j in range(window_width):
+                weighted_chgs += chgs[i + j] * weights[j]
+
+            odds.append(weighted_chgs)
+        except Exception as e:
+            break
+
+    return odds
+
+
+def get_window_odds_origin(sequence, window_width, local_scale):
     if len(sequence) < window_width:
         return []
 
@@ -61,6 +87,46 @@ def accumulate_positive_odds(odds):
             break
     return res
 
+def get_intensity(close, today_open, pre_close):
+    if abs(today_open - close) > abs(pre_close - close):
+        chg = (close / today_open - 1) * 100
+    else:
+        chg = (close / pre_close - 1) * 100
+
+    if chg > 9:
+        intensity = 4
+    elif chg > 6:
+        intensity = 3
+    elif chg > 3:
+        intensity = 2
+    elif chg > 0:
+        intensity = 1
+    elif chg > -3:
+        intensity = -1
+    elif chg > -6:
+        intensity = -2
+    elif chg > -9:
+        intensity = -3
+    else:
+        intensity = -4
+
+    return intensity
+
+def get_past_intensity(daily):
+    if not daily:
+        return 0
+
+    past_intensity = 0
+    is_positive = daily[0].pct_chg > 0
+    for item in daily:
+        intensity = get_intensity(close=item.close, today_open=item.open, pre_close=item.pre_close)
+        if is_positive and intensity < 0:
+            break
+        if (not is_positive) and intensity > 0:
+            break
+        past_intensity += intensity
+    return past_intensity
+
 def main(offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
@@ -84,11 +150,13 @@ def main(offset=0):
 
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
-            window_odds = get_window_odds(sequence=daily, window_width=10, local_scale=290)
+            window_odds = get_window_odds(sequence=daily, window_width=WINDOW_WIDTH, local_scale=300-WINDOW_WIDTH)
             # accumulate_odds = accumulate_positive_odds(window_odds)
             window_odds_map[stock_basic.ts_code] = window_odds
             # data_frame.loc[i, COL_ACCUMULATE_ODDS] = accumulate_odds
             data_frame.loc[i, COL_ODDS] = round(window_odds[0], 2)
+
+            data_frame.loc[i, COL_PAST_INTENSITY] = get_past_intensity(daily)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -110,8 +178,11 @@ def main(offset=0):
                            ]
 
     data_frame = data_frame.sort_values(by=COL_ODDS, ascending=False).reset_index(drop=True)
-    # data_frame = data_frame.head(100)
+    data_frame = data_frame.head(300)
 
+    file_name = '{data_path}/past_intensity.csv'.format(date=LAST_MARKET_DATE, data_path=env.data_path)
+    with open(file_name, 'w', encoding='utf8') as file:
+        data_frame.to_csv(file)
 
     file_name = '{logs_path}/{date}@Window_Odds.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
@@ -208,12 +279,14 @@ def plot_odds_daily(ax, ts_code, last_date, misc):
 
 
 def plot_candle_daily(ax, ts_code, name, last_date, misc):
+    odds = window_odds_map[ts_code]
+
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
                                                        models.DailyPro.trade_date <= last_date).order_by(
         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
     df = DataFrame()
-    for i, item in enumerate(daily[300::-1]):
+    for i, item in enumerate(daily[len(odds) - 1::-1]):
         df.loc[i, 'date'] = str(item.trade_date)
         df.loc[i, 'open'] = item.open
         df.loc[i, 'close'] = item.close
