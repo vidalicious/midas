@@ -16,10 +16,12 @@ import midas.core.data.models as models
 from midas.core.data.engine import main_session
 import midas.bin.env as env
 import mpl_finance as mpf
+from bs4 import BeautifulSoup
 
 COL_CHG = 'COL_CHG'
 COL_ODDS = 'COL_ODDS'
 COL_DELTA_ODDS = 'COL_DELTA_ODDS'
+# COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -52,14 +54,70 @@ def get_window_odds(sequence, window_width, local_scale):
 
     return odds
 
+def get_delta_odds(odds):
+    delta_odds = 0
+    for i in range(len(odds) - 1):
+        if odds[i] < odds[i+1]:
+            delta_odds += odds[i] - odds[i+1]
+        else:
+            break
+
+    return delta_odds
+
+
+def daily_close_ma(daily=None, step=5):
+    if len(daily) < step:
+        raise Exception('invalid daily data')
+
+    closes = list()
+    for item in daily:
+        closes.append(item.close)
+
+    result = list()
+    for i in range(len(daily) - step + 1):
+        ma = round(np.mean(closes[i:i + step]), 2)
+        result.append(ma)
+
+    return result
+
+
+def get_kaipanla_symbols(concept):
+    with open('{data_path}/{concept}.html'.format(data_path=env.data_path, concept=concept), "r") as f:  # 打开文件
+        text = f.read()  # 读取文
+    soup = BeautifulSoup(markup=text, features='lxml')
+    symbol_tags = soup.find_all(class_='c gray')
+
+    symbols = []
+    for tag in symbol_tags:
+        symbol = tag.get_text()
+        symbols.append(symbol)
+
+    return symbols
+
+
+def get_symbols():
+    symbol_set = set()
+    for concept in ['锂电池', '酿酒', '芯片', '华为']:
+        symbols = get_kaipanla_symbols(concept=concept)
+        for symbol in symbols:
+            symbol_set.add(symbol)
+
+    return list(symbol_set)
+
+
 def main(offset=0):
     daily001 = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == '000001.SZ').order_by(models.DailyPro.trade_date.desc()).all()
     LAST_MARKET_DATE = daily001[offset].trade_date
+
+    target_symbols = get_symbols()
 
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
         try:
             if 'ST' in stock_basic.name or stock_basic.symbol.startswith('688'):
+                continue
+
+            if stock_basic.symbol not in target_symbols:
                 continue
 
             for key in models.StockBasicPro.keys:
@@ -80,7 +138,10 @@ def main(offset=0):
             window_odds_map[stock_basic.ts_code] = window_odds
             # data_frame.loc[i, COL_ACCUMULATE_ODDS] = accumulate_odds
             data_frame.loc[i, COL_ODDS] = round(window_odds[0], 2)
-            data_frame.loc[i, COL_DELTA_ODDS] = round(window_odds[0] - window_odds[1], 2)
+            data_frame.loc[i, COL_DELTA_ODDS] = get_delta_odds(window_odds) #round(window_odds[0] - window_odds[1], 2)
+
+            # ma_20 = daily_close_ma(daily=daily, step=20)
+            # data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -98,12 +159,12 @@ def main(offset=0):
         print('##### window_odds {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_ODDS] > 0)
-                            & (data_frame[COL_DELTA_ODDS] < 0)
+                            # (data_frame[COL_MA_20_SLOPE] > 0)
+                            (data_frame[COL_DELTA_ODDS] < 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_ODDS, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.head(100)
+    data_frame = data_frame.sort_values(by=COL_DELTA_ODDS, ascending=True).reset_index(drop=True)
+    # data_frame = data_frame.head(100)
 
     file_name = '{data_path}/window_odds.csv'.format(date=LAST_MARKET_DATE, data_path=env.data_path)
     with open(file_name, 'w', encoding='utf8') as file:

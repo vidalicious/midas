@@ -257,12 +257,13 @@ def run():
 
                     if if_display:
                         displays.append({
-                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\tintensity:{intensity}\todds:{odds}'.format(code=code, name=name, chg=chg_display,
-                                price=round(current_price, 2), intensity=today_intensity, odds=odds),
-                            'odds': odds
+                            'note': '{code}\t{name}\tchg:{chg}\tprice:{price}\todds:{odds}\tdelta_odds:{delta_odds}'.format(code=code, name=name, chg=chg_display,
+                                price=round(current_price, 2), intensity=today_intensity, odds=odds, delta_odds=delta_odds),
+                            'odds': odds,
+                            'delta_odds': delta_odds
                         })
 
-            displays.sort(key=lambda x: x['odds'], reverse=False)
+            displays.sort(key=lambda x: x['delta_odds'], reverse=True)
             displays = displays[-20:]
             notes = [i['note'] for i in displays]
             print('\n'.join(notes))
