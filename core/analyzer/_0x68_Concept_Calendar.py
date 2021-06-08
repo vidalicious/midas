@@ -11,6 +11,12 @@ sns.set(font='Heiti TC')
 def main():
     raw_data = [
         {
+            'date': 20210601,
+            'concepts': {
+                '多胎':9,
+                ''
+            }
+        }, {
             'date':20210602,
             'concepts':{
                 '碳中和':7,
