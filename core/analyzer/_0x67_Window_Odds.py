@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 COL_CHG = 'COL_CHG'
 COL_ODDS = 'COL_ODDS'
 COL_DELTA_ODDS = 'COL_DELTA_ODDS'
-# COL_MA_20_SLOPE = 'COL_MA_20_SLOPE'
+COL_LIMIT_COUNT = 'COL_LIMIT_COUNT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -62,23 +62,7 @@ def get_delta_odds(odds):
         else:
             break
 
-    return delta_odds
-
-
-def daily_close_ma(daily=None, step=5):
-    if len(daily) < step:
-        raise Exception('invalid daily data')
-
-    closes = list()
-    for item in daily:
-        closes.append(item.close)
-
-    result = list()
-    for i in range(len(daily) - step + 1):
-        ma = round(np.mean(closes[i:i + step]), 2)
-        result.append(ma)
-
-    return result
+    return round(delta_odds, 2)
 
 
 def get_kaipanla_symbols(concept):
@@ -103,6 +87,17 @@ def get_symbols():
             symbol_set.add(symbol)
 
     return list(symbol_set)
+
+
+def local_limit_count(sequence=None, local_scale=5):
+    sequence = sequence[:local_scale]
+    limit_count = 0
+    for item in sequence:
+        pre_close = item.pre_close
+        close = item.close
+        if close == round(pre_close * 1.1, 2):
+            limit_count += 1
+    return limit_count
 
 
 def main(offset=0):
@@ -140,8 +135,7 @@ def main(offset=0):
             data_frame.loc[i, COL_ODDS] = round(window_odds[0], 2)
             data_frame.loc[i, COL_DELTA_ODDS] = get_delta_odds(window_odds) #round(window_odds[0] - window_odds[1], 2)
 
-            # ma_20 = daily_close_ma(daily=daily, step=20)
-            # data_frame.loc[i, COL_MA_20_SLOPE] = round((ma_20[0] / ma_20[1] - 1) * 100, 2)
+            data_frame.loc[i, COL_LIMIT_COUNT] = local_limit_count(daily, local_scale=10)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -159,12 +153,12 @@ def main(offset=0):
         print('##### window_odds {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            # (data_frame[COL_MA_20_SLOPE] > 0)
                             (data_frame[COL_DELTA_ODDS] < 0)
+                            & (data_frame[COL_LIMIT_COUNT] < 3)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_DELTA_ODDS, ascending=True).reset_index(drop=True)
-    # data_frame = data_frame.head(100)
+    data_frame = data_frame.sort_values(by=COL_ODDS, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.head(100)
 
     file_name = '{data_path}/window_odds.csv'.format(date=LAST_MARKET_DATE, data_path=env.data_path)
     with open(file_name, 'w', encoding='utf8') as file:
