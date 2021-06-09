@@ -25,7 +25,7 @@ COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
-WINDOW_WIDTH = 9
+WINDOW_WIDTH = 10
 probability_map = dict()
 
 tmp_weights = [(WINDOW_WIDTH - i) ** 2 for i in range(WINDOW_WIDTH)]
