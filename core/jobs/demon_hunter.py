@@ -10,6 +10,8 @@ import midas.core.analyzer._0x62Concept_Rank as concept_rank
 import midas.core.analyzer._0x64Whole_Rank as whole_rank
 import midas.core.analyzer._0x65Past_Intensity as past_intensity
 import midas.core.analyzer._0x67_Window_Odds as window_odds
+import midas.core.analyzer._0x69_Window_Probability_ST as window_probability_st
+import midas.core.analyzer._0x70_Window_Probability as window_probability
 
 
 def working_day():
@@ -20,7 +22,8 @@ def working_day():
     # past_intensity.main()
     # concept_rank.main()
     # whole_rank.main()
-    window_odds.main()
+    window_probability_st.main()
+    window_probability.main()
     limit_rank.main()
     wind_chime.main()
 
@@ -35,7 +38,8 @@ def total():
     # past_intensity.main()
     # concept_rank.main()
     # whole_rank.main()
-    window_odds.main()
+    window_probability_st.main()
+    window_probability.main()
     limit_rank.main()
     wind_chime.main()
 
