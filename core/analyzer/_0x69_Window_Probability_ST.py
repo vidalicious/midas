@@ -24,7 +24,7 @@ COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
-WINDOW_WIDTH = 5
+WINDOW_WIDTH = 10
 probability_map = dict()
 
 
@@ -63,10 +63,13 @@ def get_probability(sequence, window_width, local_scale):
             probability = 0
             for j in range(window_width):
                 item = sequence[i + j]
-                pre_close = item.pre_close
-                close = item.close
-                if close > round(pre_close * 1.025, 2):
+                # pre_close = item.pre_close
+                # close = item.close
+                chg = item.pct_chg
+                if chg > 4:
                     probability += 1 / window_width
+                elif chg < 0:
+                    probability -= 1 / window_width
 
             res.append(probability)
         except Exception as e:
@@ -108,7 +111,7 @@ def main(offset=0):
 
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
-            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=300-WINDOW_WIDTH)
+            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=150-WINDOW_WIDTH)
             probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability[0], 2)
             # data_frame.loc[i, COL_ACCUMULATE_PROBABILITY] = round(accumulate(probability), 2)
@@ -128,9 +131,9 @@ def main(offset=0):
             continue
         print('##### window_probability_st {i} #####'.format(i=i))
 
-    # data_frame = data_frame[
-    #                         (data_frame[COL_ODDS] > 0)
-    #                        ]
+    data_frame = data_frame[
+                            (data_frame[COL_PROBABILITY] > 0)
+                           ]
 
     data_frame = data_frame.sort_values(by=COL_PROBABILITY, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.head(300)
@@ -161,7 +164,8 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             'index': i + offset,
             # COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_CHG: round(data_frame.loc[i, COL_CHG], 2)
+            COL_CHG: round(data_frame.loc[i, COL_CHG], 2),
+            COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2)
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
@@ -224,8 +228,8 @@ def plot_stuff_daily(ax, ts_code, last_date, misc):
 
     sns.lineplot(data=df, x='date', y='probability', lw=1)
     plt.axhline(y=0, c='r', ls='--', lw=1)
-    # plt.title('accumulate_probability:{accumulate_probability}'.format(accumulate_probability=round(misc[COL_ACCUMULATE_PROBABILITY], 2)),
-    #           fontproperties='Heiti TC')
+    plt.title('probability:{probability}'.format(probability=round(misc[COL_PROBABILITY], 2)),
+              fontproperties='Heiti TC')
 
 
 def plot_candle_daily(ax, ts_code, name, last_date, misc):

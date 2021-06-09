@@ -47,7 +47,7 @@ def get_probability(sequence, window_width, local_scale):
                 chg = item.pct_chg
                 if chg > 0:
                     probability += 1 / window_width
-                else:
+                elif chg < 0:
                     probability -= 1 / window_width
 
             res.append(probability)
@@ -74,7 +74,7 @@ def main(offset=0):
     data_frame = DataFrame()
     for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
         try:
-            if stock_basic.symbol.startswith('688'):
+            if 'ST' in stock_basic.name or stock_basic.symbol.startswith('688'):
                 continue
 
             for key in models.StockBasicPro.keys:
@@ -90,10 +90,10 @@ def main(offset=0):
 
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
-            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=300-WINDOW_WIDTH)
+            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=150-WINDOW_WIDTH)
             probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability[0], 2)
-            data_frame.loc[i, COL_ACCUMULATE_PROBABILITY] = round(accumulate(probability), 2)
+            # data_frame.loc[i, COL_ACCUMULATE_PROBABILITY] = round(accumulate(probability), 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -114,7 +114,7 @@ def main(offset=0):
                             (data_frame[COL_PROBABILITY] > 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_ACCUMULATE_PROBABILITY, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_PROBABILITY, ascending=False).reset_index(drop=True)
     data_frame = data_frame.head(100)
 
     file_name = '{logs_path}/{date}@Window_Probability.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
@@ -144,7 +144,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             # COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
             COL_CHG: round(data_frame.loc[i, COL_CHG], 2),
-            COL_ACCUMULATE_PROBABILITY: round(data_frame.loc[i, COL_ACCUMULATE_PROBABILITY], 2)
+            COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2)
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
@@ -207,7 +207,7 @@ def plot_stuff_daily(ax, ts_code, last_date, misc):
 
     sns.lineplot(data=df, x='date', y='probability', lw=1)
     plt.axhline(y=0, c='r', ls='--', lw=1)
-    plt.title('accumulate_probability:{accumulate_probability}'.format(accumulate_probability=round(misc[COL_ACCUMULATE_PROBABILITY], 2)),
+    plt.title('probability:{probability}'.format(probability=round(misc[COL_PROBABILITY], 2)),
               fontproperties='Heiti TC')
 
 
