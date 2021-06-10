@@ -24,7 +24,7 @@ COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
-WINDOW_WIDTH = 10
+WINDOW_WIDTH = 5
 probability_map = dict()
 
 
