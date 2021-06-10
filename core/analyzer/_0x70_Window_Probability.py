@@ -19,13 +19,12 @@ import mpl_finance as mpf
 
 COL_CHG = 'COL_CHG'
 COL_PROBABILITY = 'COL_PROBABILITY'
-COL_ACCUMULATE_PROBABILITY = 'COL_ACCUMULATE_PROBABILITY'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
-WINDOW_WIDTH = 10
+WINDOW_WIDTH = 20
 probability_map = dict()
 
 tmp_weights = [(WINDOW_WIDTH - i) ** 2 for i in range(WINDOW_WIDTH)]
@@ -45,10 +44,11 @@ def get_probability(sequence, window_width, local_scale):
             for j in range(window_width):
                 item = sequence[i + j]
                 chg = item.pct_chg
-                if chg > 0:
-                    probability += 1 / window_width
-                elif chg < 0:
-                    probability -= 1 / window_width
+                close = item.close
+                pre_close = item.pre_close
+
+                if close < round(pre_close * 1.1, 2):
+                    probability += chg / window_width
 
             res.append(probability)
         except Exception as e:
@@ -93,7 +93,6 @@ def main(offset=0):
             probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=150-WINDOW_WIDTH)
             probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability[0], 2)
-            # data_frame.loc[i, COL_ACCUMULATE_PROBABILITY] = round(accumulate(probability), 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -115,7 +114,7 @@ def main(offset=0):
                            ]
 
     data_frame = data_frame.sort_values(by=COL_PROBABILITY, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.head(100)
+    data_frame = data_frame.head(300)
 
     file_name = '{logs_path}/{date}@Window_Probability.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
@@ -207,7 +206,7 @@ def plot_stuff_daily(ax, ts_code, last_date, misc):
 
     sns.lineplot(data=df, x='date', y='probability', lw=1)
     plt.axhline(y=0, c='r', ls='--', lw=1)
-    plt.title('probability:{probability}'.format(probability=round(misc[COL_PROBABILITY], 2)),
+    plt.title('probability:{probability}'.format(probability=misc[COL_PROBABILITY]),
               fontproperties='Heiti TC')
 
 
