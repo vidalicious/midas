@@ -19,11 +19,9 @@ def working_day():
     base.async_daily()
     base.async_daily_basic_origin()
     north_money.main()
-    # past_intensity.main()
-    # concept_rank.main()
-    # whole_rank.main()
-    window_probability_st.main()
     window_probability.main()
+    window_probability_st.main()
+
     limit_rank.main()
     wind_chime.main()
 
@@ -35,11 +33,8 @@ def total():
     monthly.async_monthly()
     holders.async_float_holders()
     north_money.main()
-    # past_intensity.main()
-    # concept_rank.main()
-    # whole_rank.main()
-    window_probability_st.main()
     window_probability.main()
+    window_probability_st.main()
     limit_rank.main()
     wind_chime.main()
 
