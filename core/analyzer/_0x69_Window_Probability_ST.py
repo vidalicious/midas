@@ -111,7 +111,7 @@ def main(offset=0):
 
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
-            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=150-WINDOW_WIDTH)
+            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=300-WINDOW_WIDTH)
             probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability[0], 2)
             # data_frame.loc[i, COL_ACCUMULATE_PROBABILITY] = round(accumulate(probability), 2)
