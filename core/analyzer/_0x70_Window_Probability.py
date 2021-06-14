@@ -47,8 +47,8 @@ def get_probability(sequence, window_width, local_scale):
                 close = item.close
                 pre_close = item.pre_close
 
-                if close < round(pre_close * 1.1, 2):
-                    probability += chg / window_width
+                # if close < round(pre_close * 1.1, 2):
+                probability += chg / window_width
 
             res.append(probability)
         except Exception as e:
@@ -90,7 +90,7 @@ def main(offset=0):
 
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
-            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=300-WINDOW_WIDTH)
+            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=150-WINDOW_WIDTH)
             probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability[0], 2)
 
