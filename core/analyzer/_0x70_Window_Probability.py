@@ -44,8 +44,8 @@ def get_probability(sequence, window_width, local_scale):
             for j in range(window_width):
                 item = sequence[i + j]
                 chg = item.pct_chg
-                close = item.close
-                pre_close = item.pre_close
+                # close = item.close
+                # pre_close = item.pre_close
 
                 # if close < round(pre_close * 1.1, 2):
                 probability += chg / window_width
