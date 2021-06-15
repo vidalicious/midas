@@ -110,11 +110,11 @@ def main(offset=0):
         print('##### window_probability {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_PROBABILITY] > 0)
+                            (data_frame[COL_PROBABILITY] > 1)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_PROBABILITY, ascending=False).reset_index(drop=True)
-    data_frame = data_frame.head(300)
+    # data_frame = data_frame.head(300)
 
     file_name = '{logs_path}/{date}@Window_Probability.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
     with open(file_name, 'w', encoding='utf8') as file:
