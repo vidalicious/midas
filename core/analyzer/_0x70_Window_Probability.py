@@ -32,22 +32,18 @@ tmp_weights_sum = sum(tmp_weights)
 weights = [i / tmp_weights_sum for i in tmp_weights]
 
 def get_probability(sequence, window_width, local_scale):
-    if len(sequence) < window_width:
-        return []
-
     sequence = sequence[:window_width + local_scale]
+    chgs = [i.pct_chg for i in sequence]
+
+    if len(chgs) < window_width:
+        return [np.mean(chgs)]
 
     res = []
     for i in range(local_scale):
         try:
             probability = 0
             for j in range(window_width):
-                item = sequence[i + j]
-                chg = item.pct_chg
-                # close = item.close
-                # pre_close = item.pre_close
-
-                # if close < round(pre_close * 1.1, 2):
+                chg = chgs[i + j]
                 probability += chg / window_width
 
             res.append(probability)
