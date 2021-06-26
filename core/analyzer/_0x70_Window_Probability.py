@@ -116,7 +116,8 @@ def main(offset=0):
     with open(file_name, 'w', encoding='utf8') as file:
         data_frame.to_csv(file)
 
-    batch_size = 100
+    # 100 * 2 * 5 * 100 = 100000
+    batch_size = int(65000 / 100 / 5) #100
     sub = 0
     for i in range(0, len(data_frame), batch_size):
         sub_df = data_frame.iloc[i:i+batch_size, :]
@@ -126,17 +127,17 @@ def main(offset=0):
 
 
 def plot_candle_gather(data_frame, last_date, sub, offset):
-    # columns = 1
-    # rows = len(data_frame) * 2
-
-    columns = 2
+    columns = 1
     rows = len(data_frame)
+
+    # columns = 2
+    # rows = len(data_frame)
 
     fig = plt.figure(figsize=(columns * 15, rows * 5))#/ 2))
     for i in range(len(data_frame)):
         ts_code = data_frame.loc[i, 'ts_code']
         name = data_frame.loc[i, 'name']
-        ax = fig.add_subplot(rows, columns, 2 * i + 1)
+        ax = fig.add_subplot(rows, columns, i + 1)
         misc = {
             'index': i + offset,
             # COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
@@ -146,8 +147,8 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
-        ax = fig.add_subplot(rows, columns, 2 * i + 2)
-        plot_stuff_daily(ax=ax, ts_code=ts_code, last_date=last_date, misc=misc)
+        # ax = fig.add_subplot(rows, columns, 2 * i + 2)
+        # plot_stuff_daily(ax=ax, ts_code=ts_code, last_date=last_date, misc=misc)
 
     plt.tight_layout()
     plt.savefig('../../buffer/window_probability/{date}_window_probability_{sub}.png'.format(date=last_date, sub=sub))
@@ -238,9 +239,9 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-                                                                    circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG]),
-              fontproperties='Heiti TC')
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} probability:{probability}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY]),
+        fontproperties='Heiti TC')
     # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
 
