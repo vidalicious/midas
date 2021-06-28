@@ -17,7 +17,7 @@ import midas.core.data.models as models
 
 target_symbols = [
     '300581',
-    '002129',
+    '002245',
     '300842',
     '300409'
 ]
