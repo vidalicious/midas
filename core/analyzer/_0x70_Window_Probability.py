@@ -24,12 +24,12 @@ COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
 
 sampling_count = 300
-WINDOW_WIDTH = 20
+WINDOW_WIDTH = 10
 probability_map = dict()
 
-tmp_weights = [(WINDOW_WIDTH - i) ** 2 for i in range(WINDOW_WIDTH)]
-tmp_weights_sum = sum(tmp_weights)
-weights = [i / tmp_weights_sum for i in tmp_weights]
+# tmp_weights = [(WINDOW_WIDTH - i) ** 2 for i in range(WINDOW_WIDTH)]
+# tmp_weights_sum = sum(tmp_weights)
+# weights = [i / tmp_weights_sum for i in tmp_weights]
 
 def get_probability(sequence, window_width, local_scale):
     sequence = sequence[:window_width + local_scale]
