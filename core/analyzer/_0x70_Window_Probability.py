@@ -19,6 +19,8 @@ import mpl_finance as mpf
 
 COL_CHG = 'COL_CHG'
 COL_PROBABILITY = 'COL_PROBABILITY'
+COL_RECENT_HALF_PROBABILITY = 'COL_RECENT_HALF_PROBABILITY'
+COL_PROBABILITY_DIFFER = 'COL_PROBABILITY_DIFFER'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -31,26 +33,31 @@ probability_map = dict()
 # tmp_weights_sum = sum(tmp_weights)
 # weights = [i / tmp_weights_sum for i in tmp_weights]
 
-def get_probability(sequence, window_width, local_scale):
-    sequence = sequence[:window_width + local_scale]
+# def get_probability(sequence, window_width, local_scale):
+#     sequence = sequence[:window_width + local_scale]
+#     chgs = [i.pct_chg for i in sequence]
+#
+#     if len(chgs) < window_width:
+#         return [np.mean(chgs)]
+#
+#     res = []
+#     for i in range(local_scale):
+#         try:
+#             probability = 0
+#             for j in range(window_width):
+#                 chg = chgs[i + j]
+#                 probability += chg / window_width
+#
+#             res.append(probability)
+#         except Exception as e:
+#             break
+#
+#     return res
+
+def get_probability(sequence, window_width):
+    sequence = sequence[:window_width]
     chgs = [i.pct_chg for i in sequence]
-
-    if len(chgs) < window_width:
-        return [np.mean(chgs)]
-
-    res = []
-    for i in range(local_scale):
-        try:
-            probability = 0
-            for j in range(window_width):
-                chg = chgs[i + j]
-                probability += chg / window_width
-
-            res.append(probability)
-        except Exception as e:
-            break
-
-    return res
+    return np.mean(chgs)
 
 
 def accumulate(sequence):
@@ -86,9 +93,12 @@ def main(offset=0):
 
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
-            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH, local_scale=150-WINDOW_WIDTH)
-            probability_map[stock_basic.ts_code] = probability
-            data_frame.loc[i, COL_PROBABILITY] = round(probability[0], 2)
+            probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH)
+            recent_half_probability = get_probability(sequence=daily, window_width=int(WINDOW_WIDTH / 2))
+            # probability_map[stock_basic.ts_code] = probability
+            data_frame.loc[i, COL_PROBABILITY] = round(probability, 2)
+            data_frame.loc[i, COL_RECENT_HALF_PROBABILITY] = round(recent_half_probability, 2)
+            data_frame.loc[i, COL_PROBABILITY_DIFFER] = round(recent_half_probability - probability, 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
