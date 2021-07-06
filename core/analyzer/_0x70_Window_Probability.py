@@ -116,7 +116,8 @@ def main(offset=0):
         print('##### window_probability {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_PROBABILITY] > 1)
+                            (data_frame[COL_PROBABILITY] > 0.5)
+                            & (data_frame[COL_PROBABILITY_DIFFER] > 0)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_PROBABILITY, ascending=False).reset_index(drop=True)
@@ -153,7 +154,9 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             # COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
             COL_CHG: round(data_frame.loc[i, COL_CHG], 2),
-            COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2)
+            COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2),
+            COL_RECENT_HALF_PROBABILITY: round(data_frame.loc[i, COL_RECENT_HALF_PROBABILITY], 2),
+            COL_PROBABILITY_DIFFER: round(data_frame.loc[i, COL_PROBABILITY_DIFFER], 2)
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
@@ -221,14 +224,12 @@ def plot_stuff_daily(ax, ts_code, last_date, misc):
 
 
 def plot_candle_daily(ax, ts_code, name, last_date, misc):
-    probability = probability_map[ts_code]
-
     daily = main_session.query(models.DailyPro).filter(models.DailyPro.ts_code == ts_code,
                                                        models.DailyPro.trade_date <= last_date).order_by(
         models.DailyPro.trade_date.desc()).limit(sampling_count).all()
 
     df = DataFrame()
-    for i, item in enumerate(daily[len(probability) - 1::-1]):
+    for i, item in enumerate(daily[150::-1]):
         df.loc[i, 'date'] = str(item.trade_date)
         df.loc[i, 'open'] = item.open
         df.loc[i, 'close'] = item.close
@@ -249,8 +250,9 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} probability:{probability}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY]),
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} prob:{probability} half_prob:{half_prob} prob_differ:{prob_differ}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY], half_prob=misc[COL_RECENT_HALF_PROBABILITY],
+        prob_differ=misc[COL_PROBABILITY_DIFFER]),
         fontproperties='Heiti TC')
     # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
