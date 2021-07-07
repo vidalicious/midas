@@ -19,10 +19,10 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
-    '603300',
-    '603026',
+    '300591',
+    '300790',
     '600619',
-    '603733'
+    '300982'
 ]
 target_symbols = list(set(target_symbols))
 
@@ -77,7 +77,7 @@ class Console():
                 circ_mv = self.stock_map[code]['circ_mv']
 
                 displays.append({
-                    'note': '{code} {name} chg:{chg} price:{price} circ_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
+                    'note': '{code}  {name}  chg:{chg}  price:{price}  circ_mv:{circ_mv}亿'.format(code=code, name=name, chg=chg_display,
                                                                                                   price=round(current_price, 2), circ_mv=int(circ_mv)),
                     'chg': chg
                 })
