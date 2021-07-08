@@ -19,8 +19,6 @@ import mpl_finance as mpf
 
 COL_CHG = 'COL_CHG'
 COL_PROBABILITY = 'COL_PROBABILITY'
-COL_RECENT_HALF_PROBABILITY = 'COL_RECENT_HALF_PROBABILITY'
-COL_PROBABILITY_DIFFER = 'COL_PROBABILITY_DIFFER'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -94,11 +92,8 @@ def main(offset=0):
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
             probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH)
-            recent_half_probability = get_probability(sequence=daily, window_width=int(WINDOW_WIDTH / 2))
             # probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability, 2)
-            data_frame.loc[i, COL_RECENT_HALF_PROBABILITY] = round(recent_half_probability, 2)
-            data_frame.loc[i, COL_PROBABILITY_DIFFER] = round(recent_half_probability - probability, 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -116,8 +111,7 @@ def main(offset=0):
         print('##### window_probability {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_PROBABILITY] > 0.5)
-                            & (data_frame[COL_PROBABILITY_DIFFER] > 0)
+                            (data_frame[COL_PROBABILITY] > 1)
                            ]
 
     data_frame = data_frame.sort_values(by=COL_PROBABILITY, ascending=False).reset_index(drop=True)
@@ -154,9 +148,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             # COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
             COL_CHG: round(data_frame.loc[i, COL_CHG], 2),
-            COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2),
-            COL_RECENT_HALF_PROBABILITY: round(data_frame.loc[i, COL_RECENT_HALF_PROBABILITY], 2),
-            COL_PROBABILITY_DIFFER: round(data_frame.loc[i, COL_PROBABILITY_DIFFER], 2)
+            COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2)
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
@@ -250,9 +242,8 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} prob:{probability} half_prob:{half_prob} prob_differ:{prob_differ}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY], half_prob=misc[COL_RECENT_HALF_PROBABILITY],
-        prob_differ=misc[COL_PROBABILITY_DIFFER]),
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} prob:{probability}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY]),
         fontproperties='Heiti TC')
     # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
