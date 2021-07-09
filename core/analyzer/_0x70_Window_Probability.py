@@ -19,7 +19,7 @@ import mpl_finance as mpf
 
 COL_CHG = 'COL_CHG'
 COL_PROBABILITY = 'COL_PROBABILITY'
-COL_SEPARATION_DEGREE = 'COL_SEPARATION_DEGREE'
+COL_DISCRETE = 'COL_DISCRETE'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -59,26 +59,14 @@ def get_probability(sequence, window_width):
     return np.mean(chgs)
 
 
-def get_separation_degree(sequence, window_width):
+def get_discrete(sequence, window_width, probability):
     sequence = sequence[:window_width]
-    separations = []
-    for item in sequence:
-        entity_low = min(item.open, item.close)
-        pre_close = item.pre_close
-        separ = (entity_low / pre_close - 1) * 100
-        separations.append(separ)
+    chgs = [i.pct_chg for i in sequence]
+    discretes = []
+    for item in chgs:
+        discretes.append((item - probability) ** 2)
 
-    return np.mean(separations)
-
-
-def accumulate(sequence):
-    res = 0
-    for item in sequence:
-        if item > 0:
-            res += item
-        else:
-            break
-    return res
+    return np.mean(discretes)
 
 
 def main(offset=0):
@@ -86,7 +74,7 @@ def main(offset=0):
     LAST_MARKET_DATE = daily001[offset].trade_date
 
     data_frame = DataFrame()
-    for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
+    for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()[:10]):
         try:
             if 'ST' in stock_basic.name or stock_basic.symbol.startswith('688'):
                 continue
@@ -105,11 +93,11 @@ def main(offset=0):
             data_frame.loc[i, COL_CHG] = round((daily[0].close / min_close - 1) * 100, 2)
 
             probability = get_probability(sequence=daily, window_width=WINDOW_WIDTH)
-            separation_degree = get_separation_degree(sequence=daily, window_width=WINDOW_WIDTH)
+            discrete = get_discrete(sequence=daily, window_width=WINDOW_WIDTH, probability=probability)
 
             # probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_PROBABILITY] = round(probability, 2)
-            data_frame.loc[i, COL_SEPARATION_DEGREE] = round(separation_degree, 2)
+            data_frame.loc[i, COL_DISCRETE] = round(discrete, 2)
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -130,7 +118,7 @@ def main(offset=0):
                             (data_frame[COL_PROBABILITY] > 1)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_SEPARATION_DEGREE, ascending=False).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_DISCRETE, ascending=True).reset_index(drop=True)
     # data_frame = data_frame.head(300)
 
     file_name = '{logs_path}/{date}@Window_Probability.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
@@ -165,7 +153,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
             COL_CHG: round(data_frame.loc[i, COL_CHG], 2),
             COL_PROBABILITY: round(data_frame.loc[i, COL_PROBABILITY], 2),
-            COL_SEPARATION_DEGREE: round(data_frame.loc[i, COL_SEPARATION_DEGREE], 2)
+            COL_DISCRETE: round(data_frame.loc[i, COL_DISCRETE], 2)
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
         plot_candle_daily(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
@@ -259,8 +247,8 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} prob:{probability} separ:{separ}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY], separ=misc[COL_SEPARATION_DEGREE]),
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 chg:{chg} prob:{probability} discrete:{discrete}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+        circ_mv=int(misc[COL_CIRC_MV]), chg=misc[COL_CHG], probability=misc[COL_PROBABILITY], discrete=misc[COL_DISCRETE]),
         fontproperties='Heiti TC')
     # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
