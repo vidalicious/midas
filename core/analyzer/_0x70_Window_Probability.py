@@ -74,7 +74,7 @@ def main(offset=0):
     LAST_MARKET_DATE = daily001[offset].trade_date
 
     data_frame = DataFrame()
-    for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()[:10]):
+    for i, stock_basic in enumerate(main_session.query(models.StockBasicPro).all()):
         try:
             if 'ST' in stock_basic.name or stock_basic.symbol.startswith('688'):
                 continue
