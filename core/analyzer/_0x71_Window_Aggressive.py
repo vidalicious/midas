@@ -44,7 +44,7 @@ def aggressive_rate(symbol):
     elif symbol.startswith('688'):
         rate = 8
     else:
-        rate = 9.5
+        rate = 8
 
     return rate
 
