@@ -69,7 +69,7 @@ def main(offset=0):
             rate = aggressive_rate(stock_basic.symbol)
 
             aggressive_count_long = aggressive_count(sequence=daily, window_width=10, rate=rate)
-            aggressive_count_short = aggressive_count(sequence=daily, window_width=2, rate=rate)
+            aggressive_count_short = aggressive_count(sequence=daily, window_width=1, rate=rate)
 
             # probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_AGGRESSIVE_COUNT_LONG] = aggressive_count_long

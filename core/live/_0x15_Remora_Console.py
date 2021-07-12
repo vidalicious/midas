@@ -19,10 +19,10 @@ from midas.core.data.engine import main_session
 import midas.core.data.models as models
 
 target_symbols = [
-    '300591',
-    '300790',
-    '600619',
-    '300982'
+    '000550',
+    '603019',
+    '600623',
+    '002149'
 ]
 target_symbols = list(set(target_symbols))
 
