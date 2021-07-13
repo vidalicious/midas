@@ -19,7 +19,7 @@ import mpl_finance as mpf
 
 
 COL_AGGRESSIVE_COUNT_LONG = 'COL_AGGRESSIVE_COUNT_LONG'
-COL_AGGRESSIVE_COUNT_SHORT = 'COL_AGGRESSIVE_COUNT_SHORT'
+# COL_AGGRESSIVE_COUNT_SHORT = 'COL_AGGRESSIVE_COUNT_SHORT'
 COL_FLOAT_HOLDERS = 'COL_FLOAT_HOLDERS'
 COL_HOLDERS_COUNT = 'COL_HOLDERS_COUNT'
 COL_CIRC_MV = 'COL_CIRC_MV'
@@ -68,12 +68,12 @@ def main(offset=0):
 
             rate = aggressive_rate(stock_basic.symbol)
 
-            aggressive_count_long = aggressive_count(sequence=daily, window_width=10, rate=rate)
-            aggressive_count_short = aggressive_count(sequence=daily, window_width=1, rate=rate)
+            aggressive_count_long = aggressive_count(sequence=daily, window_width=5, rate=rate)
+            # aggressive_count_short = aggressive_count(sequence=daily, window_width=1, rate=rate)
 
             # probability_map[stock_basic.ts_code] = probability
             data_frame.loc[i, COL_AGGRESSIVE_COUNT_LONG] = aggressive_count_long
-            data_frame.loc[i, COL_AGGRESSIVE_COUNT_SHORT] = aggressive_count_short
+            # data_frame.loc[i, COL_AGGRESSIVE_COUNT_SHORT] = aggressive_count_short
 
             daily_basic = main_session.query(models.DailyBasic).filter(models.DailyBasic.ts_code == stock_basic.ts_code).one()
             data_frame.loc[i, COL_CIRC_MV] = daily_basic.circ_mv
@@ -91,10 +91,10 @@ def main(offset=0):
         print('##### window_aggressive {i} #####'.format(i=i))
 
     data_frame = data_frame[
-                            (data_frame[COL_AGGRESSIVE_COUNT_SHORT] > 0)
+                            (data_frame[COL_AGGRESSIVE_COUNT_LONG] > 0)
                            ]
 
-    data_frame = data_frame.sort_values(by=COL_AGGRESSIVE_COUNT_LONG, ascending=True).reset_index(drop=True)
+    data_frame = data_frame.sort_values(by=COL_AGGRESSIVE_COUNT_LONG, ascending=False).reset_index(drop=True)
     # data_frame = data_frame.head(300)
 
     file_name = '{logs_path}/{date}@Window_Aggressive.csv'.format(date=LAST_MARKET_DATE, logs_path=env.logs_path)
@@ -127,7 +127,7 @@ def plot_candle_gather(data_frame, last_date, sub, offset):
             'index': i + offset,
             # COL_HOLDERS_COUNT: data_frame.loc[i, COL_HOLDERS_COUNT] if not np.isnan(data_frame.loc[i, COL_HOLDERS_COUNT]) else 0,
             COL_CIRC_MV: data_frame.loc[i, COL_CIRC_MV] if not np.isnan(data_frame.loc[i, COL_CIRC_MV]) else 0,
-            COL_AGGRESSIVE_COUNT_SHORT: data_frame.loc[i, COL_AGGRESSIVE_COUNT_SHORT],
+            # COL_AGGRESSIVE_COUNT_SHORT: data_frame.loc[i, COL_AGGRESSIVE_COUNT_SHORT],
             COL_AGGRESSIVE_COUNT_LONG: data_frame.loc[i, COL_AGGRESSIVE_COUNT_LONG],
         }
         # plot_candle_month(ax=ax, ts_code=ts_code, name=name, last_date=last_date, misc=misc)
@@ -222,8 +222,8 @@ def plot_candle_daily(ax, ts_code, name, last_date, misc):
                           width=0.5, colorup='red', colordown='green',
                           alpha=0.5)
 
-    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 count_short:{count_short} count_long:{count_long}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
-        circ_mv=int(misc[COL_CIRC_MV]), count_short=misc[COL_AGGRESSIVE_COUNT_SHORT], count_long=misc[COL_AGGRESSIVE_COUNT_LONG]),
+    plt.title('{index} {ts_code} {name} circ_mv:{circ_mv}亿 count_long:{count_long}'.format(index=int(misc['index']), ts_code=ts_code, name=name,
+        circ_mv=int(misc[COL_CIRC_MV]), count_long=misc[COL_AGGRESSIVE_COUNT_LONG]),
         fontproperties='Heiti TC')
     # plt.grid()
     print('plot {ts_code} {name}'.format(ts_code=ts_code, name=name))
